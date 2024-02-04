@@ -5,5 +5,5 @@ public enum TerrainType {
     MOUNTAIN, 
     FIELD,
     PASTURE,
-    EMPTY; 
+    EMPTY
 }
