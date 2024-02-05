@@ -20,6 +20,7 @@ public class Tile {
 
     void setTileConnection(Tile t, Direction d) {
         neighborTile[d.ordinal()] = t;
+        t.neighborTile[d.oppositeOrdinal()] = t;
     }
 
     Tile getTileConnection(Direction d) {

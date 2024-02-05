@@ -12,7 +12,7 @@ public enum Direction {
         return (this.ordinal() + 3)%6;
     }
 
-    public Direction getDirection(int n) {
-        return (this.ordinal() + 3)%6;
+    public static Direction getDirection(int n) {
+        return Direction.values()[n%6];
     }
 }
