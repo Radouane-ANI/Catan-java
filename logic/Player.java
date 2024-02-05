@@ -1,24 +1,25 @@
 package logic;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
+    private List<Card> hand;
     private HashMap<String, Integer> ressources;
     private boolean bot;
-    private String nom;
-    private List<Road> routes;
-    private List<Settlement> colonies;
-    private List<City> villes;
+    private String name;
+    private List<Road> roads;
+    private List<Settlement> settlements;
+    private List<City> cities;
     private int points;
 
     public Player(boolean bot, String nom) {
         this.bot = bot;
-        this.nom = nom;
-        routes = new ArrayList<>();
-        colonies = new ArrayList<>();
-        villes = new ArrayList<>();
+        this.name = nom;
+        roads = new ArrayList<>();
+        settlements = new ArrayList<>();
+        cities = new ArrayList<>();
         ressources = new HashMap<>();
         ressources.put("bois", 0);
         ressources.put("brique", 0);
@@ -27,8 +28,40 @@ public class Player {
         ressources.put("laine", 0);
     }
 
-    public boolean win() {
-        return points >= 10;
+    public void setRoads(List<Road> roads) {
+        this.roads = roads;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Card> getHand() {
+        return hand;
+    }
+
+    public void setHand(List<Card> hand) {
+        this.hand = hand;
+    }
+
+    public List<Settlement> getSettlements() {
+        return settlements;
+    }
+
+    public void setSettlements(List<Settlement> settlements) {
+        this.settlements = settlements;
+    }
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
+    }
+
+    public List<Road> getRoads() {
+        return roads;
     }
 
     public int getPoints() {
@@ -37,6 +70,10 @@ public class Player {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public boolean win() {
+        return points >= 10;
     }
 
     public int getResourceQuantity(String resourceType) {
@@ -60,22 +97,22 @@ public class Player {
     }
 
     public boolean canBuildRoad() {
-        return ressources.get("bois") >= 1 && ressources.get("brique") >= 1 && routes.size() < 15;
+        return ressources.get("bois") >= 1 && ressources.get("brique") >= 1 && roads.size() < 15;
     }
 
     public boolean canBuildSettlement() {
         return ressources.get("bois") >= 1 && ressources.get("brique") >= 1 && ressources.get("ble") >= 1
-                && ressources.get("laine") >= 1 && colonies.size() < 5;
+                && ressources.get("laine") >= 1 && settlements.size() < 5;
     }
 
     public boolean canBuildCity() {
-        return ressources.get("ble") >= 2 && ressources.get("pierre") >= 3 && villes.size() < 4;
+        return ressources.get("ble") >= 2 && ressources.get("pierre") >= 3 && cities.size() < 4;
     }
 
     public void buildRoad(Road route) {
         ressources.put("bois", ressources.get("bois") - 1);
         ressources.put("brique", ressources.get("brique") - 1);
-        routes.add(route);
+        roads.add(route);
     }
 
     public void buildSettlement(Settlement colonie) {
@@ -83,14 +120,14 @@ public class Player {
         ressources.put("brique", ressources.get("brique") - 1);
         ressources.put("ble", ressources.get("ble") - 1);
         ressources.put("laine", ressources.get("laine") - 1);
-        colonies.add(colonie);
+        settlements.add(colonie);
     }
 
     public void buildCity(City ville, Settlement colonie) {
         ressources.put("ble", ressources.get("ble") - 2);
         ressources.put("pierre", ressources.get("pierre") - 3);
-        villes.add(ville);
-        colonies.remove(colonie);
+        cities.add(ville);
+        settlements.remove(colonie);
     }
 
 }
