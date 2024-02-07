@@ -2,29 +2,15 @@ package map;
 
 import logic.Thief;
 
-public class Tile {
-    private int diceNumber;
+public class Tile extends Vector {
+    private int diceNumber = 0;
     private Thief thief = null;
-    private TerrainType terrain = null;
+    private TerrainType terrain = TerrainType.DESERT;
 
-    private Edge[] neighborEdge = new Edge[6];
-
-    private Node[] neighborNode = new Node[6];
-
-    private Tile[] neighborTile = new Tile[6];
-
-    Tile(int diceNumber, TerrainType terrain) {
+    Tile(int x, int y, int diceNumber, TerrainType terrain) {
+        super(x, y);
         this.diceNumber = diceNumber;
         this.terrain = terrain;
-    }
-
-    void setTileConnection(Tile t, Direction d) {
-        neighborTile[d.ordinal()] = t;
-        t.neighborTile[d.oppositeOrdinal()] = t;
-    }
-
-    Tile getTileConnection(Direction d) {
-        return neighborTile[d.ordinal()];
     }
 
     public int getDiceNumber() {

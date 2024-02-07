@@ -3,57 +3,47 @@ package map;
 public class Board {
     private static Board INSTANCE;
 
-    private static Tile topTile;
-
-    private static Node[] nodeArray;
-    private static Edge[] edgeArray;
-    private static Tile[] tileArray;
+    private static Vector[] tileArray;
 
     public static void createBoard() {
         Board.INSTANCE = new Board();
     }
 
     private Board() {
-        topTile = new Tile(5, TerrainType.FOREST);
-        Tile buffer = topTile;
+        tileArray = new Vector[19];
+        int counter = 0;
 
-        for (int d = 0; d < 6; d++) {
-            for (int i = 0; i < 2; i++) {
-                Direction dir = Direction.getDirection(Direction.SOUTH_EAST.ordinal() + d);
-                if (buffer.getTileConnection(dir) == null) {
-                    buffer.setTileConnection(new Tile(5, TerrainType.FOREST), dir);
-                }
-                else {
-                    buffer.setTileConnection(buffer.getTileConnection(dir), dir);
-                }
-                buffer = buffer.getTileConnection(dir);
+        Basket<Integer> diceBasket = new Basket<Integer>(new Integer[] {
+            1,
+            2,
+            3, 3,
+            4, 4,
+            5, 5,
+            6, 6,
+            8, 8,
+            9, 9,
+            10, 10,
+            11, 11,
+            12
+        });
+
+        Basket<TerrainType> terrainBasket = new Basket<TerrainType>(new TerrainType[] {
+            TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST,
+            TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD,
+            TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE,
+            TerrainType.BRICK, TerrainType.BRICK, TerrainType.BRICK,
+            TerrainType.MOUNTAIN, TerrainType.MOUNTAIN, TerrainType.MOUNTAIN
+        });
+        
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 3 + i; j++) {
+            tileArray[counter++] = new Tile(j , j + 5 - 2*i, diceBasket.pickRandomItem(), terrainBasket.pickRandomItem());
+            tileArray[counter++] = new Tile(j + 5 - 2*i, j, diceBasket.pickRandomItem(), terrainBasket.pickRandomItem());
+
             }
         }
-
-        buffer.setTileConnection(new Tile(5, TerrainType.FOREST), Direction.SOUTH);
-        buffer = buffer.getTileConnection(Direction.SOUTH);
-
-        for (int d = 0; d < 6; d++) {
-            int numdirection = Direction.SOUTH_EAST.ordinal() + d;
-            if (buffer.getTileConnection(Direction.getDirection(numdirection)) == null) {
-                buffer.setTileConnection(new Tile(5, TerrainType.FOREST), Direction.getDirection(numdirection));
-                for (int i = 4; i <= 6; i++) {
-                    buffer.setTileConnection(buffer.getTileConnection(Direction.getDirection(numdirection + i)), 
-                        Direction.getDirection(numdirection + i));
-                }
-            }
-            else {
-                buffer.setTileConnection(buffer.getTileConnection(Direction.getDirection(numdirection)), Direction.getDirection(numdirection));
-            }
-            buffer = buffer.getTileConnection(Direction.getDirection(numdirection));
-        }
-
-        buffer.setTileConnection(new Tile(5, TerrainType.FOREST), Direction.SOUTH);
-        buffer = buffer.getTileConnection(Direction.SOUTH);
-
-        for (int i = 1; i < 6; i++) {
-            Direction dir = Direction.getDirection(i);
-            buffer.setTileConnection(buffer.getTileConnection(dir), dir);
+        for (int i = 1; i <= 5; i++) {
+            tileArray[counter++] = new Tile(i , i, diceBasket.pickRandomItem(), terrainBasket.pickRandomItem());
         }
     }
 /*
@@ -62,14 +52,13 @@ public class Board {
     }*/
 
     public static Tile getTile(int x, int y) {
-        Tile buffer = topTile;
-        for (int i = 0; i < x && buffer != null; i++) {
-            buffer = buffer.getTileConnection(Direction.SOUTH_WEST);
-            for (int j = 0; j < y && buffer != null; j++) {
-                buffer = buffer.getTileConnection(Direction.SOUTH_EAST);
+        for (int i = 0; i < tileArray.length; i++) {
+            if (tileArray[i].getX() == x && tileArray[i].getY() == y) {
+                return (Tile)tileArray[i];
             }
         }
-        return buffer;
+        
+        return null;
     }
 /* 
     private void printBoard() {
@@ -78,6 +67,6 @@ public class Board {
     
     public static void main(String[] args) {
         createBoard();
-        System.out.println(getTile(2, 1).getTerrain());
+        System.out.println(getTile(3, 0).getTerrain());
     }
 }
