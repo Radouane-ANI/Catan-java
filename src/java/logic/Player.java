@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
+import map.TerrainType;
 
 public class Player {
     private List<Card> hand;
-    private HashMap<String, Integer> ressources;
+    private HashMap<TerrainType, Integer> ressources;
     private boolean bot;
     private String name;
     private List<Road> roads;
@@ -23,11 +24,11 @@ public class Player {
         settlements = new ArrayList<>();
         cities = new ArrayList<>();
         ressources = new HashMap<>();
-        ressources.put("bois", 0);
-        ressources.put("brique", 0);
-        ressources.put("ble", 0);
-        ressources.put("pierre", 0);
-        ressources.put("laine", 0);
+        ressources.put(TerrainType.FOREST, 0);
+        ressources.put(TerrainType.BRICK, 0);
+        ressources.put(TerrainType.FIELD, 0);
+        ressources.put(TerrainType.MOUNTAIN, 0);
+        ressources.put(TerrainType.PASTURE, 0);
         pLayers.add(this);
     }
 
@@ -87,20 +88,20 @@ public class Player {
         return points >= 10;
     }
 
-    public int getResourceQuantity(String resourceType) {
+    public int getResourceQuantity(TerrainType resourceType) {
         if (ressources.containsKey(resourceType)) {
             return ressources.get(resourceType);
         }
         return -1;
     }
 
-    public void addResource(String resourceType, int quantity) {
+    public void addResource(TerrainType resourceType, int quantity) {
         if (ressources.containsKey(resourceType) && quantity > 0) {
             ressources.put(resourceType, ressources.get(resourceType) + quantity);
         }
     }
 
-    public void removeResource(String resourceType, int quantity) {
+    public void removeResource(TerrainType resourceType, int quantity) {
         if (ressources.containsKey(resourceType) && quantity > 0) {
             int total = (ressources.get(resourceType) >= quantity) ? ressources.get(resourceType) - quantity : 0;
             ressources.put(resourceType, total);
@@ -108,40 +109,42 @@ public class Player {
     }
 
     public boolean canBuildRoad() {
-        return ressources.get("bois") >= 1 && ressources.get("brique") >= 1 && roads.size() < 15;
+        return ressources.get(TerrainType.FOREST) >= 1 && ressources.get(TerrainType.BRICK) >= 1 && roads.size() < 15;
     }
 
     public boolean canBuildSettlement() {
-        return ressources.get("bois") >= 1 && ressources.get("brique") >= 1 && ressources.get("ble") >= 1
-                && ressources.get("laine") >= 1 && settlements.size() < 5;
+        return ressources.get(TerrainType.FOREST) >= 1 && ressources.get(TerrainType.BRICK) >= 1
+                && ressources.get(TerrainType.FIELD) >= 1
+                && ressources.get(TerrainType.PASTURE) >= 1 && settlements.size() < 5;
     }
 
     public boolean canBuildCity() {
-        return ressources.get("ble") >= 2 && ressources.get("pierre") >= 3 && cities.size() < 4;
+        return ressources.get(TerrainType.FIELD) >= 2 && ressources.get(TerrainType.MOUNTAIN) >= 3 && cities.size() < 4;
     }
 
     public void buildRoad(Road route) {
-        ressources.put("bois", ressources.get("bois") - 1);
-        ressources.put("brique", ressources.get("brique") - 1);
+        ressources.put(TerrainType.FOREST, ressources.get(TerrainType.FOREST) - 1);
+        ressources.put(TerrainType.BRICK, ressources.get(TerrainType.BRICK) - 1);
         roads.add(route);
     }
 
     public void buildSettlement(Settlement colonie) {
-        ressources.put("bois", ressources.get("bois") - 1);
-        ressources.put("brique", ressources.get("brique") - 1);
-        ressources.put("ble", ressources.get("ble") - 1);
-        ressources.put("laine", ressources.get("laine") - 1);
+        ressources.put(TerrainType.FOREST, ressources.get(TerrainType.FOREST) - 1);
+        ressources.put(TerrainType.BRICK, ressources.get(TerrainType.BRICK) - 1);
+        ressources.put(TerrainType.FIELD, ressources.get(TerrainType.FIELD) - 1);
+        ressources.put(TerrainType.PASTURE, ressources.get(TerrainType.PASTURE) - 1);
         settlements.add(colonie);
     }
 
     public void buildCity(City ville, Settlement colonie) {
-        ressources.put("ble", ressources.get("ble") - 2);
-        ressources.put("pierre", ressources.get("pierre") - 3);
+        ressources.put(TerrainType.FIELD, ressources.get(TerrainType.FIELD) - 2);
+        ressources.put(TerrainType.MOUNTAIN, ressources.get(TerrainType.MOUNTAIN) - 3);
         cities.add(ville);
         settlements.remove(colonie);
     }
 
-    public void trade(String offerResourceType, int offerQuantity, String requestResourceType, int requestQuantity) {
+    public void trade(TerrainType offerResourceType, int offerQuantity, TerrainType requestResourceType,
+            int requestQuantity) {
         if (offerQuantity < 0 || requestQuantity < 0) {
             return;
         }
@@ -164,22 +167,19 @@ public class Player {
         }
     }
 
-    public boolean accepte(Player p, String offer, int oQuantity, String request, int rQuantity) {
-        HashMap<String, Integer> etats = p.etatsRessources();
+    private boolean accepte(Player p, TerrainType offer, int oQuantity, TerrainType request, int rQuantity) {
+        HashMap<TerrainType, Integer> etats = p.etatsRessources();
 
-        if (etats.get(offer) < 0 && etats.get(request) - rQuantity >= 0) {
-            return true;
-        }
-        return false;
+        return (etats.get(offer) < 0 && etats.get(request) - rQuantity >= 0);
     }
 
     public void demande() {
-        HashMap<String, Integer> etats = etatsRessources();
-        List<String> keys = new ArrayList<>(etats.keySet());
+        HashMap<TerrainType, Integer> etats = etatsRessources();
+        List<TerrainType> keys = new ArrayList<>(etats.keySet());
 
-        String min = keys.get(0);
-        String max = keys.get(0);
-        for (String key : keys) {
+        TerrainType min = keys.get(0);
+        TerrainType max = keys.get(0);
+        for (TerrainType key : keys) {
             if (etats.get(key) > 0 && etats.get(key) > etats.get(max)) {
                 max = key;
             } else if (etats.get(key) < 0 && etats.get(key) < etats.get(min)) {
@@ -187,20 +187,20 @@ public class Player {
             }
         }
         if (etats.get(max) > 0 && etats.get(min) < 0) {
-            int quantite = etats.get(min) * -1;
+            int quantite = etats.get(min) * -1 <= etats.get(max) ? etats.get(min) * -1 : etats.get(max);
             trade(max, quantite, min, quantite);
         }
 
     }
 
-    public HashMap<String, Integer> etatsRessources() {
-        HashMap<String, Integer> etats = new HashMap<>();
-        etats.put("bois", ressources.get("bois") - 1);
-        etats.put("brique", ressources.get("brique") - 1);
-        etats.put("ble", ressources.get("ble") - 2);
-        etats.put("pierre", ressources.get("pierre") - 3);
-        etats.put("laine", ressources.get("laine") - 1);
+    private HashMap<TerrainType, Integer> etatsRessources() {
+        HashMap<TerrainType, Integer> etats = new HashMap<>();
+        etats.put(TerrainType.FOREST, ressources.get(TerrainType.FOREST) - 1);
+        etats.put(TerrainType.BRICK, ressources.get(TerrainType.BRICK) - 1);
+        etats.put(TerrainType.FIELD, ressources.get(TerrainType.FIELD) - 2);
+        etats.put(TerrainType.MOUNTAIN, ressources.get(TerrainType.MOUNTAIN) - 3);
+        etats.put(TerrainType.PASTURE, ressources.get(TerrainType.PASTURE) - 1);
         return etats;
     }
-    
+
 }
