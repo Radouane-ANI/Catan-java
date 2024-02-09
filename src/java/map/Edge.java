@@ -2,8 +2,11 @@ package map;
 
 import logic.Road;
 
-class Edge {
+class Edge extends Tuple<Vector> {
     private Road road;
 
-    private Node[] node = new Node[2];
+    Edge(int firstX, int firstY, int lastX, int lastY) {
+        super(new Vector(firstX, firstY), new Vector(lastX, lastY));
+        road = null;
+    }
 }
