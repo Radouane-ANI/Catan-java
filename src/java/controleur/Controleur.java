@@ -4,16 +4,12 @@ import gui.GameMenu;
 import gui.GameView;
 import gui.MainFrame;
 import logic.Player;
-import map.Tile;
-
 import java.util.List;
-
-import org.w3c.dom.Node;
 
 public class Controleur {
     
     private static MainFrame frame;
-    private static List<Player> players;
+    private static List<Player> playersList;
     private static int currentPlayerIndex;
 
     public Controleur(MainFrame mainFrame) {
@@ -23,7 +19,7 @@ public class Controleur {
 
     public Controleur(MainFrame mainFrame, List<Player> players) {
         frame = mainFrame;
-        this.players = players;
+        playersList = players;
         frame.setPanel(new GameMenu());
         currentPlayerIndex = 0; // Commence avec le premier joueur
     }
@@ -41,7 +37,7 @@ public class Controleur {
         // boucle de jeu à implémenter
 
         while (!isGameEnded()) {
-            Player currentPlayer = players.get(currentPlayerIndex);
+            Player currentPlayer = playersList.get(currentPlayerIndex);
             executeTurn(currentPlayer);
             nextPlayer();
         }
@@ -74,7 +70,7 @@ public class Controleur {
     }
 
     private static void nextPlayer() {
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        currentPlayerIndex = (currentPlayerIndex + 1) % playersList.size();
     }
 
     private static boolean isGameEnded() {
