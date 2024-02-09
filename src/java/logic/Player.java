@@ -129,5 +129,4 @@ public class Player {
         cities.add(ville);
         settlements.remove(colonie);
     }
-
 }
