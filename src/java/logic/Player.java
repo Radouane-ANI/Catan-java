@@ -1,7 +1,6 @@
 package logic;
 
 import java.util.List;
-import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
 import map.TerrainType;
@@ -15,7 +14,6 @@ public class Player {
     private List<Settlement> settlements;
     private List<City> cities;
     private int points;
-    private static List<Player> pLayers = new ArrayList<>();
 
     public Player(boolean bot, String nom) {
         this.bot = bot;
@@ -29,19 +27,14 @@ public class Player {
         ressources.put(TerrainType.FIELD, 0);
         ressources.put(TerrainType.MOUNTAIN, 0);
         ressources.put(TerrainType.PASTURE, 0);
-        pLayers.add(this);
-    }
-
-    public static List<Player> getpLayers() {
-        return pLayers;
-    }
-
-    public static void resetPLayers() {
-        pLayers.clear();
     }
 
     public void setRoads(List<Road> roads) {
         this.roads = roads;
+    }
+
+    public boolean isBot() {
+        return bot;
     }
 
     public String getName() {
@@ -143,37 +136,13 @@ public class Player {
         settlements.remove(colonie);
     }
 
-    public void trade(TerrainType offerResourceType, int offerQuantity, TerrainType requestResourceType,
-            int requestQuantity) {
-        if (offerQuantity < 0 || requestQuantity < 0) {
-            return;
-        }
-        List<Player> accepter = new ArrayList<>();
-        for (Player p : pLayers) {
-            if (p != this && p.bot) {
-                if (accepte(p, offerResourceType, requestQuantity, requestResourceType, offerQuantity)) {
-                    accepter.add(p);
-                }
-            }
-        }
-        if (accepter.size() > 0) {
-            Random rd = new Random();
-            Player choisi = accepter.get(rd.nextInt(accepter.size()));
-            addResource(requestResourceType, requestQuantity);
-            removeResource(offerResourceType, offerQuantity);
+    public boolean accepte(DemandeResult result) {
+        HashMap<TerrainType, Integer> etats = etatsRessources();
 
-            choisi.addResource(offerResourceType, offerQuantity);
-            choisi.removeResource(requestResourceType, requestQuantity);
-        }
+        return (etats.get(result.offer) < 0 && etats.get(result.request) - result.requestQuantity >= 0);
     }
 
-    private boolean accepte(Player p, TerrainType offer, int oQuantity, TerrainType request, int rQuantity) {
-        HashMap<TerrainType, Integer> etats = p.etatsRessources();
-
-        return (etats.get(offer) < 0 && etats.get(request) - rQuantity >= 0);
-    }
-
-    public void demande() {
+    public DemandeResult demande() {
         HashMap<TerrainType, Integer> etats = etatsRessources();
         List<TerrainType> keys = new ArrayList<>(etats.keySet());
 
@@ -188,9 +157,9 @@ public class Player {
         }
         if (etats.get(max) > 0 && etats.get(min) < 0) {
             int quantite = etats.get(min) * -1 <= etats.get(max) ? etats.get(min) * -1 : etats.get(max);
-            trade(max, quantite, min, quantite);
+            return new DemandeResult(max, quantite, min, quantite);
         }
-
+        return null;
     }
 
     private HashMap<TerrainType, Integer> etatsRessources() {
@@ -203,4 +172,38 @@ public class Player {
         return etats;
     }
 
+    public boolean canTrade(DemandeResult demande) {
+        return ressources.get(demande.offer) > demande.offerQuantite;
+    }
+
+    public class DemandeResult {
+        private TerrainType offer;
+        private int offerQuantite;
+        private TerrainType request;
+        private int requestQuantity;
+
+        public DemandeResult(TerrainType offer, int offerQuantite, TerrainType request, int requestQuantity) {
+            this.offer = offer;
+            this.offerQuantite = offerQuantite;
+            this.request = request;
+            this.requestQuantity = requestQuantity;
+        }
+
+        public TerrainType getOffer() {
+            return offer;
+        }
+
+        public int getOfferQuantite() {
+            return offerQuantite;
+        }
+
+        public TerrainType getRequest() {
+            return request;
+        }
+
+        public int getRequestQuantity() {
+            return requestQuantity;
+        }
+
+    }
 }
