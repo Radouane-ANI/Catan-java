@@ -2,9 +2,11 @@ package map;
 
 import logic.HumanGroup;
 
-class Node {
+class Node extends Vector {
     private HumanGroup group;
 
-    private Edge[] edge = new Edge[3];
-    private Tile[] tile = new Tile[3];
+    Node(int x, int y) {
+        super(x, y);
+        group = null;
+    }
 }
