@@ -36,4 +36,5 @@ public class GameMenu extends JPanel{
         button.setBorderPainted(false);
         return button;
     }
+
 }
