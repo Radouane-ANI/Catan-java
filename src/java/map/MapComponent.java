@@ -46,13 +46,13 @@ public class MapComponent extends JPanel {
     private Polygon createHexagon(int cx, int cy) {
         Polygon hexagon = new Polygon();
         for (int i = 0; i < 6; i++) {
-            double angle = Math.PI / 3 * i;
+            double angle = Math.PI / 3 * (i + 0.5);
             int x = (int) (cx + HEX_RADIUS * Math.cos(angle));
             int y = (int) (cy + HEX_RADIUS * Math.sin(angle));
             hexagon.addPoint(x, y);
         }
         return hexagon;
-    }
+    } 
 
     private Color getTerrainColor(TerrainType terrain) {
         if (terrain != null) {
@@ -68,12 +68,12 @@ public class MapComponent extends JPanel {
                 case MOUNTAIN:
                     return Color.GRAY;
                 case DESERT:
-                    return Color.PINK;
+                    return Color.LIGHT_GRAY;
                 default:
-                    return Color.WHITE;
+                    return Color.PINK;
             }
         } else {
-            return Color.BLACK;
+            return Color.WHITE;
         }
     }
 

@@ -8,7 +8,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         setTitle("Katan");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 600); 
+        setSize(1000, 700); 
         setResizable(false);
         
         setPanel(new GameMenu());
