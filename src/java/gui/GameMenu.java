@@ -5,7 +5,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import controleur.Controleur;
+import controleur.ViewControleur;
 
 public class GameMenu extends JPanel{
     
@@ -18,10 +18,10 @@ public class GameMenu extends JPanel{
     private void makeButtons(){
         JPanel buttons = new JPanel();
         //JButton quitter = new JButton("Quitter"); //,Controleur::quitter
-        JButton quitter = createImageButton("src/ressources/quitter.png", Controleur::quitter); 
-        JButton jouer = createImageButton("src/ressources/jouer.png", Controleur::jouer); 
+        JButton quitter = createImageButton("src/ressources/quitter.png", ViewControleur::quitter); 
+        JButton jouer = createImageButton("src/ressources/jouer.png", ViewControleur::jouer); 
 
-        quitter.addActionListener(( event ) -> { Controleur.quitter();});
+        quitter.addActionListener(( event ) -> { ViewControleur.quitter();});
         buttons.add(jouer,BorderLayout.PAGE_END);
         buttons.add(quitter,BorderLayout.PAGE_END);
         buttons.setBackground(new Color(0));
