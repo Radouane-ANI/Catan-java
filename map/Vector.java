@@ -1,6 +1,6 @@
 package map;
 
-class Vector {
+public class Vector {
     private int x;
     private int y;
 

@@ -1,5 +1,7 @@
 package map;
 
+import java.util.Vector;
+
 public class Board {
     private static Board INSTANCE;
 
@@ -60,6 +62,11 @@ public class Board {
         
         return null;
     }
+
+    public static Vector getTileArray() {
+        return tileArray;
+    }
+
 /* 
     private void printBoard() {
         //for debuging purpose
