@@ -1,6 +1,7 @@
 package map;
 
 import logic.Thief;
+import util.TerrainType;
 
 public class Tile extends Vector {
     private int diceNumber = 0;

@@ -3,7 +3,8 @@ package logic;
 import util.Tuple;
 
 public class TupleDice extends Tuple<Dice>{
-    TupleDice(){
+    
+    public TupleDice(){
         super(new Dice(),new Dice());
     }
 

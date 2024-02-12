@@ -3,7 +3,7 @@ package logic;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
-import map.TerrainType;
+import util.TerrainType;
 
 public class Player {
     private List<Card> hand;
