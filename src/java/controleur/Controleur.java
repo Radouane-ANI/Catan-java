@@ -55,10 +55,6 @@ public class Controleur {
         // collecte des resources selon le résultat aux dés
         collectResources(diceRoll, player);
         // code pour permettre au joueur de faire des actions
-        if (player.isBot()) {
-            DemandeResult result = player.demande();
-            trade(result);
-        }
         // active le voleur
         if (diceRoll == 7) {
             handleRobberMovement();
@@ -93,7 +89,7 @@ public class Controleur {
 
         List<Player> accepter = new ArrayList<>();
         for (Player p : playersList) {
-            if (p != currentPlayer || p.isBot()) {
+            if (p != currentPlayer && p.isBot()) {
                 if (p.accepte(result)) {
                     accepter.add(p);
                 }

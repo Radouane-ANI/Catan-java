@@ -176,6 +176,15 @@ public class Player {
         return ressources.get(demande.offer) > demande.offerQuantite;
     }
 
+    public void echange(Player choisi, DemandeResult result) {
+        addResource(result.getRequest(), result.getRequestQuantity());
+        removeResource(result.getOffer(), result.getOfferQuantite());
+
+        choisi.addResource(result.getOffer(), result.getOfferQuantite());
+        choisi.removeResource(result.getRequest(), result.getRequestQuantity());
+
+    }
+
     public class DemandeResult {
         private TerrainType offer;
         private int offerQuantite;
