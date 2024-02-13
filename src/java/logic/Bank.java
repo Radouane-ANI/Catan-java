@@ -1,8 +1,11 @@
-package logic;
+package src.java.logic;
+
+import src.java.logic.Card;
+import src.java.logic.CardBox;
 
 import java.util.Random;
 
-public class Bank extends CardBox{
+public class Bank extends CardBox {
     private static final int NB_RES_CARD = 19;
     private static final int NB_KNIGHT_CARD = 14;
     private static final int NB_ROAD_BUILD_CARD = 2;
@@ -54,3 +57,4 @@ public class Bank extends CardBox{
     }
 
 }
+

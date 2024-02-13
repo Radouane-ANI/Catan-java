@@ -1,4 +1,6 @@
-package logic;
+package src.java.logic;
+
+import src.java.logic.Card;
 
 public class TradePort {
     private boolean[] tradePorts = new boolean[6];

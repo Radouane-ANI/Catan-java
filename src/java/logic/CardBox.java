@@ -1,4 +1,6 @@
-package logic;
+package src.java.logic;
+
+import src.java.logic.Card;
 
 public class CardBox {
     protected int[] cardsNumbers = new int[Card.values().length];
