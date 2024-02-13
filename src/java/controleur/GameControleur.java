@@ -11,8 +11,6 @@ public class GameControleur {
     private List<Player> playersList;
     private int currentPlayerIndex;
 
-    private Board board;
-
     public GameControleur(List<Player> players) {
         Board.createBoard();
         playersList = players;
@@ -42,7 +40,7 @@ public class GameControleur {
     }
 
     private void recupRessources(List<Player> players, int sumDices){
-        //récuperer les ressources 
+        //en attente de Gabriel
     }
 
     private void echange(){}
