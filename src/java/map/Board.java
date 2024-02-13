@@ -1,5 +1,7 @@
 package map;
 
+import util.TerrainType;
+
 public class Board {
     private static Board INSTANCE;
 

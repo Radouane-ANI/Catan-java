@@ -1,10 +1,11 @@
-package map;
+package util;
 
-class Tuple<T> {
+public class Tuple<T> {
+    
     private T x;
     private T y;
 
-    Tuple(T x, T y) {
+    public Tuple(T x, T y) {
         this.x = x;
         this.y = y;
     }

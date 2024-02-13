@@ -4,21 +4,20 @@ import gui.GameMenu;
 import gui.GameView;
 import gui.MainFrame;
 
-public class Controleur {
+public class ViewControleur {
     
-    static MainFrame frame;
+    private static MainFrame frame;
 
-    public Controleur(MainFrame mainFrame){
+    public ViewControleur(MainFrame mainFrame) {
         frame = mainFrame;
         frame.setPanel(new GameMenu());
     }
 
-    
-    public static void quitter(){
+    public static void quitter() {
         System.exit(0);
     }
 
-    public static void jouer(){
+    public static void jouer() {
         frame.setPanel(new GameView());
     }
 }

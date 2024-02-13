@@ -1,6 +1,7 @@
 package map;
 
 import logic.Road;
+import util.Tuple;
 
 class Edge extends Tuple<Vector> {
     private Road road;
