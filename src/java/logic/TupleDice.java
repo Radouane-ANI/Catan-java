@@ -1,4 +1,4 @@
-package src.java.logic;
+package logic;
 
 import util.Tuple;
 

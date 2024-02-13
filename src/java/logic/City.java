@@ -1,4 +1,4 @@
-package src.java.logic;
+package logic;
 
 public class City extends HumanGroup {
     private Player owner;
