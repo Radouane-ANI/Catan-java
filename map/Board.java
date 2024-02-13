@@ -1,18 +1,20 @@
 package map;
 
-import java.util.Vector;
-
 public class Board {
     private static Board INSTANCE;
 
     private static Vector[] tileArray;
 
+    static {
+        tileArray = new Vector[19];
+    }
+
     public static void createBoard() {
         Board.INSTANCE = new Board();
+        Node.createNodes();
     }
 
     private Board() {
-        tileArray = new Vector[19];
         int counter = 0;
 
         Basket<Integer> diceBasket = new Basket<Integer>(new Integer[] {
@@ -63,8 +65,12 @@ public class Board {
         return null;
     }
 
-    public static Vector getTileArray() {
+    public static Vector[] getTileArray() {
         return tileArray;
+    }
+
+    public static Vector[] getNodeArray() {
+        return Node.getNodes();
     }
 
 /* 
@@ -75,5 +81,9 @@ public class Board {
     public static void main(String[] args) {
         createBoard();
         System.out.println(getTile(3, 0).getTerrain());
+
+        for (Vector n : getNodeArray()) {
+            System.out.println(n);
+        }
     }
 }
