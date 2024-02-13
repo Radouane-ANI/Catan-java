@@ -1,31 +1,43 @@
-package logic;
+package src.java.logic;
+
+import com.sun.source.tree.Tree;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Player {
-    private List<Card> hand;
+import static src.java.logic.Card.*;
+
+public class Player implements Trade{
+    private String name;
+
+    private CardBox myCards;
+    private CardBox saleList;
+    private CardBox wishList;
+    private Bank bank;
+
+    private TradePort tradePorts;
+
     private HashMap<String, Integer> ressources;
     private boolean bot;
-    private String name;
     private List<Road> roads;
     private List<Settlement> settlements;
     private List<City> cities;
+
     private int points;
 
-    public Player(boolean bot, String nom) {
-        this.bot = bot;
+    public Player(boolean bot, String nom,Bank bank) {
         this.name = nom;
+        this.bot = bot;
+
         roads = new ArrayList<>();
         settlements = new ArrayList<>();
         cities = new ArrayList<>();
-        ressources = new HashMap<>();
-        ressources.put("bois", 0);
-        ressources.put("brique", 0);
-        ressources.put("ble", 0);
-        ressources.put("pierre", 0);
-        ressources.put("laine", 0);
+
+        this.myCards = new CardBox();
+        this.saleList = new CardBox();
+        this.wishList = new CardBox();
+        this.bank = bank;
     }
 
     public void setRoads(List<Road> roads) {
@@ -36,12 +48,20 @@ public class Player {
         return name;
     }
 
-    public List<Card> getHand() {
-        return hand;
+    public CardBox getMyCards() {
+        return myCards;
     }
 
-    public void setHand(List<Card> hand) {
-        this.hand = hand;
+    public boolean addInSaleList(Card c) {
+        if(myCards.removeCard(c,1)) {
+            saleList.addCard(c,1);
+            return true;
+        }
+        return false;
+    }
+
+    public void addInWishList(Card c) {
+        wishList.addCard(c,1);
     }
 
     public List<Settlement> getSettlements() {
@@ -76,56 +96,36 @@ public class Player {
         return points >= 10;
     }
 
-    public int getResourceQuantity(String resourceType) {
-        if (ressources.containsKey(resourceType)) {
-            return ressources.get(resourceType);
-        }
-        return -1;
-    }
-
-    public void addResource(String resourceType, int quantity) {
-        if (ressources.containsKey(resourceType) && quantity > 0) {
-            ressources.put(resourceType, ressources.get(resourceType) + quantity);
-        }
-    }
-
-    public void removeResource(String resourceType, int quantity) {
-        if (ressources.containsKey(resourceType) && quantity > 0) {
-            int total = (ressources.get(resourceType) >= quantity) ? ressources.get(resourceType) - quantity : 0;
-            ressources.put(resourceType, total);
-        }
-    }
-
     public boolean canBuildRoad() {
-        return ressources.get("bois") >= 1 && ressources.get("brique") >= 1 && roads.size() < 15;
+        return myCards.getNumber(TREE) >= 1 && myCards.getNumber(BRICK) >= 1 && roads.size() < 15;
     }
 
     public boolean canBuildSettlement() {
-        return ressources.get("bois") >= 1 && ressources.get("brique") >= 1 && ressources.get("ble") >= 1
-                && ressources.get("laine") >= 1 && settlements.size() < 5;
+        return myCards.getNumber(TREE) >= 1 && myCards.getNumber(BRICK) >= 1 && myCards.getNumber(GRAIN) >= 1
+                && myCards.getNumber(SHEEP) >= 1 && settlements.size() < 5;
     }
 
     public boolean canBuildCity() {
-        return ressources.get("ble") >= 2 && ressources.get("pierre") >= 3 && cities.size() < 4;
+        return myCards.getNumber(GRAIN) >= 2 && myCards.getNumber(STONE) >= 3 && cities.size() < 4;
     }
 
     public void buildRoad(Road route) {
-        ressources.put("bois", ressources.get("bois") - 1);
-        ressources.put("brique", ressources.get("brique") - 1);
+        myCards.removeCard(TREE,1);
+        myCards.removeCard(BRICK,1);
         roads.add(route);
     }
 
     public void buildSettlement(Settlement colonie) {
-        ressources.put("bois", ressources.get("bois") - 1);
-        ressources.put("brique", ressources.get("brique") - 1);
-        ressources.put("ble", ressources.get("ble") - 1);
-        ressources.put("laine", ressources.get("laine") - 1);
+        myCards.removeCard(TREE,1);
+        myCards.removeCard(BRICK,1);
+        myCards.removeCard(GRAIN,1);
+        myCards.removeCard(SHEEP,1);
         settlements.add(colonie);
     }
 
     public void buildCity(City ville, Settlement colonie) {
-        ressources.put("ble", ressources.get("ble") - 2);
-        ressources.put("pierre", ressources.get("pierre") - 3);
+        myCards.removeCard(GRAIN,2);
+        myCards.removeCard(STONE,3);
         cities.add(ville);
         settlements.remove(colonie);
     }
