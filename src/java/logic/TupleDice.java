@@ -1,6 +1,6 @@
-package logic;
+package src.java.logic;
 
-import util.Tuple;
+import src.java.util.Tuple;
 
 public class TupleDice extends Tuple<Dice>{
     

@@ -1,17 +1,15 @@
-package logic;
+package src.java.logic;
 
-public class Card {
-    private String type;
+public enum Card {
+    TREE,
+    BRICK,
+    SHEEP,
+    GRAIN,
+    STONE,
 
-    public Card(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+    KNIGHT,
+    ROAD_BUILD,
+    YEAR_PLENTY,
+    MONOPOLY,
+    ONE_POINT
 }

@@ -1,11 +1,11 @@
-package gui;
+package src.java.gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import controleur.ViewControleur;
+import src.java.controleur.ViewControleur;
 
 public class GameMenu extends JPanel{
     

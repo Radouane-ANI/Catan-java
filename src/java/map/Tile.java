@@ -1,6 +1,7 @@
-package map;
+package src.java.map;
 
-import logic.Thief;
+import src.java.logic.Thief;
+import src.java.util.TerrainType;
 
 public class Tile extends Vector {
     private int diceNumber = 0;

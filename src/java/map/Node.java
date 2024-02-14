@@ -1,6 +1,6 @@
-package map;
+package src.java.map;
 
-import logic.HumanGroup;
+import src.java.logic.HumanGroup;
 
 class Node extends Vector {
     private HumanGroup group;
