@@ -11,5 +11,5 @@ public enum Card {
     ROAD_BUILD,
     YEAR_PLENTY,
     MONOPOLY,
-    ONE_POINT;
+    ONE_POINT
 }

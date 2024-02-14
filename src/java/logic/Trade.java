@@ -1,10 +1,5 @@
 package src.java.logic;
 
-import src.java.logic.Bank;
-import src.java.logic.Card;
-import src.java.logic.CardBox;
-import src.java.logic.TradePort;
-
 import static src.java.logic.Card.*;
 
 public interface Trade {

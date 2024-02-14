@@ -1,7 +1,5 @@
 package src.java.logic;
 
-import src.java.logic.Card;
-
 public class TradePort {
     private boolean[] tradePorts = new boolean[6];
 
@@ -20,3 +18,4 @@ public class TradePort {
         tradePorts[c.ordinal()] = true;
     }
 }
+
