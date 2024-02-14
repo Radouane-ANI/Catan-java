@@ -1,8 +1,5 @@
 package src.java.logic;
 
-import src.java.logic.Card;
-import src.java.logic.CardBox;
-
 import java.util.Random;
 
 public class Bank extends CardBox {

@@ -1,4 +1,4 @@
-package controleur;
+package src.java.controleur;
 
 import gui.MainFrame;
 
