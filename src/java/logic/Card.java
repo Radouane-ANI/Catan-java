@@ -1,4 +1,4 @@
-package src.java.logic;
+package logic;
 
 public enum Card {
     TREE,

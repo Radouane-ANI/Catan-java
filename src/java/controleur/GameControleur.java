@@ -1,10 +1,10 @@
-package src.java.controleur;
+package controleur;
 
 import java.util.List;
 
-import src.java.logic.Player;
-import src.java.logic.TupleDice;
-import src.java.map.Board;
+import logic.Player;
+import logic.TupleDice;
+import map.Board;
 
 public class GameControleur {
 

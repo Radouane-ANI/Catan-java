@@ -1,6 +1,6 @@
-package src.java.map;
+package map;
 
-import src.java.util.TerrainType;
+import util.TerrainType;
 
 public class Board {
     private static Board INSTANCE;

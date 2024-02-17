@@ -1,4 +1,4 @@
-package src.java.map;
+package map;
 
 class Vector {
     private int x;
