@@ -1,4 +1,4 @@
-package src.java.logic;
+package logic;
 
 public class Road {
     private Player owner;

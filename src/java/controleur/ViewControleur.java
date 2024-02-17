@@ -1,8 +1,8 @@
-package src.java.controleur;
+package controleur;
 
-import src.java.gui.GameMenu;
-import src.java.gui.GameView;
-import src.java.gui.MainFrame;
+import gui.GameMenu;
+import gui.GameView;
+import gui.MainFrame;
 
 public class ViewControleur {
     

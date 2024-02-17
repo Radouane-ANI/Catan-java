@@ -1,4 +1,4 @@
-package src.java.util;
+package util;
 
 public enum TerrainType {
     FOREST,
