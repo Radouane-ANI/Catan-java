@@ -2,21 +2,15 @@ package map;
 
 import javax.swing.JFrame;
 import java.awt.*;
+import gui.*;
 
 public class Board extends MapElementsApi {
-
-    private static Tile[][] board;
 
     public static void createBoard() {
         Tile.createTiles();
         Node.createNodes();
         Edge.createEdge();
-        board = Tile.getBoard();
     }    
-
-    public static Tile[][] getBoard() {
-        return board;
-    }
 
     public static void main(String[] args) {
         createBoard();
@@ -25,7 +19,7 @@ public class Board extends MapElementsApi {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
 
-        CatanBoardView boardView = new CatanBoardView(getBoard());
+        CatanBoardView boardView = new CatanBoardView(frame.getSize());
         frame.getContentPane().add(boardView, BorderLayout.CENTER);
 
         frame.pack();

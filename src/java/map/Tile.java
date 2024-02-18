@@ -5,7 +5,7 @@ import logic.Thief;
 public class Tile extends Vector {
     private int diceNumber = 0;
     private Thief thief = null;
-    private TerrainType terrain = TerrainType.DESERT;
+    private TerrainType terrain;
     private Node[] neighbors;
 
     private static Tile[] tileArray;
@@ -42,7 +42,8 @@ public class Tile extends Vector {
             TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD,
             TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE,
             TerrainType.BRICK, TerrainType.BRICK, TerrainType.BRICK,
-            TerrainType.MOUNTAIN, TerrainType.MOUNTAIN, TerrainType.MOUNTAIN
+            TerrainType.MOUNTAIN, TerrainType.MOUNTAIN, TerrainType.MOUNTAIN,
+            TerrainType.DESERT
         });
         
         for (int i = 0; i < 2; i++) {
@@ -90,26 +91,4 @@ public class Tile extends Vector {
     void setNeighbors(Node[] neighbors) {
         this.neighbors = neighbors;
     }
-
-    public static Tile[][] getBoard() {
-        Tile[][] board = new Tile[3][];
-        for (int i = 0; i < 3; i++) {
-            int numTiles = i < 2 ? 4 + i : 3;
-            board[i] = new Tile[numTiles];
-        }
-        
-        int counter = 0;
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 3 + i; j++) {
-                board[i][j] = tileArray[counter++];
-                board[2 - i][j] = tileArray[counter++];
-            }
-        }
-        
-        for (int i = 0; i < 3; i++) {
-            board[i][i] = tileArray[counter++];
-        }
-        
-        return board;
-    }  
 }

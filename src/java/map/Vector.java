@@ -4,7 +4,7 @@ public class Vector {
     private int x;
     private int y;
 
-    Vector(int x, int y) {
+    public Vector(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -14,11 +14,11 @@ public class Vector {
         this.y += y;
     }
 
-    int getX() {
+    public int getX() {
         return x;
     }
 
-    int getY() {
+    public int getY() {
         return y;
     }
 
