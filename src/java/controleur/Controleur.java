@@ -4,7 +4,7 @@ import gui.MainFrame;
 import gui.GameMenu;
 import gui.GameView;
 import map.Board;
-import map.MapComponent;
+import map.CatanBoardView;
 
 public class Controleur {
     
@@ -23,7 +23,7 @@ public class Controleur {
         GameView gameView = new GameView();
         frame.setPanel(gameView);
         Board.createBoard();
-        MapComponent mapComponent = new MapComponent(Board.getInstance());
+        CatanBoardView mapComponent = new CatanBoardView();
         gameView.add(mapComponent);
         gameView.revalidate();
         gameView.repaint();
