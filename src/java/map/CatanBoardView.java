@@ -52,7 +52,7 @@ public class CatanBoardView extends JPanel {
     private Shape createHexagon(double xOffset, double yOffset, double size) {
         Path2D.Double hexagon = new Path2D.Double();
         for (int i = 0; i < 6; i++) {
-            double angleRadians = Math.toRadians(60 * i);
+            double angleRadians = Math.toRadians(60 * i + 30);
             double x = xOffset + size * Math.cos(angleRadians);
             double y = yOffset + size * Math.sin(angleRadians);
             if (i == 0) {
@@ -63,5 +63,5 @@ public class CatanBoardView extends JPanel {
         }
         hexagon.closePath();
         return hexagon;
-    }
+    }    
 }
