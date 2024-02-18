@@ -186,4 +186,12 @@ public class Player implements Trade {
             wishList.addCard(min, quantite);
         }
     }
+
+    public boolean isTradeInteresting(Player player) {
+        return isTradeInteresting(saleList, wishList, player.wishList, player.saleList);
+    }
+
+    public void trade(Player player) {
+        trade(saleList, player.myCards, wishList, myCards);
+    }
 }
