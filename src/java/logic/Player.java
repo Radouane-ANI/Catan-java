@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import static logic.Card.*;
 
-public class Player implements Trade{
+public class Player implements Trade {
     private String name;
 
     private CardBox myCards;
@@ -16,7 +16,6 @@ public class Player implements Trade{
 
     private TradePort tradePorts;
 
-    private HashMap<String, Integer> ressources;
     private boolean bot;
     private List<Road> roads;
     private List<Settlement> settlements;
@@ -24,7 +23,7 @@ public class Player implements Trade{
 
     private int points;
 
-    public Player(boolean bot, String nom,Bank bank) {
+    public Player(boolean bot, String nom, Bank bank) {
         this.name = nom;
         this.bot = bot;
 
@@ -46,20 +45,24 @@ public class Player implements Trade{
         return name;
     }
 
+    public boolean isBot() {
+        return bot;
+    }
+
     public CardBox getMyCards() {
         return myCards;
     }
 
     public boolean addInSaleList(Card c) {
-        if(myCards.removeCard(c,1)) {
-            saleList.addCard(c,1);
+        if (myCards.removeCard(c, 1)) {
+            saleList.addCard(c, 1);
             return true;
         }
         return false;
     }
 
     public void addInWishList(Card c) {
-        wishList.addCard(c,1);
+        wishList.addCard(c, 1);
     }
 
     public List<Settlement> getSettlements() {
@@ -108,23 +111,79 @@ public class Player implements Trade{
     }
 
     public void buildRoad(Road route) {
-        myCards.removeCard(TREE,1);
-        myCards.removeCard(BRICK,1);
+        myCards.removeCard(TREE, 1);
+        myCards.removeCard(BRICK, 1);
         roads.add(route);
     }
 
     public void buildSettlement(Settlement colonie) {
-        myCards.removeCard(TREE,1);
-        myCards.removeCard(BRICK,1);
-        myCards.removeCard(GRAIN,1);
-        myCards.removeCard(SHEEP,1);
+        myCards.removeCard(TREE, 1);
+        myCards.removeCard(BRICK, 1);
+        myCards.removeCard(GRAIN, 1);
+        myCards.removeCard(SHEEP, 1);
         settlements.add(colonie);
     }
 
     public void buildCity(City ville, Settlement colonie) {
-        myCards.removeCard(GRAIN,2);
-        myCards.removeCard(STONE,3);
+        myCards.removeCard(GRAIN, 2);
+        myCards.removeCard(STONE, 3);
         cities.add(ville);
         settlements.remove(colonie);
+    }
+
+    private HashMap<Card, Integer> getMissingCardsForBuildings() {
+        HashMap<Card, Integer> missingCards = new HashMap<>();
+        if (settlements.size() <= 3) {
+            missingCards.put(TREE, 1 - myCards.getNumber(TREE));
+            missingCards.put(BRICK, 1 - myCards.getNumber(BRICK));
+            missingCards.put(GRAIN, 1 - myCards.getNumber(GRAIN));
+            missingCards.put(SHEEP, 1 - myCards.getNumber(SHEEP));
+        } else {
+            missingCards.put(GRAIN, 2 - myCards.getNumber(GRAIN));
+            missingCards.put(STONE, 3 - myCards.getNumber(STONE));
+            missingCards.put(TREE, 1 - myCards.getNumber(TREE));
+            missingCards.put(BRICK, 1 - myCards.getNumber(BRICK));
+        }
+        return missingCards;
+    }
+
+    public void updateTradeLists() {
+        saleList.clearBox();
+        wishList.clearBox();
+        HashMap<Card, Integer> missingCards = getMissingCardsForBuildings();
+
+        missingCards.forEach((card, quantity) -> {
+            if (quantity > 0) {
+                saleList.addCard(card, quantity);
+            } else if (quantity < 0) {
+                wishList.addCard(card, -quantity);
+            }
+        });
+    }
+
+    public boolean canTrade(CardBox sList, CardBox wList) {
+        return isTradeInteresting(sList, wList, myCards, myCards);
+    }
+
+    public void exchangeSuggestion() {
+        saleList.clearBox();
+        wishList.clearBox();
+        HashMap<Card, Integer> etats = getMissingCardsForBuildings();
+        List<Card> keys = new ArrayList<>(etats.keySet());
+
+        Card min = keys.get(0);
+        Card max = keys.get(0);
+        for (Card key : keys) {
+            if (etats.get(key) > 0 && etats.get(key) > etats.get(max)) {
+                max = key;
+            } else if (etats.get(key) < 0 && etats.get(key) < etats.get(min)) {
+                min = key;
+            }
+        }
+        if (etats.get(max) > 0 && etats.get(min) < 0) {
+            int quantite = etats.get(min) * -1 <= etats.get(max) ? etats.get(min) * -1 : etats.get(max);
+            saleList.addCard(max, quantite);
+            wishList.addCard(min, quantite);
+        }
     }
 }
