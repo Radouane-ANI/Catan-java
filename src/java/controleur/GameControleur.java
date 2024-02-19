@@ -48,7 +48,9 @@ public class GameControleur {
     private void echange(){
         Player currentPlayer = playersList.get(currentPlayerIndex);
 
-        currentPlayer.exchangeSuggestion();
+        if (!currentPlayer.exchangeSuggestion()) {
+            return;
+        }
         List<Player> accepter = new ArrayList<>();
         for (Player p : playersList) {
             if (p != currentPlayer && p.isBot()) {
@@ -66,6 +68,8 @@ public class GameControleur {
             Random rd = new Random();
             Player choisi = accepter.get(rd.nextInt(accepter.size()));
             currentPlayer.trade(choisi);
+        }else if (currentPlayer.isBot()) {
+            currentPlayer.tradeWithBank();
         }
     }
 

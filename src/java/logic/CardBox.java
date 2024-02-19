@@ -44,4 +44,12 @@ public class CardBox {
     public boolean hasCard(Card c) {
         return cardsNumbers[c.ordinal()] > 0;
     }
+
+    public Card getFirst(){
+        for(Card card : Card.values()) {
+            if (cardsNumbers[card.ordinal()] != 0) {
+                return card;
+            }
+        }return null;
+    }
 }

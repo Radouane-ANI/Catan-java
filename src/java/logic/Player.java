@@ -133,16 +133,17 @@ public class Player implements Trade {
 
     private HashMap<Card, Integer> getMissingCardsForBuildings() {
         HashMap<Card, Integer> missingCards = new HashMap<>();
+        missingCards.put(TREE, 1 - myCards.getNumber(TREE));
+        missingCards.put(BRICK, 1 - myCards.getNumber(BRICK));
         if (settlements.size() <= 3) {
-            missingCards.put(TREE, 1 - myCards.getNumber(TREE));
-            missingCards.put(BRICK, 1 - myCards.getNumber(BRICK));
             missingCards.put(GRAIN, 1 - myCards.getNumber(GRAIN));
             missingCards.put(SHEEP, 1 - myCards.getNumber(SHEEP));
+            missingCards.put(STONE, 0 - myCards.getNumber(STONE));
         } else {
             missingCards.put(GRAIN, 2 - myCards.getNumber(GRAIN));
             missingCards.put(STONE, 3 - myCards.getNumber(STONE));
-            missingCards.put(TREE, 1 - myCards.getNumber(TREE));
-            missingCards.put(BRICK, 1 - myCards.getNumber(BRICK));
+            missingCards.put(SHEEP, 0 - myCards.getNumber(SHEEP));
+
         }
         return missingCards;
     }
@@ -154,18 +155,14 @@ public class Player implements Trade {
 
         missingCards.forEach((card, quantity) -> {
             if (quantity > 0) {
-                saleList.addCard(card, quantity);
+                wishList.addCard(card, quantity);
             } else if (quantity < 0) {
-                wishList.addCard(card, -quantity);
+                saleList.addCard(card, -quantity);
             }
         });
     }
 
-    public boolean canTrade(CardBox sList, CardBox wList) {
-        return isTradeInteresting(sList, wList, myCards, myCards);
-    }
-
-    public void exchangeSuggestion() {
+    public boolean exchangeSuggestion() {
         saleList.clearBox();
         wishList.clearBox();
         HashMap<Card, Integer> etats = getMissingCardsForBuildings();
@@ -182,9 +179,10 @@ public class Player implements Trade {
         }
         if (etats.get(max) > 0 && etats.get(min) < 0) {
             int quantite = etats.get(min) * -1 <= etats.get(max) ? etats.get(min) * -1 : etats.get(max);
-            saleList.addCard(max, quantite);
-            wishList.addCard(min, quantite);
+            wishList.addCard(max, quantite);
+            saleList.addCard(min, quantite);
         }
+        return wishList.getNumberOfRes() != 0;
     }
 
     public boolean isTradeInteresting(Player player) {
@@ -193,5 +191,11 @@ public class Player implements Trade {
 
     public void trade(Player player) {
         trade(saleList, player.myCards, wishList, myCards);
+    }
+
+    public void tradeWithBank() {
+        if (isTradableInBank(saleList, tradePorts)) {
+            TradBank(saleList, wishList.getFirst(), myCards, tradePorts, bank);
+        }
     }
 }

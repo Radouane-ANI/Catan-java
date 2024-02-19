@@ -27,6 +27,30 @@ public interface Trade {
         return flag;
     }
 
+    default void TradBank(CardBox saleList, Card wish, CardBox myCards, TradePort tradePorts, Bank bank) {
+        CardBox wishList = new CardBox();
+        wishList.addCard(wish, 1);
+        for (Card c : Card.values()) {
+            switch (saleList.getNumber(c)) {
+                case 2:
+                    if (tradePorts.hasPort(c) && bank.hasCard(wish)) {
+                        trade(saleList, bank, wishList, myCards);
+                    }
+                    break;
+                case 3:
+                    if (tradePorts.hasPort(null) && bank.hasCard(wish)) {
+                        trade(saleList, bank, wishList, myCards);
+                    }
+                    break;
+                case 4:
+                    if (bank.hasCard(wish)) {
+                        trade(saleList, bank, wishList, myCards);
+                    }
+                    break;
+            }
+        }
+    }
+
     default boolean isTradeInteresting(CardBox saleList, CardBox wishList, CardBox wishList1, CardBox saleList1) {
         for (Card c : Card.values()) {
             if (wishList.getNumber(c) != 0) {
@@ -51,8 +75,8 @@ public interface Trade {
                 myCards.addCard(c, wishList.getNumber(c));
             }
             if (saleList.getNumber(c) != 0) {
-                myCards.removeCard(c, wishList.getNumber(c));
-                tradeObj.addCard(c, wishList.getNumber(c));
+                myCards.removeCard(c, saleList.getNumber(c));
+                tradeObj.addCard(c, saleList.getNumber(c));
             }
         }
     }
