@@ -19,7 +19,7 @@ public class GameMenu extends JPanel {
     public GameMenu() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 600));
-        loadImage("src/ressources/menu.jpeg");
+        loadImage("src/ressources/menu_2.jpeg");
         makeButtons();
     }
 
