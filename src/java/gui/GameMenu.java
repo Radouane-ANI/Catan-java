@@ -25,18 +25,22 @@ public class GameMenu extends JPanel {
 
     private void makeButtons() {
         setLayout(new BorderLayout());
-
+    
         JPanel buttonPanel = new JPanel(new BorderLayout());
         buttonPanel.setOpaque(false);
-
+    
         JButton playButton = createButton("src/ressources/play.png", "src/ressources/play_click.png", ViewControleur::jouer);
         buttonPanel.add(playButton, BorderLayout.NORTH);
-
+    
+        JButton extraButton = createButton("src/ressources/parametres.png", "src/ressources/parametres_click.png", () -> {});
+        buttonPanel.add(extraButton, BorderLayout.CENTER);
+    
         JButton quitButton = createButton("src/ressources/quit.png", "src/ressources/quit_click.png", ViewControleur::quitter);
         buttonPanel.add(quitButton, BorderLayout.SOUTH);
-
+    
         add(buttonPanel, BorderLayout.SOUTH);
     }
+    
 
     private JButton createButton(String imagePath, String hoverImagePath, Runnable action) {
         ImageIcon normalIcon = new ImageIcon(imagePath);
