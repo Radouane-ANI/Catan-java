@@ -10,7 +10,7 @@ public class MainFrame extends JFrame{
     public MainFrame(){
         setTitle("Katan");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(1200,800);
+        setSize(800,600);
         setResizable(false);
         setVisible(true);
     }
