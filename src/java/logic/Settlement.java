@@ -1,6 +1,6 @@
 package logic;
 
-public class Settlement extends HumanGroup {
+public class Settlement implements HumanGroup {
     private Player owner;
 
     public Settlement(Player owner) {

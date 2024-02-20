@@ -61,6 +61,10 @@ public class Player implements Trade {
         return false;
     }
 
+    public void addCard(Card c, int number){
+        myCards.addCard(c, number);
+    }
+
     public void addInWishList(Card c) {
         wishList.addCard(c, 1);
     }

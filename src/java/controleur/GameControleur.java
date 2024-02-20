@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import map.Node;
+import logic.HumanGroup;
 import logic.Player;
 import logic.TupleDice;
 import map.Board;
+import map.Tile;
+import util.TerrainType;
+
 
 public class GameControleur {
 
@@ -42,7 +47,17 @@ public class GameControleur {
     }
 
     private void recupRessources(List<Player> players, int sumDices){
-        //en attente de Gabriel
+        ArrayList<Tile> tiles = Board.getTileByDiceNumberArray(sumDices);
+        for (Tile t : tiles){
+            if (t.getTerrain() == TerrainType.DESERT) continue;
+            Node[] nodes = t.getNeighbors();
+            for (Node n : nodes){
+                HumanGroup hG = n.getHumanGroup();
+                if (hG != null){
+                    hG.getOwner().addCard(t.getTerrain().toCard(),1);
+                }
+            }
+        }
     }
 
     private void echange(){
