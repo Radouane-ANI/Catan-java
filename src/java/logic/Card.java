@@ -2,9 +2,9 @@ package logic;
 
 public enum Card {
     TREE,
-    BRICK,
-    SHEEP,
     GRAIN,
+    SHEEP,
+    BRICK,
     STONE,
 
     KNIGHT,

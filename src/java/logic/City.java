@@ -1,6 +1,6 @@
 package logic;
 
-public class City extends HumanGroup {
+public class City implements HumanGroup {
     private Player owner;
 
     public City(Player owner) {
