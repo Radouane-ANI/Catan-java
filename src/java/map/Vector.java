@@ -27,10 +27,15 @@ public class Vector {
     }
 
     boolean isNeighbor(Vector v) {
-        int deltaX = (int) (v.x - x);
-        int deltaY = v.y - y;
-
-        return Math.abs(deltaX) == 1 && (deltaY == -deltaX || deltaY == 0) ||
-               Math.abs(deltaY) == 1 && (deltaX == -deltaY || deltaX == 0);
+        int deltaX = (int) Math.abs(v.getX() - x);
+        int deltaY = Math.abs(v.getY() - y);
+    
+        if ((deltaX == 1 && deltaY == 1) || // Diagonal 
+            (deltaX == 1 && deltaY == 0) || // Horizontal
+            (deltaX == 0 && deltaY == 1)) {  // Vertical
+            return true;
+        }
+        return false;
     }
+    
 }

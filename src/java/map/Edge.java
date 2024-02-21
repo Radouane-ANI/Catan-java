@@ -18,14 +18,21 @@ class Edge extends Tuple<Vector> {
     }
 
     static void createEdge() {
-        for (Vector i : Node.getNodesIntern()) {
-            for (Vector j : Node.getNodesIntern()) {
-                if (i.isNeighbor(j)) {
-                    edgeList.add(new Edge(i, j));
+        Node[] nodes = Node.getNodesIntern();
+        for (Node node : nodes) {
+            if (node != null) {
+                Node[] neighbors = node.getNeighbors();
+                if (neighbors != null) {
+                    for (Node neighbor : neighbors) {
+                        if (neighbor != null) {
+                            edgeList.add(new Edge(node, neighbor));
+                        }
+                    }
                 }
             }
         }
     }
+    
 
     static ArrayList<Edge> getEdgesIntern() {
         return edgeList;
