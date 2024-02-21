@@ -45,7 +45,7 @@ public class CatanBoardView extends JPanel {
     }
 
     private double calculateScreenX(double x) {
-        int spacing = TILE_SIZE - 14; // peut être ajusté
+        int spacing = TILE_SIZE - 13; // peut être ajusté
         int padding = 10;
 
         return x * (TILE_SIZE + spacing) + padding;

@@ -10,10 +10,14 @@ public class Board extends MapElementsApi {
         Tile.createTiles();
         Node.createNodes();
         Edge.createEdge();
-    }    
+    }
 
     public static void main(String[] args) {
         createBoard();
+
+        for (Vector n : Tile.getTile(1, 1).getNeighbors()) {
+            System.out.println(n);
+        }
 
         JFrame frame = new JFrame("Catan Board");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,5 +29,4 @@ public class Board extends MapElementsApi {
         frame.pack();
         frame.setVisible(true);
     }
-
 }

@@ -9,13 +9,15 @@ public class Tile extends Vector {
     private Node[] neighbors;
 
     private static Tile[] tileArray;
-
+    private Position position; // positions simplifiées à utiliser
+    
     static {
         tileArray = new Tile[19];
     }
 
     Tile(double x, int y, int diceNumber, TerrainType terrain) {
         super(x, y);
+        this.position = new Position((int)x, y);
         this.diceNumber = diceNumber;
         this.terrain = terrain;
     }
@@ -106,14 +108,22 @@ public class Tile extends Vector {
         return tileArray;
     }
 
-    public static Tile getTile(int x, int y) {
+    public static Tile getTile(double x, int y) {
         for (int i = 0; i < tileArray.length; i++) {
-            if (tileArray[i].getX() == x && tileArray[i].getY() == y) {
-                return tileArray[i];
+            Tile tile = tileArray[i];
+            if (tile != null && tile.getPosition().getX() == x && tile.getPosition().getY() == y) {
+                return tile;
             }
         }
-        
         return null;
+    }    
+    
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public int getDiceNumber() {
