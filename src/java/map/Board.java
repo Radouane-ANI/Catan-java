@@ -1,9 +1,5 @@
 package map;
 
-import javax.swing.JFrame;
-import java.awt.*;
-import gui.*;
-
 public class Board extends MapElementsApi {
 
     public static void createBoard() {
@@ -12,6 +8,7 @@ public class Board extends MapElementsApi {
         Edge.createEdge();
     }
 
+    /* 
     public static void main(String[] args) {
         createBoard();
 
@@ -36,4 +33,5 @@ public class Board extends MapElementsApi {
         frame.setSize(600, 600);
         frame.setVisible(true);
     }
+    */
 }

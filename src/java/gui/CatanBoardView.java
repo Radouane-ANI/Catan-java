@@ -15,9 +15,11 @@ public class CatanBoardView extends JPanel {
 
     public CatanBoardView(Dimension d) {
         dim = d;
-        center = new Point((int)d.getWidth()/2, (int)d.getHeight()/2);
+        center = new Point((int) d.getWidth() / 2, (int) d.getHeight() / 2);
         hex = new Hexagon(TILE_SIZE);
+        setPreferredSize(d);
     }
+    
 
     @Override
     protected void paintComponent(Graphics g) {

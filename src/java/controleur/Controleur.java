@@ -23,8 +23,11 @@ public class Controleur {
         GameView gameView = new GameView();
         frame.setPanel(gameView);
         Board.createBoard();
-        CatanBoardView mapComponent = new CatanBoardView(frame.getSize());
+        
+        CatanBoardView mapComponent = new CatanBoardView(gameView.getSize());
+        
         gameView.add(mapComponent);
+        
         gameView.revalidate();
         gameView.repaint();
     }
