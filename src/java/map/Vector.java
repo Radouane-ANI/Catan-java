@@ -1,20 +1,20 @@
 package map;
 
 public class Vector {
-    private int x;
-    private int y;
+    protected double x;
+    protected int y;
 
-    public Vector(int x, int y) {
+    public Vector(double x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    void add(int x, int y) {
+    void add(double x, int y) {
         this.x += x;
         this.y += y;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
@@ -23,18 +23,14 @@ public class Vector {
     }
 
     public String toString() {
-        return "("+x+", "+y+")";
+        return "(" + x + ", " + y + ")";
     }
 
     boolean isNeighbor(Vector v) {
-        int deltaX =  v.x - x;
+        int deltaX = (int) (v.x - x);
         int deltaY = v.y - y;
 
-        return abs(deltaX) == 1 && (deltaY == -deltaX || deltaY == 0) || 
-                abs(deltaY) == 1 && (deltaX == -deltaY || deltaX == 0);
-    }
-
-    private int abs(int x) {
-        return (x > 0)? x:-x;
+        return Math.abs(deltaX) == 1 && (deltaY == -deltaX || deltaY == 0) ||
+               Math.abs(deltaY) == 1 && (deltaX == -deltaY || deltaX == 0);
     }
 }

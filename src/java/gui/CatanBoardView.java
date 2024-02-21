@@ -20,27 +20,40 @@ public class CatanBoardView extends JPanel {
     }
 
     @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-            Graphics2D g2d = (Graphics2D) g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
 
-            for (Tile t : Board.getTileArray()) {
-                drawTile(t, g2d);
-            }
+        for (Tile t : Tile.getTilesIntern()) {
+            double x = t.getX();
+            int y = t.getY();
+
+            double screenX = calculateScreenX(x);
+            double screenY = calculateScreenY(x, y);
+
+            drawTile(t, g2d, screenX, screenY);
         }
-
-    private void drawTile(Tile t, Graphics2D g2) {
-        Shape pointer = hex.translate(convertCoordinate(t.getX(), t.getY()));
-        g2.setColor(TerrainColor.getTerrainColors(t.getTerrain()));
-        g2.fill(pointer);
-        g2.setColor(Color.BLACK);
-        g2.draw(pointer);
     }
 
-    private Point convertCoordinate(int x, int y) {
-        double a = Math.toRadians(-30);
-        double b = Math.toRadians(-60);
-        return new Point((int)(TILE_SIZE*(Math.cos(a)*x-Math.sin(a)*y)) + 200, (int)(TILE_SIZE*(Math.sin(b)*x+Math.cos(b)*y)) + 200);
+    private void drawTile(Tile t, Graphics2D g2d, double screenX, double screenY) {
+        Shape pointer = hex.translate(new Point((int) screenX, (int) screenY));
+        g2d.setColor(TerrainColor.getTerrainColors(t.getTerrain()));
+        g2d.fill(pointer);
+        g2d.setColor(Color.BLACK);
+        g2d.draw(pointer);
+    }
+
+    private double calculateScreenX(double x) {
+        int spacing = TILE_SIZE - 14; // peut être ajusté
+        int padding = 10;
+
+        return x * (TILE_SIZE + spacing) + padding;
+    }
+
+    private int calculateScreenY(double x, int y) {
+        int spacing = TILE_SIZE - 27; // peut être ajusté
+        int padding = 10;
+        return y * (TILE_SIZE + spacing) + padding;
     }
 }
