@@ -34,7 +34,6 @@ public class Tile extends Vector {
         tileArray = new Tile[TILE_COORDINATES.length];
 
         Basket<Integer> diceBasket = new Basket<Integer>(new Integer[]{
-            1,
             2,
             3, 3,
             4, 4,
@@ -58,8 +57,8 @@ public class Tile extends Vector {
 
         for (int i = 0; i < TILE_COORDINATES.length; i++) {
             Vector coordinates = TILE_COORDINATES[i];
-            int diceNumber = diceBasket.pickRandomItem();
             TerrainType terrain = terrainBasket.pickRandomItem();
+            int diceNumber = (terrain == TerrainType.DESERT) ? 0 : diceBasket.pickRandomItem();
             tileArray[i] = new Tile(coordinates.getX(), coordinates.getY(), diceNumber, terrain);
         }
     }

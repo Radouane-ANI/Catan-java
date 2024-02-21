@@ -42,6 +42,18 @@ public class CatanBoardView extends JPanel {
         g2d.fill(pointer);
         g2d.setColor(Color.BLACK);
         g2d.draw(pointer);
+    
+        // numéro de dé
+        int diceNumber = t.getDiceNumber();
+        if (diceNumber != 0) {
+            String diceNumberText = Integer.toString(diceNumber);
+            FontMetrics fm = g2d.getFontMetrics();
+            int textWidth = fm.stringWidth(diceNumberText);
+            int textHeight = fm.getHeight();
+            int textX = (int) screenX + (TILE_SIZE - textWidth) / 2;
+            int textY = (int) screenY + (TILE_SIZE + textHeight) / 2;
+            g2d.drawString(diceNumberText, textX, textY);
+        }
     }
 
     private double calculateScreenX(double x) {
