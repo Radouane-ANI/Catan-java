@@ -24,7 +24,7 @@ class Hexagon {
         hexagon.moveTo(x, y);
 
         for (int i = 0; i < 6; i++) {
-            double angleRadians = Math.toRadians(60 * i);
+            double angleRadians = Math.toRadians(60 * i + 30);
             x += size * Math.cos(angleRadians);
             y += size * Math.sin(angleRadians);
             hexagon.lineTo(x, y);
