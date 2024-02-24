@@ -2,6 +2,7 @@ package logic;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import static logic.Card.*;
@@ -167,6 +168,7 @@ public class Player implements Trade {
         wishList.clearBox();
         HashMap<Card, Integer> etats = getMissingCardsForBuildings();
         List<Card> keys = new ArrayList<>(etats.keySet());
+        Collections.shuffle(keys);
 
         Card min = keys.get(0);
         Card max = keys.get(0);
