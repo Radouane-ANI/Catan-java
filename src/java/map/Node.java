@@ -1,5 +1,6 @@
 package map;
 
+import logic.City;
 import logic.HumanGroup;
 
 import java.util.ArrayList;
@@ -14,20 +15,32 @@ public class Node extends Vector {
         nodeArray = new Node[54];
     }
 
-    Node(int x, int y) {
+    Node(float x, int y) {
         super(x, y);
-        group = null;
+        group = new City(null);
         neighbors = new ArrayList<>();
     }
 
     static void createNodes() {
         int counter = 0;
 
+        float decalage = 1;
         for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 11 - 2 * i; j++) {
-                nodeArray[counter++] = new Node((j + 3) / 2 + 2 * i, j / 2 - i);
-                nodeArray[counter++] = new Node(j / 2 - i, (j + 3) / 2 + 2 * i);
+            for (float j = decalage; j <= 4 + (float) i / 2; j += 0.5) {
+                nodeArray[counter++] = new Node(j, i);
+                System.out.println("node " + (counter - 1) + nodeArray[counter - 1]);
+
             }
+            decalage -= 0.5;
+        }
+        decalage = 0;
+        for (int i = 0; i < 3; i++) {
+            for (float j = decalage; j <= 4 + (float) (2 - i) / 2; j += 0.5) {
+                nodeArray[counter++] = new Node(j, i + 3);
+                System.out.println("node " + (counter - 1) + nodeArray[counter - 1]);
+
+            }
+            decalage += 0.5;
         }
 
         connectNodesToTiles();

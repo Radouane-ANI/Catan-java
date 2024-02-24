@@ -46,10 +46,10 @@ public class CatanBoardView extends JPanel {
             int centerX = (int) (screenX - (TILE_SIZE / 6));
             int centerY = (int) (screenY - (TILE_SIZE / 6));
 
-            if (n.getX() <= 5 && n.getX() >= 0 && n.getY() <= 5 && n.getY() >= 0) {
-                if (n.getGroup() != null) {
-                    g.drawRect(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3);
-                }
+            if (n.getGroup() != null) {
+                g.drawRect(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3);
+                g.drawString(n + "", centerX, centerY);
+
             }
         }
     }
