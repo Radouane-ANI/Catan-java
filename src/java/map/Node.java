@@ -4,7 +4,7 @@ import logic.HumanGroup;
 
 import java.util.ArrayList;
 
-class Node extends Vector {
+public class Node extends Vector {
     private HumanGroup group;
     private ArrayList<Node> neighbors;
 
@@ -34,9 +34,10 @@ class Node extends Vector {
     }
 
     boolean isAdjacentToTile(Tile tile) {
-        double distance = Math.sqrt(Math.pow(getX() - tile.getPosition().getX(), 2) + Math.pow(getY() - tile.getPosition().getY(), 2));
+        double distance = Math.sqrt(
+                Math.pow(getX() - tile.getPosition().getX(), 2) + Math.pow(getY() - tile.getPosition().getY(), 2));
         return distance < 1.5; // Ajuster
-    }    
+    }
 
     private static void connectNodesToTiles() {
         for (Tile t : Tile.getTilesIntern()) {
@@ -49,8 +50,8 @@ class Node extends Vector {
             t.setNeighbors(res.toArray(new Node[0]));
         }
     }
-    
-    static Node[] getNodesIntern() {
+
+    public static Node[] getNodesIntern() {
         return nodeArray;
     }
 
@@ -58,11 +59,16 @@ class Node extends Vector {
         this.group = group;
     }
 
-    Node[] getNeighbors() {
+    public Node[] getNeighbors() {
         return neighbors.toArray(new Node[0]);
     }
 
     void addNeighbor(Node neighbor) {
         neighbors.add(neighbor);
     }
+
+    public HumanGroup getGroup() {
+        return group;
+    }
+
 }

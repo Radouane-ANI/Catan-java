@@ -19,7 +19,6 @@ public class CatanBoardView extends JPanel {
         hex = new Hexagon(TILE_SIZE);
         setPreferredSize(d);
     }
-    
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -36,6 +35,23 @@ public class CatanBoardView extends JPanel {
 
             drawTile(t, g2d, screenX, screenY);
         }
+        for (Node n : Node.getNodesIntern()) {
+            double x = n.getX();
+            int y = n.getY();
+
+            double screenX = calculateScreenX(x);
+            double screenY = calculateScreenY(x, y);
+            screenY = y % 2 == 0 ? screenY + TILE_SIZE / 2 : screenY;
+
+            int centerX = (int) (screenX - (TILE_SIZE / 6));
+            int centerY = (int) (screenY - (TILE_SIZE / 6));
+
+            if (n.getX() <= 5 && n.getX() >= 0 && n.getY() <= 5 && n.getY() >= 0) {
+                if (n.getGroup() != null) {
+                    g.drawRect(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3);
+                }
+            }
+        }
     }
 
     private void drawTile(Tile t, Graphics2D g2d, double screenX, double screenY) {
@@ -44,7 +60,7 @@ public class CatanBoardView extends JPanel {
         g2d.fill(pointer);
         g2d.setColor(Color.BLACK);
         g2d.draw(pointer);
-    
+
         // numéro de dé
         int diceNumber = t.getDiceNumber();
         if (diceNumber != 0) {
