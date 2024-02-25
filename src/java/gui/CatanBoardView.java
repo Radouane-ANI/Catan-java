@@ -76,6 +76,17 @@ public class CatanBoardView extends JPanel {
             double screenX2 = calculateScreenX(x2);
             double screenY2 = calculateScreenY(x2, y2);
 
+            if (y1 % 2 == 0) {
+                screenY1 = x1 == (int) x1 ? screenY1 + TILE_SIZE / 2 : screenY1;
+            } else {
+                screenY1 = x1 != (int) x1 ? screenY1 + TILE_SIZE / 2 : screenY1;
+            }
+            if (y2 % 2 == 0) {
+                screenY2 = x2 == (int) x2 ? screenY2 + TILE_SIZE / 2 : screenY2;
+            } else {
+                screenY2 = x2 != (int) x2 ? screenY2 + TILE_SIZE / 2 : screenY2;
+            }
+
             g2d.setStroke(new BasicStroke(5.0f));
             g2d.setColor(e.getRoad().getColor());
             g2d.drawLine((int) screenX1, (int) screenY1, (int) screenX2, (int) screenY2);

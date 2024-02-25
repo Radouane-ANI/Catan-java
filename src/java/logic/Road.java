@@ -8,7 +8,9 @@ public class Road {
 
     public Road(Player owner) {
         this.owner = owner;
-        this.color = owner.getColor();
+        if (owner != null) {
+            this.color = owner.getColor();
+        }
     }
 
     public Player getOwner() {
