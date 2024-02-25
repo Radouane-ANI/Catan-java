@@ -1,6 +1,8 @@
 package gui;
 
 import javax.swing.*;
+import logic.City;
+import logic.Settlement;
 import java.awt.*;
 import map.*;
 
@@ -35,22 +37,48 @@ public class CatanBoardView extends JPanel {
 
             drawTile(t, g2d, screenX, screenY);
         }
+
         for (Node n : Node.getNodesIntern()) {
             double x = n.getX();
             int y = n.getY();
 
             double screenX = calculateScreenX(x);
             double screenY = calculateScreenY(x, y);
-            screenY = y % 2 == 0 ? screenY + TILE_SIZE / 2 : screenY;
+
+            if (y % 2 == 0) {
+                screenY = x == (int) x ? screenY + TILE_SIZE / 2 : screenY;
+            } else {
+                screenY = x != (int) x ? screenY + TILE_SIZE / 2 : screenY;
+            }
 
             int centerX = (int) (screenX - (TILE_SIZE / 6));
             int centerY = (int) (screenY - (TILE_SIZE / 6));
-
-            if (n.getGroup() != null) {
-                g.drawRect(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3);
-                g.drawString(n + "", centerX, centerY);
-
+            if (n.getGroup() instanceof Settlement) {
+                g.setColor(n.getGroup().getColor());
+                g.fillOval(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3);
+            } else if (n.getGroup() instanceof City) {
+                g.setColor(n.getGroup().getColor());
+                g.fill3DRect(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3, true);
             }
+        }
+
+        for (Edge e : Edge.getEdgesIntern()) {
+            if (e.getRoad() == null) {
+                continue;
+            }
+            double x1 = e.getX().getX();
+            int y1 = e.getX().getY();
+            double x2 = e.getY().getX();
+            int y2 = e.getY().getY();
+
+            double screenX1 = calculateScreenX(x1);
+            double screenY1 = calculateScreenY(x1, y1);
+            double screenX2 = calculateScreenX(x2);
+            double screenY2 = calculateScreenY(x2, y2);
+
+            g2d.setStroke(new BasicStroke(5.0f));
+            g2d.setColor(e.getRoad().getColor());
+            g2d.drawLine((int) screenX1, (int) screenY1, (int) screenX2, (int) screenY2);
         }
     }
 

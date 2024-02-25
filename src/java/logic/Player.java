@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.List;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,6 +14,7 @@ public class Player {
     private List<Settlement> settlements;
     private List<City> cities;
     private int points;
+    private Color color;
 
     public Player(boolean bot, String nom) {
         this.bot = bot;
@@ -34,6 +36,14 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public List<Card> getHand() {

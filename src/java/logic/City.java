@@ -5,6 +5,9 @@ public class City extends HumanGroup {
 
     public City(Player owner) {
         this.owner = owner;
+        if (owner != null) {
+            super.setColor(owner.getColor());
+        }
     }
 
     public Player getOwner() {

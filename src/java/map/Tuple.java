@@ -1,6 +1,6 @@
 package map;
 
-class Tuple<T> {
+public class Tuple<T> {
     private T x;
     private T y;
 
