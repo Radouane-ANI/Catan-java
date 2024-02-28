@@ -1,6 +1,6 @@
-package logic;
+package src.java.logic;
 
-import static logic.Card.*;
+import static src.java.logic.Card.*;
 
 public interface Trade {
     default boolean isTradableInBank(CardBox saleList, TradePort tradePorts) {
@@ -95,6 +95,17 @@ public interface Trade {
             if (saleList.getNumberOfRes() == 3) {
                 return saleList.getNumber(SHEEP) == 1 && saleList.getNumber(GRAIN) == 1
                         && saleList.getNumber(STONE) == 1;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    default boolean canExchangeDev(CardBox myCards, Bank bank) {
+        if (bank.allDevCardsNumber() > 0) {
+            if (myCards.getNumberOfRes() >= 3) {
+                return myCards.getNumber(SHEEP) >= 1 && myCards.getNumber(GRAIN) >= 1
+                        && myCards.getNumber(STONE) >= 1;
             }
             return false;
         }

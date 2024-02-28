@@ -1,10 +1,10 @@
-package logic;
+package src.java.logic;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static logic.Card.*;
+import static src.java.logic.Card.*;
 
 public class Player implements Trade {
     private String name;
@@ -22,6 +22,10 @@ public class Player implements Trade {
     private List<City> cities;
 
     private int points;
+
+    private boolean isMyTurn;
+
+    private boolean isDiced;
 
     public Player(boolean bot, String nom, Bank bank) {
         this.name = nom;
@@ -45,13 +49,28 @@ public class Player implements Trade {
         return name;
     }
 
+    public boolean isMyTurn() {
+        return isMyTurn;
+    }
+
+    public boolean isDiced() {
+        return isDiced;
+    }
+
     public boolean isBot() {
         return bot;
+    }
+
+    //setMyCards -> for test
+    public void setMyCards(CardBox myCards) {
+        this.myCards = myCards;
     }
 
     public CardBox getMyCards() {
         return myCards;
     }
+
+    public Bank getBank() { return  bank; }
 
     public boolean addInSaleList(Card c) {
         if (myCards.removeCard(c, 1)) {

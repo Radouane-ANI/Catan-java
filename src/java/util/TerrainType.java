@@ -1,8 +1,8 @@
-package util;
+package src.java.util;
 
-import static logic.Card.BRICK;
+import static src.java.logic.Card.BRICK;
 
-import logic.Card;
+import src.java.logic.Card;
 
 public enum TerrainType {
     FOREST,

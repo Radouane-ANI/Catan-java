@@ -1,4 +1,4 @@
-package gui;
+package src.java.gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -10,7 +10,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import controleur.ViewControleur;
+import src.java.controleur.ViewControleur;
 
 public class GameMenu extends JPanel {
 

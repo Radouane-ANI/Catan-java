@@ -1,4 +1,4 @@
-package logic;
+package src.java.logic;
 
 public class Settlement implements HumanGroup {
     private Player owner;
