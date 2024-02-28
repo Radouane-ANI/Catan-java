@@ -28,6 +28,9 @@ public interface Trade {
     }
 
     default void TradBank(CardBox saleList, Card wish, CardBox myCards, TradePort tradePorts, Bank bank) {
+        if (wish == null) {
+            return;
+        }
         CardBox wishList = new CardBox();
         wishList.addCard(wish, 1);
         for (Card c : Card.values()) {
