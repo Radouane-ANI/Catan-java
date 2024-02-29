@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.List;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class Player implements Trade {
     private List<City> cities;
 
     private int points;
+    private Color color;
 
     public Player(boolean bot, String nom, Bank bank) {
         this.name = nom;
@@ -50,6 +52,14 @@ public class Player implements Trade {
         return bot;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public CardBox getMyCards() {
         return myCards;
     }
@@ -62,7 +72,7 @@ public class Player implements Trade {
         return false;
     }
 
-    public void addCard(Card c, int number){
+    public void addCard(Card c, int number) {
         myCards.addCard(c, number);
     }
 

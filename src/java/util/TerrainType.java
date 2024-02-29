@@ -1,7 +1,5 @@
 package util;
 
-import static logic.Card.BRICK;
-
 import logic.Card;
 
 public enum TerrainType {

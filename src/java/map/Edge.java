@@ -1,12 +1,10 @@
 package map;
 
-
 import java.util.ArrayList;
-
 import logic.Road;
 import util.Tuple;
 
-class Edge extends Tuple<Vector> {
+public class Edge extends Tuple<Vector> {
     private Road road;
 
     private static ArrayList<Edge> edgeList;
@@ -30,7 +28,12 @@ class Edge extends Tuple<Vector> {
         }
     }
 
-    static ArrayList<Edge> getEdgesIntern() {
+    public static ArrayList<Edge> getEdgesIntern() {
         return edgeList;
+
+    }
+
+    public Road getRoad() {
+        return road;
     }
 }
