@@ -39,6 +39,19 @@ public class Node extends Vector {
         }
 
         connectNodesToTiles();
+        connectToNeighbors();
+    }
+
+    private static void connectToNeighbors() {
+        for (int i = 0; i < nodeArray.length; i++) {
+            for (int j = 0; j < nodeArray.length; j++) {
+                Node vi = nodeArray[i];
+                Node vj = nodeArray[j];
+                if (vi.isNeighbor(vj)) {
+                    vi.neighbors.add(vj);
+                }
+            }
+        }
     }
 
     boolean isAdjacentToTile(Tile tile) {
@@ -67,9 +80,10 @@ public class Node extends Vector {
         this.group = group;
     }
 
-    public HumanGroup getHumanGroup(){
+    public HumanGroup getHumanGroup() {
         return group;
     }
+
     public Node[] getNeighbors() {
         return neighbors.toArray(new Node[0]);
     }
@@ -80,6 +94,22 @@ public class Node extends Vector {
 
     public HumanGroup getGroup() {
         return group;
+    }
+
+    public static boolean canBuild(Vector v) {
+        for (int i = 0; i < nodeArray.length; i++) {
+            if (nodeArray[i].equals(v)) {
+                if (nodeArray[i].group != null) {
+                    return false;
+                }
+                for (Node node : nodeArray[i].neighbors) {
+                    if (node.group != null) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
 }
