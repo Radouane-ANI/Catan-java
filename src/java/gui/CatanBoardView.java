@@ -38,30 +38,6 @@ public class CatanBoardView extends JPanel {
             drawTile(t, g2d, screenX, screenY);
         }
 
-        for (Node n : Node.getNodesIntern()) {
-            double x = n.getX();
-            int y = n.getY();
-
-            double screenX = calculateScreenX(x);
-            double screenY = calculateScreenY(x, y);
-
-            if (y % 2 == 0) {
-                screenY = x == (int) x ? screenY + TILE_SIZE / 2 : screenY;
-            } else {
-                screenY = x != (int) x ? screenY + TILE_SIZE / 2 : screenY;
-            }
-
-            int centerX = (int) (screenX - (TILE_SIZE / 6));
-            int centerY = (int) (screenY - (TILE_SIZE / 6));
-            if (n.getGroup() instanceof Settlement) {
-                g.setColor(n.getGroup().getColor());
-                g.fillOval(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3);
-            } else if (n.getGroup() instanceof City) {
-                g.setColor(n.getGroup().getColor());
-                g.fill3DRect(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3, true);
-            }
-        }
-
         for (Edge e : Edge.getEdgesIntern()) {
             if (e.getRoad() == null) {
                 continue;
@@ -76,20 +52,32 @@ public class CatanBoardView extends JPanel {
             double screenX2 = calculateScreenX(x2);
             double screenY2 = calculateScreenY(x2, y2);
 
-            if (y1 % 2 == 0) {
-                screenY1 = x1 == (int) x1 ? screenY1 + TILE_SIZE / 2 : screenY1;
-            } else {
-                screenY1 = x1 != (int) x1 ? screenY1 + TILE_SIZE / 2 : screenY1;
-            }
-            if (y2 % 2 == 0) {
-                screenY2 = x2 == (int) x2 ? screenY2 + TILE_SIZE / 2 : screenY2;
-            } else {
-                screenY2 = x2 != (int) x2 ? screenY2 + TILE_SIZE / 2 : screenY2;
-            }
+            screenY1 = centerIntersection(x1, y1, screenY1);
+            screenY2 = centerIntersection(x2, y2, screenY2);
 
             g2d.setStroke(new BasicStroke(5.0f));
             g2d.setColor(e.getRoad().getColor());
             g2d.drawLine((int) screenX1, (int) screenY1, (int) screenX2, (int) screenY2);
+        }
+
+        for (Node n : Node.getNodesIntern()) {
+            double x = n.getX();
+            int y = n.getY();
+
+            double screenX = calculateScreenX(x);
+            double screenY = calculateScreenY(x, y);
+
+            screenY = centerIntersection(x, y, screenY);
+
+            int centerX = (int) (screenX - (TILE_SIZE / 6));
+            int centerY = (int) (screenY - (TILE_SIZE / 6));
+            if (n.getGroup() instanceof Settlement) {
+                g.setColor(n.getGroup().getColor());
+                g.fillOval(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3);
+            } else if (n.getGroup() instanceof City) {
+                g.setColor(n.getGroup().getColor());
+                g.fill3DRect(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3, true);
+            }
         }
     }
 
@@ -124,5 +112,9 @@ public class CatanBoardView extends JPanel {
         int spacing = TILE_SIZE - 27; // peut être ajusté
         int padding = 10;
         return y * (TILE_SIZE + spacing) + padding;
+    }
+
+    private double centerIntersection(double x, int y, double screenY) {
+        return screenY += (x != (int) x) ^ (y % 2 == 0) ? TILE_SIZE / 2 : 0;
     }
 }
