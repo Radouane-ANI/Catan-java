@@ -84,24 +84,12 @@ public interface Trade {
         }
     }
 
-    default void getDevCard(CardBox myCards, CardBox saleList, Bank bank) {
-        if (canGetDevCard(saleList, bank)) {
+    default void getDevCard(CardBox myCards, Bank bank) {
+        if (canExchangeDev(myCards, bank)) {
             Card dev = bank.devCardGenerator();
             bank.removeCard(dev, 1);
             myCards.addCard(dev, 1);
-            saleList.clearBox();
         }
-    }
-
-    default boolean canGetDevCard(CardBox saleList, Bank bank) {
-        if (bank.allDevCardsNumber() > 0) {
-            if (saleList.getNumberOfRes() == 3) {
-                return saleList.getNumber(SHEEP) == 1 && saleList.getNumber(GRAIN) == 1
-                        && saleList.getNumber(STONE) == 1;
-            }
-            return false;
-        }
-        return false;
     }
 
     default boolean canExchangeDev(CardBox myCards, Bank bank) {

@@ -1,10 +1,13 @@
 package src.java.gui;
 
+import src.java.logic.Card;
 import src.java.logic.Player;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -73,9 +76,77 @@ public class ButtonsPanel extends JPanel {
             }
             button.setIcon(buttonIcons[i]);
             button.setEnabled(false);
+            setButtons(i);
             add(button);
         }
     }
+
+    public void setButtons(int NUMBER_OF_BUTTON) {
+        switch (NUMBER_OF_BUTTON) {
+            case 0 : setExchangeButton();break;
+            case 1 : setGetDevButton();break;
+            case 2 : setBuildRoadButton();break;
+            case 3 : setBuildSettlementButton();break;
+            case 4 : setBuildCityButton();break;
+            case 5 : setGoButton();break;
+        }
+    }
+
+    public void setExchangeButton() {
+        buttons[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
+
+    public void setGetDevButton() {
+        buttons[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                player.getDevCard(player.getMyCards(),player.getBank());
+            }
+        });
+    }
+
+    public void setBuildRoadButton() {
+        buttons[2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
+
+    public void setBuildSettlementButton() {
+        buttons[3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
+
+    public void setBuildCityButton() {
+        buttons[4].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
+
+    public void setGoButton() {
+        buttons[5].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+    }
+
+
 
     public void update() {
         if(player.isMyTurn()) {
