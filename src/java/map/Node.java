@@ -67,9 +67,10 @@ public class Node extends Vector {
         this.group = group;
     }
 
-    public HumanGroup getHumanGroup(){
+    public HumanGroup getHumanGroup() {
         return group;
     }
+
     public Node[] getNeighbors() {
         return neighbors.toArray(new Node[0]);
     }
