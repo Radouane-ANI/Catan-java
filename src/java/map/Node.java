@@ -76,7 +76,7 @@ public class Node extends Vector {
         return nodeArray;
     }
 
-    void setNode(HumanGroup group) {
+    public void setNode(HumanGroup group) {
         this.group = group;
     }
 
@@ -96,20 +96,22 @@ public class Node extends Vector {
         return group;
     }
 
-    public static boolean canBuild(Vector v) {
+    public static Node canBuildSettlement(Vector v) {
+        Node pos = null;
         for (int i = 0; i < nodeArray.length; i++) {
             if (nodeArray[i].equals(v)) {
+                pos = nodeArray[i];
                 if (nodeArray[i].group != null) {
-                    return false;
+                    return null;
                 }
                 for (Node node : nodeArray[i].neighbors) {
                     if (node.group != null) {
-                        return false;
+                        return null;
                     }
                 }
             }
         }
-        return true;
+        return pos;
     }
 
 }

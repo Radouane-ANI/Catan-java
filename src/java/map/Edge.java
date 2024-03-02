@@ -42,18 +42,24 @@ public class Edge extends Tuple<Vector> {
         return road;
     }
 
+    public void setRoad(Road road) {
+        this.road = road;
+    }
+
     public static boolean canBuildRoad(Tuple<Vector> v, Player p) {
         for (Edge edge : edgeList) {
             if (edge.equals(v)) {
                 if (edge.road != null) {
                     return false;
                 }
-                for (Edge edge2 : edgeList) {
+                for (Road road : p.getRoads()) {
+                    Edge edge2 = getEdge(road);
                     if (edge2.getX().equals(edge.getX()) || edge2.getX().equals(edge.getY())
                             || edge2.getY().equals(edge.getX()) || edge2.getY().equals(edge.getY())) {
                         return true;
                     }
                 }
+                return false;
             }
         }
         return false;
@@ -65,5 +71,24 @@ public class Edge extends Tuple<Vector> {
         }
         return (this.getX().equals(v.getX()) || v.getX().equals(this.getX()))
                 && (this.getY().equals(v.getY()) || v.getY().equals(this.getY()));
+    }
+
+    public static Edge getEdge(Road road) {
+        for (Edge edge : edgeList) {
+            if (edge.road == road) {
+                return edge;
+            }
+        }
+        return null;
+    }
+
+    public static ArrayList<Edge> getEdgeNeighbor(Vector v) {
+        ArrayList<Edge> l = new ArrayList<>();
+        for (Edge edge : edgeList) {
+            if ((edge.getX().equals(v) || edge.getY().equals(v)) && edge.road == null) {
+                l.add(edge);
+            }
+        }
+        return l;
     }
 }
