@@ -8,7 +8,6 @@ public class Board extends MapElementsApi {
         Edge.createEdge();
     }
 
-<<<<<<< src/java/map/Board.java
     /* 
     public static void main(String[] args) {
         createBoard();
@@ -35,8 +34,7 @@ public class Board extends MapElementsApi {
         frame.setVisible(true);
     }
     */
-}
-=======
+    
     public static void main(String[] args) {
         createBoard();
         System.out.println(Tile.getTile(3, 0).getTerrain());
@@ -75,4 +73,3 @@ public class Board extends MapElementsApi {
      */
 
 }
->>>>>>> src/java/map/Board.java
