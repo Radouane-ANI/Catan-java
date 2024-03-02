@@ -3,9 +3,8 @@ package controleur;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import map.Node;
 import logic.Card;
+import map.Node;
 import logic.HumanGroup;
 import logic.Player;
 import logic.TupleDice;
@@ -85,6 +84,10 @@ public class GameControleur {
         }else if (currentPlayer.isBot()) {
             currentPlayer.tradeWithBank();
         }
+    }
+
+    private boolean buyRessourceCard(Player p,Card c){
+        return p.buyRessourceCard(c);
     }
 
     private void creationCity(){}
