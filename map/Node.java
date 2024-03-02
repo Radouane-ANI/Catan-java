@@ -7,6 +7,8 @@ import logic.HumanGroup;
 class Node extends Vector {
     private HumanGroup group;
 
+    private ArrayList<Edge> neighEdges = new ArrayList<Edge>();
+
     private static Node[] nodeArray;
 
     static {
@@ -43,12 +45,45 @@ class Node extends Vector {
             t.setNeighbors(res);
         }
     }
-    
+
+    static void connectEdge() {
+        for (Edge t : Edge.getEdgesIntern()) {
+            Node a = getNode(t.getX());
+            Node b = getNode(t.getY());
+
+            if (!a.neighEdges.contains(t)) {
+                getNode(a).neighEdges.add(t);
+            }
+            else if (!b.neighEdges.contains(t)) {
+                getNode(b).neighEdges.add(t);
+            }
+        }
+    }
+
     static Node[] getNodesIntern() {
         return nodeArray;
     }
 
-    void setNode(HumanGroup group) {
+    public static Node getNode(Vector v) {
+        for (Node n : nodeArray) {
+            if (((Vector)n).equals(v)) {
+                return n;
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<Node> getNeighborsNode() {
+        ArrayList<Node> res = new ArrayList<Node>();
+        for (Edge e : neighEdges) {
+            res.add((e.getX().equals(this))?e.getY():e.getX());
+        }
+
+        return res;
+    }
+
+    public void setNode(HumanGroup group) {
         this.group = group;
     }
 }

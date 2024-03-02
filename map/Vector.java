@@ -30,11 +30,18 @@ public class Vector {
         int deltaX =  v.x - x;
         int deltaY = v.y - y;
 
-        return abs(deltaX) == 1 && (deltaY == -deltaX || deltaY == 0) || 
-                abs(deltaY) == 1 && (deltaX == -deltaY || deltaX == 0);
+        return abs(deltaX) == 1 && deltaY == 0 || 
+                abs(deltaY) == 1 && deltaX == 0 ||
+                abs(deltaX) == 1 && deltaY == -deltaX;
     }
 
     private int abs(int x) {
         return (x > 0)? x:-x;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Vector && x == ((Vector)o).x &&  y == ((Vector)o).y;
+        
     }
 }

@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import logic.Road;
 
-class Edge extends Tuple<Vector> {
+class Edge extends Tuple<Node> {
     private Road road;
 
     private static ArrayList<Edge> edgeList;
@@ -15,15 +15,15 @@ class Edge extends Tuple<Vector> {
         edgeList = new ArrayList<Edge>();
     }
 
-    Edge(Vector a, Vector b) {
+    Edge(Node a, Node b) {
         super(a, b);
         road = null;
     }
 
     static void createEdge() {
-        for (Vector i : Node.getNodesIntern()) {
-            for (Vector j : Node.getNodesIntern()) {
-                if (i.isNeighbor(j)) {
+        for (Node i : Node.getNodesIntern()) {
+            for (Node j : Node.getNodesIntern()) {
+                if (((Vector)i).isNeighbor((Vector)j)) {
                     edgeList.add(new Edge(i, j));
                 }
             }
@@ -32,5 +32,13 @@ class Edge extends Tuple<Vector> {
 
     static ArrayList<Edge> getEdgesIntern() {
         return edgeList;
+    }
+
+    public void putRoad(Road r) {
+        road = r;
+    }
+
+    public Road getRoad() {
+        return road;
     }
 }

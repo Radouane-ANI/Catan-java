@@ -6,6 +6,8 @@ public class Board extends MapElementsApi {
         Tile.createTiles();
         Node.createNodes();
         Edge.createEdge();
+
+        Node.connectEdge();
     }
     
     public static void main(String[] args) {
@@ -15,5 +17,7 @@ public class Board extends MapElementsApi {
         for (Vector n : Tile.getTile(1, 1).getNeighbors()) {
             System.out.println(n);
         }
+
+        System.out.println(Node.getNode(new Vector(1, 2)).getNeighborsNode());
     }
 }
