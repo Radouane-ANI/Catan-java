@@ -3,7 +3,6 @@ package controleur;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import logic.Card;
 import map.Node;
 import logic.HumanGroup;
 import logic.Player;
@@ -16,7 +15,7 @@ import util.TerrainType;
 public class Turn {
 
     protected List<Player> playersList;
-    private int currentPlayerIndex;
+    protected int currentPlayerIndex;
 
     public Turn(List<Player> players) {
         playersList = players;
@@ -71,9 +70,11 @@ public class Turn {
         }
     }
 
+    /* 
     private boolean buyRessourceCard(Player p,Card c){
         return p.buyRessourceCard(c);
     }
+    */
 
     private void creationCity(){}
 

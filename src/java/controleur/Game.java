@@ -15,8 +15,17 @@ public class Game extends Turn {
     public void startGame(List<Player> players, int currentPlayerIndex){
         while (!isOver(players)){
             tour(playersList,currentPlayerIndex);
-            currentPlayerIndex++;
+            nextPlayer();
         }
+    }
+
+    private void nextPlayer(){
+        if (currentPlayerIndex == (playersList.size() -1)){
+            currentPlayerIndex = 0;
+            return;
+        }
+        currentPlayerIndex++;
+
     }
 
     private boolean isOver(List<Player> players){
