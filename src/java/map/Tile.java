@@ -1,13 +1,24 @@
 package map;
 
 import logic.Thief;
+import util.TerrainType;
 
 public class Tile extends Vector {
     private int diceNumber = 0;
     private Thief thief = null;
+<<<<<<< src/java/map/Tile.java
     private TerrainType terrain;
     private Node[] neighbors;
 
+=======
+    private TerrainType terrain = TerrainType.DESERT;
+    private Node[] neighbors;
+
+    static {
+        tileArray = new Tile[19];
+    }
+
+>>>>>>> src/java/map/Tile.java
     private static Tile[] tileArray;
     private Position position; // positions simplifiées à utiliser
 

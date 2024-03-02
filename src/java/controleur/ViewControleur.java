@@ -6,11 +6,11 @@ import gui.GameView;
 import map.Board;
 import gui.CatanBoardView;
 
-public class Controleur {
+public class ViewControleur {
     
     private static MainFrame frame;
 
-    public Controleur(MainFrame mainFrame){
+    public ViewControleur(MainFrame mainFrame) {
         frame = mainFrame;
         frame.setPanel(new GameMenu());
     }

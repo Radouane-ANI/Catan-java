@@ -2,7 +2,7 @@ package gui;
 
 import java.awt.Color;
 
-import map.TerrainType;
+import util.TerrainType;
 
 class TerrainColor {
     private static final Color DARK_GREEN = new Color(0, 100, 0);
