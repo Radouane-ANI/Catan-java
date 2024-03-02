@@ -2,6 +2,7 @@ package map;
 
 import java.util.ArrayList;
 import logic.Road;
+import util.Tuple;
 
 public class Edge extends Tuple<Vector> {
     private Road road;
@@ -18,16 +19,10 @@ public class Edge extends Tuple<Vector> {
     }
 
     static void createEdge() {
-        Node[] nodes = Node.getNodesIntern();
-        for (Node node : nodes) {
-            if (node != null) {
-                Node[] neighbors = node.getNeighbors();
-                if (neighbors != null) {
-                    for (Node neighbor : neighbors) {
-                        if (neighbor != null) {
-                            edgeList.add(new Edge(node, neighbor));
-                        }
-                    }
+        for (Vector i : Node.getNodesIntern()) {
+            for (Vector j : Node.getNodesIntern()) {
+                if (i.isNeighbor(j)) {
+                    edgeList.add(new Edge(i, j));
                 }
             }
         }
