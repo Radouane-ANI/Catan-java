@@ -192,7 +192,7 @@ public class Player implements Trade {
     public boolean isTradeInteresting(Player player) {
         return isTradeInteresting(saleList, wishList, player.wishList, player.saleList);
     }
-
+    
     public void trade(Player player) {
         trade(saleList, player.myCards, wishList, myCards);
     }
@@ -201,5 +201,9 @@ public class Player implements Trade {
         if (isTradableInBank(saleList, tradePorts)) {
             TradBank(saleList, wishList.getFirst(), myCards, tradePorts, bank);
         }
+    }
+
+    public void buyCard(Card c){
+        
     }
 }

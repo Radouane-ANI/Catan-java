@@ -1,7 +1,5 @@
 package util;
 
-import static logic.Card.BRICK;
-
 import logic.Card;
 
 public enum TerrainType {
@@ -12,17 +10,13 @@ public enum TerrainType {
     MOUNTAIN,
     DESERT;
 
-
-
-
-
     public Card toCard(){
         switch (this){
             case FOREST : return Card.TREE; 
             case FIELD : return Card.GRAIN;
             case PASTURE : return Card.SHEEP;
-            case MOUNTAIN : return Card.STONE;
             case BRICK : return Card.BRICK;
+            case MOUNTAIN : return Card.STONE;
             default : return null;
         }
     }

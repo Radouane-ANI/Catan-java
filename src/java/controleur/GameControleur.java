@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import map.Node;
+import logic.Card;
 import logic.HumanGroup;
 import logic.Player;
 import logic.TupleDice;
@@ -43,7 +44,6 @@ public class GameControleur {
         recupRessources(players,dices.lancer());
         echange();
         creationCity();
-        buyCard();
     }
 
     private void recupRessources(List<Player> players, int sumDices){
@@ -62,7 +62,6 @@ public class GameControleur {
 
     private void echange(){
         Player currentPlayer = playersList.get(currentPlayerIndex);
-
         if (!currentPlayer.exchangeSuggestion()) {
             return;
         }
@@ -90,15 +89,8 @@ public class GameControleur {
 
     private void creationCity(){}
 
-    private void buyCard(){}
-
     private boolean proposeEchange(Player p) {
         // affiche a l'ecran un echange que le joueur peut accepeter ou non
         return false;
     }
-
-    public void playerTrade() {
-        echange();
-    }
-  
 }
