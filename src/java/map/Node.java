@@ -114,4 +114,13 @@ public class Node extends Vector {
         return pos;
     }
 
+    public static Node getNode(HumanGroup group) {
+        for (int i = 0; i < nodeArray.length; i++) {
+            if (nodeArray[i].group == group) {
+                return nodeArray[i];
+            }
+        }
+        return null;
+    }
+
 }

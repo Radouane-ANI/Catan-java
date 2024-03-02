@@ -8,6 +8,7 @@ import java.util.List;
 import gui.CatanBoardView;
 import gui.CityComponent;
 import gui.RoadComponent;
+import logic.City;
 import logic.Player;
 import logic.Road;
 import logic.Settlement;
@@ -22,8 +23,37 @@ public class CatanBoardControleur {
         this.view = view;
     }
 
+    public void buildCity(Player p) {
+        for (Settlement settlement : p.getSettlements()) {
+            Node node = Node.getNode(settlement);
+            if (node != null) {
+                avaibleCity(node, p, settlement);
+            }
+        }
+    }
+
+    public void buildSettlement(Player p) {
+        for (Road road : p.getRoads()) {
+            Edge edge = Edge.getEdge(road);
+            Node posX = Node.canBuildSettlement(edge.getX());
+            if (posX != null) {
+                avaibleSettelement(posX, p);
+            }
+            Node posY = Node.canBuildSettlement(edge.getY());
+            if (posY != null) {
+                avaibleSettelement(posY, p);
+            }
+        }
+    }
+
+    public void buildRoad(Player p) {
+        for (Edge edge : Edge.listBuildRoad(p)) {
+            avaibleRoad(p, edge);
+        }
+    }
+
     public void firstBuild(Player p) {
-        if (p == null) {
+        if (p == null || p.getRoads().size() > 2) {
             return;
         }
         for (Node node : Node.getNodesIntern()) {
@@ -35,27 +65,30 @@ public class CatanBoardControleur {
 
     private void firstBuildRoad(Player p, Node n) {
         for (Edge edge : Edge.getEdgeNeighbor(n)) {
-            RoadComponent road = new RoadComponent();
-            view.addRoad(road, edge);
-            roadComponents.add(road);
-            road.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    Road r = new Road(p);
-                    p.getRoads().add(r);
-                    edge.setRoad(r);
-                    removeRoadComponents();
-                    view.repaint();
-                    if (p.getSettlements().size() < 2) {
-                        firstBuild(p);
-                    }
-                }
-            });
-
+            avaibleRoad(p, edge);
         }
     }
 
-    public void avaibleSettelement(Node n, Player p) {
+    private void avaibleRoad(Player p, Edge edge) {
+        RoadComponent road = new RoadComponent();
+        view.addRoad(road, edge);
+        roadComponents.add(road);
+        road.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Road r = new Road(p);
+                p.buildRoad(r);
+                edge.setRoad(r);
+                removeRoadComponents();
+                view.repaint();
+                if (p.getRoads().size() < 2) {
+                    firstBuild(p);
+                }
+            }
+        });
+    }
+
+    private void avaibleSettelement(Node n, Player p) {
         CityComponent city = new CityComponent();
         view.add(city, n);
         cityComponents.add(city);
@@ -64,11 +97,30 @@ public class CatanBoardControleur {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Settlement c = new Settlement(p);
-                p.getSettlements().add(c);
+                p.buildSettlement(c);
                 n.setNode(c);
                 removeCityComponents();
                 view.repaint();
-                firstBuildRoad(p, n);
+                if (p.getRoads().size() < 2) {
+                    firstBuildRoad(p, n);
+                }
+            }
+        });
+    }
+
+    private void avaibleCity(Node n, Player p, Settlement s) {
+        CityComponent city = new CityComponent();
+        view.add(city, n);
+        cityComponents.add(city);
+
+        city.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                City c = new City(p);
+                p.buildCity(c, s);
+                n.setNode(c);
+                removeCityComponents();
+                view.repaint();
             }
         });
     }

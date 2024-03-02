@@ -46,23 +46,26 @@ public class Edge extends Tuple<Vector> {
         this.road = road;
     }
 
-    public static boolean canBuildRoad(Tuple<Vector> v, Player p) {
-        for (Edge edge : edgeList) {
-            if (edge.equals(v)) {
-                if (edge.road != null) {
-                    return false;
+    public static ArrayList<Edge> listBuildRoad(Player p) {
+        ArrayList<Edge> possible = new ArrayList<>();System.out.println(p.getRoads());
+        for (Road road : p.getRoads()) {
+            Edge edge = getEdge(road);
+            if (edge == null) {
+                continue;
+            }
+            for (Edge edge2 : getEdgeNeighbor(edge.getX())) {
+                if (edge2.road == null) {
+                    possible.add(edge2);
                 }
-                for (Road road : p.getRoads()) {
-                    Edge edge2 = getEdge(road);
-                    if (edge2.getX().equals(edge.getX()) || edge2.getX().equals(edge.getY())
-                            || edge2.getY().equals(edge.getX()) || edge2.getY().equals(edge.getY())) {
-                        return true;
-                    }
+            }
+            for (Edge edge2 : getEdgeNeighbor(edge.getY())) {
+                if (edge2.road == null) {
+                    possible.add(edge2);
                 }
-                return false;
             }
         }
-        return false;
+        System.out.println(possible);
+        return possible;
     }
 
     public boolean equals(Tuple<Vector> v) {
