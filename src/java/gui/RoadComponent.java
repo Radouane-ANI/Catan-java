@@ -22,19 +22,19 @@ public class RoadComponent extends JLabel {
     }
 
     public void setSize(int screenX1, int screenY1, int screenX2, int screenY2) {
+        this.screenX2 = screenX2 - screenX1;
+        this.screenY2 = screenY2 - screenY1;
 
         int x1 = Math.min((int) screenX1, (int) screenX2);
         int y1 = Math.min((int) screenY1, (int) screenY2);
         if (x1 == (int) screenX1 && y1 == (int) screenY1) {
             this.screenX1 = 0;
             this.screenY1 = 0;
-            this.screenX2 = screenX2 - screenX1;
-            this.screenY2 = screenY2 - screenY1;
         } else {
             this.screenX1 = screenX1 - screenX1;
             this.screenY1 = screenY1 - screenY2;
-            this.screenX2 = screenX2 - screenX1 + this.screenX1;
-            this.screenY2 = screenY2 - screenY1 + this.screenY1;
+            this.screenX2 += this.screenX1;
+            this.screenY2 += this.screenY1;
         }
 
     }

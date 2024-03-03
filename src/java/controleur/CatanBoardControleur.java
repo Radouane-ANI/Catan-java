@@ -71,7 +71,7 @@ public class CatanBoardControleur {
 
     private void avaibleRoad(Player p, Edge edge) {
         RoadComponent road = new RoadComponent();
-        view.addRoad(road, edge);
+        view.addRoad(road, edge, null);
         roadComponents.add(road);
         road.addMouseListener(new MouseAdapter() {
             @Override
@@ -90,7 +90,7 @@ public class CatanBoardControleur {
 
     private void avaibleSettelement(Node n, Player p) {
         CityComponent city = new CityComponent();
-        view.add(city, n);
+        view.addCity(city, n, null);
         cityComponents.add(city);
 
         city.addMouseListener(new MouseAdapter() {
@@ -110,7 +110,7 @@ public class CatanBoardControleur {
 
     private void avaibleCity(Node n, Player p, Settlement s) {
         CityComponent city = new CityComponent();
-        view.add(city, n);
+        view.addCity(city, n, null);
         cityComponents.add(city);
 
         city.addMouseListener(new MouseAdapter() {
