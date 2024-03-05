@@ -15,7 +15,7 @@ public class Player implements Trade {
     private CardBox saleList;
     private CardBox wishList;
     private Bank bank;
-
+    private int monney = 3;
     private TradePort tradePorts;
 
     private boolean bot;
@@ -46,6 +46,10 @@ public class Player implements Trade {
 
     public String getName() {
         return name;
+    }
+
+    public void setMonney(int monney) {
+        this.monney = monney;
     }
 
     public boolean isBot() {
@@ -204,7 +208,7 @@ public class Player implements Trade {
     public boolean isTradeInteresting(Player player) {
         return isTradeInteresting(saleList, wishList, player.wishList, player.saleList);
     }
-
+    
     public void trade(Player player) {
         trade(saleList, player.myCards, wishList, myCards);
     }
@@ -213,5 +217,15 @@ public class Player implements Trade {
         if (isTradableInBank(saleList, tradePorts)) {
             TradBank(saleList, wishList.getFirst(), myCards, tradePorts, bank);
         }
+    }
+
+    public boolean buyRessourceCard(Card c){
+        // remplacer 1 et -- par le cout de la carte si le couop n'est pas le même pour chaque 
+        if (monney > 1 && c.isRessourceCard()){
+            addCard(c, 1);
+            monney--;
+            return true;
+        }
+        return false;
     }
 }
