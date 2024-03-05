@@ -3,6 +3,7 @@ package logic;
 import static logic.Card.*;
 
 public interface Trade {
+    
     default boolean isTradableInBank(CardBox saleList, TradePort tradePorts) {
         boolean flag = false;
         int otherCardsNumber = 0;
