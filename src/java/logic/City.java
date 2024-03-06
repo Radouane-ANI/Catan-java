@@ -1,17 +1,11 @@
+
 package src.java.logic;
 
-public class City implements HumanGroup {
-    private Player owner;
+public class City extends HumanGroup {
 
     public City(Player owner) {
-        this.owner = owner;
+        super(owner);
     }
-
-    public Player getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
-    }
+    
 }
+

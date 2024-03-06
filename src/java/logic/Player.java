@@ -1,6 +1,7 @@
 package src.java.logic;
 
 import java.util.List;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ public class Player implements Trade {
     private CardBox saleList;
     private CardBox wishList;
     private Bank bank;
-
+    private int monney = 3;
     private TradePort tradePorts;
 
     private boolean bot;
@@ -23,12 +24,11 @@ public class Player implements Trade {
     private List<City> cities;
 
     private int points;
-
+    private Color color;
     private boolean isMyTurn;
 
     private boolean isDiced;
-
-    public Player(boolean bot, String nom, Bank bank) {
+    public Player(boolean bot, String nom, Bank bank, Color color) {
         this.name = nom;
         this.bot = bot;
 
@@ -40,6 +40,7 @@ public class Player implements Trade {
         this.saleList = new CardBox();
         this.wishList = new CardBox();
         this.bank = bank;
+        this.color = color;
     }
 
     public void setRoads(List<Road> roads) {
@@ -58,9 +59,14 @@ public class Player implements Trade {
         return isDiced;
     }
 
+    public void setMonney(int monney) {
+        this.monney = monney;
+    }
+
     public boolean isBot() {
         return bot;
     }
+
 
     public TradePort getTradePorts() {
         return tradePorts;
@@ -73,6 +79,13 @@ public class Player implements Trade {
     //setMyCards -> for test
     public void setMyCards(CardBox myCards) {
         this.myCards = myCards;
+    }
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public CardBox getMyCards() {
@@ -254,9 +267,18 @@ public class Player implements Trade {
     public boolean isTradeInteresting(Player player) {
         return isTradeInteresting(saleList, wishList, player.wishList, player.saleList);
     }
-
+    
     public void trade(Player player) {
         trade(saleList, player.myCards, wishList, myCards);
     }
 
+    public boolean buyRessourceCard(Card c){
+        // remplacer 1 et -- par le cout de la carte si le couop n'est pas le même pour chaque 
+        if (monney > 1 && c.isRessourceCard()){
+            addCard(c, 1);
+            monney--;
+            return true;
+        }
+        return false;
+    }
 }

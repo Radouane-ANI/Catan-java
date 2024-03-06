@@ -21,7 +21,7 @@ public class Bank extends CardBox {
         }
         cardsNumbers[5] = NB_KNIGHT_CARD;
         cardsNumbers[5] = NB_ROAD_BUILD_CARD;
-        cardsNumbers[5]= NB_YEAR_PLENTY_CARD;
+        cardsNumbers[5] = NB_YEAR_PLENTY_CARD;
         cardsNumbers[5] = NB_MONOPOLY_CARD;
         cardsNumbers[5] = NB_ONE_POINT_CARD;
     }

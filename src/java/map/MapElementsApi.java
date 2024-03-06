@@ -2,7 +2,6 @@ package src.java.map;
 
 import java.util.ArrayList;
 
-
 /**
  * MapElementsInterface
  */

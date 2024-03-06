@@ -1,40 +1,57 @@
 package src.java.map;
 
 public class Vector {
-    private int x;
-    private int y;
+    protected double x;
+    protected int y;
 
-    Vector(int x, int y) {
+    public Vector(double x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    void add(int x, int y) {
+    void add(double x, int y) {
         this.x += x;
         this.y += y;
     }
 
-    int getX() {
+    public double getX() {
         return x;
     }
 
-    int getY() {
+    public int getY() {
         return y;
     }
 
     public String toString() {
-        return "("+x+", "+y+")";
+        return "(" + x + ", " + y + ")";
     }
 
     boolean isNeighbor(Vector v) {
-        int deltaX =  v.x - x;
-        int deltaY = v.y - y;
-
-        return abs(deltaX) == 1 && (deltaY == -deltaX || deltaY == 0) || 
-                abs(deltaY) == 1 && (deltaX == -deltaY || deltaX == 0);
+        if (x == v.x && y == v.y) {
+            return false;
+        }
+        if (y == v.y) {
+            if (Math.abs(x - v.x) == 0.5) {
+                return true;
+            }
+        } else if (Math.abs(y - v.y) == 1) {
+            if (Math.min(y, v.y) % 2 == 0) {
+                if (x == v.x && (x - (int) x) == 0) {
+                    return true;
+                }
+            } else {
+                if (x == v.x && (x - (int) x) == 0.5) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    private int abs(int x) {
-        return (x > 0)? x:-x;
+    public boolean equals(Vector v) {
+        if (v == null) {
+            return false;
+        }
+        return Double.compare(x, v.x) == 0 && y == v.y;
     }
 }

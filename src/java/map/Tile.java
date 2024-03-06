@@ -9,23 +9,36 @@ public class Tile extends Vector {
     private TerrainType terrain = TerrainType.DESERT;
     private Node[] neighbors;
 
+    static {
+        tileArray = new Tile[19];
+    }
+
     private static Tile[] tileArray;
+    private Position position; // positions simplifiées à utiliser
 
     static {
         tileArray = new Tile[19];
     }
 
-    Tile(int x, int y, int diceNumber, TerrainType terrain) {
+    Tile(double x, int y, int diceNumber, TerrainType terrain) {
         super(x, y);
+        this.position = new Position((int) x, y);
         this.diceNumber = diceNumber;
         this.terrain = terrain;
     }
 
-    static void createTiles() {
-        int counter = 0;
+    private static final Vector[] TILE_COORDINATES = {
+        new Vector(1.5, 0), new Vector(2.5, 0), new Vector(3.5, 0),
+        new Vector(1, 1), new Vector(2, 1), new Vector(3, 1), new Vector(4, 1),
+        new Vector(0.5, 2), new Vector(1.5, 2), new Vector(2.5, 2), new Vector(3.5, 2), new Vector(4.5, 2),
+        new Vector(1, 3), new Vector(2, 3), new Vector(3, 3), new Vector(4, 3),
+        new Vector(1.5, 4), new Vector(2.5, 4), new Vector(3.5, 4)
+    };
 
-        Basket<Integer> diceBasket = new Basket<Integer>(new Integer[] {
-            1,
+    static void createTiles() {
+        tileArray = new Tile[TILE_COORDINATES.length];
+
+        Basket<Integer> diceBasket = new Basket<Integer>(new Integer[]{
             2,
             3, 3,
             4, 4,
@@ -38,38 +51,43 @@ public class Tile extends Vector {
             12
         });
 
-        Basket<TerrainType> terrainBasket = new Basket<TerrainType>(new TerrainType[] {
+        Basket<TerrainType> terrainBasket = new Basket<TerrainType>(new TerrainType[]{
             TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST,
             TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD,
             TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE,
             TerrainType.BRICK, TerrainType.BRICK, TerrainType.BRICK,
-            TerrainType.MOUNTAIN, TerrainType.MOUNTAIN, TerrainType.MOUNTAIN
+            TerrainType.MOUNTAIN, TerrainType.MOUNTAIN, TerrainType.MOUNTAIN,
+            TerrainType.DESERT
         });
-        
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 3 + i; j++) {
-            tileArray[counter++] = new Tile(j , j + 5 - 2*i, diceBasket.pickRandomItem(), terrainBasket.pickRandomItem());
-            tileArray[counter++] = new Tile(j + 5 - 2*i, j, diceBasket.pickRandomItem(), terrainBasket.pickRandomItem());
 
-            }
-        }
-        for (int i = 1; i <= 5; i++) {
-            tileArray[counter++] = new Tile(i , i, diceBasket.pickRandomItem(), terrainBasket.pickRandomItem());
+        for (int i = 0; i < TILE_COORDINATES.length; i++) {
+            Vector coordinates = TILE_COORDINATES[i];
+            TerrainType terrain = terrainBasket.pickRandomItem();
+            int diceNumber = (terrain == TerrainType.DESERT) ? 0 : diceBasket.pickRandomItem();
+            tileArray[i] = new Tile(coordinates.getX(), coordinates.getY(), diceNumber, terrain);
         }
     }
 
-    static Tile[] getTilesIntern() {
+    public static Tile[] getTilesIntern() {
         return tileArray;
     }
 
-    public static Tile getTile(int x, int y) {
+    public static Tile getTile(double x, int y) {
         for (int i = 0; i < tileArray.length; i++) {
-            if (tileArray[i].getX() == x && tileArray[i].getY() == y) {
-                return tileArray[i];
+            Tile tile = tileArray[i];
+            if (tile != null && tile.getPosition().getX() == x && tile.getPosition().getY() == y) {
+                return tile;
             }
         }
-        
         return null;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public int getDiceNumber() {
