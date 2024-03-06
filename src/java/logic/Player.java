@@ -71,6 +71,14 @@ public class Player implements Trade {
         return myCards;
     }
 
+    public CardBox getSaleList() {
+        return saleList;
+    }
+
+    public CardBox getWishList() {
+        return wishList;
+    }
+
     public Bank getBank() { return  bank; }
 
     public boolean addInSaleList(Card c) {
@@ -79,6 +87,31 @@ public class Player implements Trade {
             return true;
         }
         return false;
+    }
+
+    public boolean rmFromSaleList(Card c) {
+        if (saleList.removeCard(c,1)) {
+            myCards.addCard(c,1);
+            return true;
+        }
+        return false;
+    }
+
+    public void rmFromWishList(Card c) {
+        wishList.removeCard(c,1);
+    }
+
+    public void revertFromSaleList() {
+        while (!saleList.isEmpty()) {
+            for(int i = 0; i < 5; i++) {
+                Card card = Card.values()[i];
+                int cardNumber = saleList.getNumber(card);
+                if(cardNumber!=0) {
+                    myCards.addCard(card,cardNumber);
+                    saleList.removeCard(card,cardNumber);
+                }
+            }
+        }
     }
 
     public void addCard(Card c, int number){

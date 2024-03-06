@@ -1,8 +1,6 @@
 package src.java.gui;
 
-import src.java.logic.Card;
 import src.java.logic.Player;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +50,7 @@ public class ButtonsPanel extends JPanel {
 
     private void initializeButtons() {
         for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-            NumberedButton button = buttons[i];
+            NumberedButton button = new NumberedButton();
             button.setContentAreaFilled(false);
             switch (i) {
                 case 0 : button.setActionCommand("Exchange Card");
@@ -76,6 +74,7 @@ public class ButtonsPanel extends JPanel {
             }
             button.setIcon(buttonIcons[i]);
             button.setEnabled(false);
+            buttons[i] = button;
             setButtons(i);
             add(button);
         }

@@ -60,4 +60,13 @@ public class CardBox {
         }return null;
     }
 
+    public boolean isEmpty() {
+        for(Card card : Card.values()) {
+            if (cardsNumbers[card.ordinal()] > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
