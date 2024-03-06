@@ -1,10 +1,7 @@
 package src.java.gui;
 
 
-import src.java.logic.Bank;
-import src.java.logic.Card;
-import src.java.logic.CardBox;
-import src.java.logic.Player;
+import src.java.logic.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +31,7 @@ public class ExchangePanel extends JPanel {
         addMouseListenerToWishListLabel();
         addMouseListenerToProposeListLabel();
 
+
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.add(proposeList);
         proposeList.setVisible(false);
@@ -46,16 +44,16 @@ public class ExchangePanel extends JPanel {
 
 
     private void addMouseListenerToMyCardsLabel() {
-        JLabel firstLabel;
+        JLabel lastLabel;
         for(Card card : Card.values()) {
             List<JLabel> labelList = myCards.getCardBoxLabel().get(card);
             if(!labelList.isEmpty()) {
-                firstLabel = labelList.get(0);
-                for (MouseListener listener : firstLabel.getMouseListeners()) {
-                    firstLabel.removeMouseListener(listener);
+                lastLabel = labelList.get(labelList.size()-1);
+                for (MouseListener listener : lastLabel.getMouseListeners()) {
+                    lastLabel.removeMouseListener(listener);
                 }
 
-                firstLabel.addMouseListener(new MouseAdapter() {
+                lastLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         JLabel clickedLabel = (JLabel) e.getSource();
@@ -72,6 +70,8 @@ public class ExchangePanel extends JPanel {
                             labelList.remove(clickedLabel);
                             initializeMyCards();
                             initializeSaleList();
+                            initializeWishList();
+                            addMouseListenerToProposeListLabel();
                             reNew();
                         }
                     }
@@ -86,37 +86,36 @@ public class ExchangePanel extends JPanel {
     }
 
     private void addMouseListenerToSaleListLabel() {
-        JLabel firstLabel;
+        JLabel lastLabel;
         JButton button = saleList.getButton();
+        button.setEnabled(true);
         for (ActionListener listener : button.getActionListeners()) {
             button.removeActionListener(listener);
         }
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Click");
                 player.revertFromSaleList();
-                System.out.println("Click");
+                player.getWishList().clearBox();
+                initializeWishList();
                 initializeMyCards();
                 initializeSaleList();
                 proposeList.setVisible(false);
                 wishList.setVisible(false);
                 saleList.setVisible(false);
-                System.out.println(button.isEnabled());
-                //reNew();
             }
         });
 
         for(Card card : Card.values()) {
             List<JLabel> labelList = saleList.getCardBoxLabel().get(card);
             if(!labelList.isEmpty()) {
-                firstLabel = labelList.get(0);
+                lastLabel = labelList.get(labelList.size()-1);
 
-                for (MouseListener listener : firstLabel.getMouseListeners()) {
-                    firstLabel.removeMouseListener(listener);
+                for (MouseListener listener : lastLabel.getMouseListeners()) {
+                    lastLabel.removeMouseListener(listener);
                 }
 
-                firstLabel.addMouseListener(new MouseAdapter() {
+                lastLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         System.out.println("saleList");
@@ -128,6 +127,7 @@ public class ExchangePanel extends JPanel {
                         labelList.remove(clickedLabel);
                         initializeSaleList();
                         initializeMyCards();
+                        initializeWishList();
                         reNew();
                     }
                 });
@@ -141,17 +141,41 @@ public class ExchangePanel extends JPanel {
     }
 
     private void addMouseListenerToWishListLabel() {
-        JLabel firstLabel;
+        JLabel lastLabel;
+
+        JButton button = wishList.getButton();
+        if(!player.getWishList().isEmpty() && !player.getSaleList().isEmpty()) {
+            button.setEnabled(true);
+        }else{
+            button.setEnabled(false);
+        }
+        for (ActionListener listener : button.getActionListeners()) {
+            button.removeActionListener(listener);
+        }
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                initializeWishList();
+                initializeMyCards();
+                initializeSaleList();
+                addMouseListenerToProposeListLabel();
+                proposeList.setVisible(false);
+                wishList.setVisible(false);
+                saleList.setVisible(false);
+            }
+        });
+
         for(Card card : Card.values()) {
             List<JLabel> labelList = wishList.getCardBoxLabel().get(card);
             if(!labelList.isEmpty()) {
-                firstLabel = labelList.get(0);
+                lastLabel = labelList.get(labelList.size()-1);
 
-                for (MouseListener listener : firstLabel.getMouseListeners()) {
-                    firstLabel.removeMouseListener(listener);
+                for (MouseListener listener : lastLabel.getMouseListeners()) {
+                    lastLabel.removeMouseListener(listener);
                 }
 
-                firstLabel.addMouseListener(new MouseAdapter() {
+                lastLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         JLabel clickedLabel = (JLabel) e.getSource();
@@ -174,7 +198,28 @@ public class ExchangePanel extends JPanel {
     }
 
     private void addMouseListenerToProposeListLabel() {
+        JButton button = proposeList.getButton();
+        if(player.isTradableInBank(player.getSaleList(), player.getWishList(), player.getTradePorts())) {
+            button.setEnabled(true);
+        }else{
+            button.setEnabled(false);
+        }
+        for (ActionListener listener : button.getActionListeners()) {
+            button.removeActionListener(listener);
+        }
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                player.trade(player.getSaleList(),player.getBank(),player.getWishList(),player.getMyCards());
+                initializeWishList();
+                initializeMyCards();
+                initializeSaleList();
+            }
+        });
         for(JLabel jLabel : proposeList.getCardsLabel().values()) {
+            for (MouseListener listener : jLabel.getMouseListeners()) {
+                jLabel.removeMouseListener(listener);
+            }
             jLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -194,16 +239,40 @@ public class ExchangePanel extends JPanel {
     }
 
     public static void main(String[] args) {
-        Player player = new Player(false,"Sam",new Bank());
+        Bank bank = new Bank();
+        Player player = new Player(false,"Sam",bank);
         CardBox cardBox = new CardBox();
+        TradePort tradePort = new TradePort();
+        for (int i = 0; i < 6; i++) {
+            System.out.println(tradePort.hasPort(Card.values()[i]));
+        }
+        player.setTradePorts(tradePort);
         int[] x = {1,2,3,4,5};
         cardBox.setCardsNumbers(x);
         player.setMyCards(cardBox);
 
         JFrame frame = new JFrame("Overlapping Cards");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         ExchangePanel exchangePanel = new ExchangePanel(player);
-        frame.add(exchangePanel,BorderLayout.SOUTH);
+        ButtonsPanel buttonsPanel = new ButtonsPanel(player);
+
+// 使用GridBagLayout
+        frame.setLayout(new GridLayout(1,2));
+
+
+// 配置ExchangePanel占据大部分空间，并可以扩展
+        JPanel jPanel1 = new JPanel(new BorderLayout());
+        jPanel1.add(exchangePanel,BorderLayout.SOUTH);
+        BankPanel bankPanel = new BankPanel(bank);
+        jPanel1.add(bankPanel,BorderLayout.NORTH);
+        frame.add(jPanel1);
+
+// 配置ButtonsPanel，使其尺寸固定
+        JPanel jPanel2 = new JPanel(new BorderLayout());
+        jPanel2.add(buttonsPanel,BorderLayout.SOUTH);
+        frame.add(jPanel2);
+
         frame.setSize(1000, 700);
         frame.setVisible(true);
     }

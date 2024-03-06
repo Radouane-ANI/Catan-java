@@ -3,10 +3,13 @@ package src.java.logic;
 import static src.java.logic.Card.*;
 
 public interface Trade {
-    default boolean isTradableInBank(CardBox saleList, TradePort tradePorts) {
+    default boolean isTradableInBank(CardBox saleList,CardBox wishList, TradePort tradePorts) {
         boolean flag = false;
         int otherCardsNumber = 0;
-        while (otherCardsNumber == 0) {
+        if(saleList.isEmpty()||wishList.isEmpty()) {
+            return flag;
+        }
+        while (otherCardsNumber == 0 && wishList.getNumberOfRes() == 1) {
             for (Card c : Card.values()) {
                 switch (saleList.getNumber(c)) {
                     case 2:
@@ -25,33 +28,6 @@ public interface Trade {
             }
         }
         return flag;
-    }
-
-    default void TradBank(CardBox saleList, Card wish, CardBox myCards, TradePort tradePorts, Bank bank) {
-        if (wish == null) {
-            return;
-        }
-        CardBox wishList = new CardBox();
-        wishList.addCard(wish, 1);
-        for (Card c : Card.values()) {
-            switch (saleList.getNumber(c)) {
-                case 2:
-                    if (tradePorts.hasPort(c) && bank.hasCard(wish)) {
-                        trade(saleList, bank, wishList, myCards);
-                    }
-                    break;
-                case 3:
-                    if (tradePorts.hasPort(null) && bank.hasCard(wish)) {
-                        trade(saleList, bank, wishList, myCards);
-                    }
-                    break;
-                case 4:
-                    if (bank.hasCard(wish)) {
-                        trade(saleList, bank, wishList, myCards);
-                    }
-                    break;
-            }
-        }
     }
 
     default boolean isTradeInteresting(CardBox saleList, CardBox wishList, CardBox wishList1, CardBox saleList1) {
@@ -73,15 +49,17 @@ public interface Trade {
 
     default void trade(CardBox saleList, CardBox tradeObj, CardBox wishList, CardBox myCards) {
         for (Card c : Card.values()) {
-            if (wishList.getNumber(c) != 0) {
-                tradeObj.removeCard(c, wishList.getNumber(c));
-                myCards.addCard(c, wishList.getNumber(c));
-            }
-            if (saleList.getNumber(c) != 0) {
-                myCards.removeCard(c, saleList.getNumber(c));
-                tradeObj.addCard(c, saleList.getNumber(c));
+            if(saleList.getNumber(c) != 0) {
+                myCards.removeCard(c,saleList.getNumber(c));
             }
         }
+        for (Card c : Card.values()) {
+            if(wishList.getNumber(c) != 0) {
+                myCards.addCard(c,wishList.getNumber(c));
+            }
+        }
+        wishList.clearBox();
+        saleList.clearBox();
     }
 
     default void getDevCard(CardBox myCards, Bank bank) {

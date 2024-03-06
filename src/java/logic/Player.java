@@ -62,6 +62,14 @@ public class Player implements Trade {
         return bot;
     }
 
+    public TradePort getTradePorts() {
+        return tradePorts;
+    }
+
+    public void setTradePorts(TradePort tradePorts) {
+        this.tradePorts = tradePorts;
+    }
+
     //setMyCards -> for test
     public void setMyCards(CardBox myCards) {
         this.myCards = myCards;
@@ -251,9 +259,4 @@ public class Player implements Trade {
         trade(saleList, player.myCards, wishList, myCards);
     }
 
-    public void tradeWithBank() {
-        if (isTradableInBank(saleList, tradePorts)) {
-            TradBank(saleList, wishList.getFirst(), myCards, tradePorts, bank);
-        }
-    }
 }

@@ -7,14 +7,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CardPropose extends JPanel {
+    private JButton button;
     private ImageIcon scaledIcon;
     private Map<Card, JLabel> cardsLabel;
 
     public CardPropose() {
+        button = new JButton("Button");
+        button.setEnabled(false);
         this.cardsLabel = new HashMap<>();
         setLayout(null);
         loadScaledIcon();
         initializeAllCards();
+    }
+
+    public JButton getButton() {
+        return button;
     }
 
     public Map<Card, JLabel> getCardsLabel() {
@@ -47,6 +54,10 @@ public class CardPropose extends JPanel {
             this.add(label); // 将标签添加到面板上
             offsetX += label.getIcon().getIconWidth() + gap; // 更新X偏移，为下一个标签计算位置
         }
+        button.setBounds(400, 5, 30, 30); // 注意调整按钮位置和尺寸
+        this.add(button); // 确保按钮被添加到面板上
+        this.revalidate(); // 确保面板更新
+        this.repaint();
     }
 
     @Override

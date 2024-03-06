@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CardSuit extends JPanel {
+public class CardSuit extends JLayeredPane {
     private static final int MY_CARD_LIST = 1;
     private static final int SALE_LIST = 2;
     private static final int WISH_LIST = 3;
@@ -33,6 +33,7 @@ public class CardSuit extends JPanel {
         }
         this.cardBoxLabel = new HashMap<>();
         button = new JButton("BUTTON");
+        button.setEnabled(false);
         loadScaledIcon();
         initializeLabels();
     }
@@ -86,7 +87,24 @@ public class CardSuit extends JPanel {
                 int x = offsetX + (gap * i);
                 label.setBounds(x, offsetY, label.getIcon().getIconWidth(), label.getIcon().getIconHeight());
                 if (!this.isAncestorOf(label)) {
-                    this.add(label);
+                    if(i == labels.size() - 1) {
+                        JPanel transparentPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+
+                        transparentPanel.setOpaque(false); // 使面板透明
+
+                        JLabel numberLabel = new JLabel(String.valueOf(labels.size()));
+                        numberLabel.setForeground(Color.RED);
+                        numberLabel.setOpaque(true);
+                        numberLabel.setBackground(Color.PINK);
+                        transparentPanel.add(numberLabel); // 在透明面板上添加数字标签
+
+                        // 在图片标签上添加透明面板
+                        label.setLayout(new BorderLayout());
+                        label.add(transparentPanel, BorderLayout.NORTH);
+
+                    }
+                    this.add(label,Integer.valueOf(i));
                 }
             }
             if (!labels.isEmpty()) {
@@ -101,6 +119,7 @@ public class CardSuit extends JPanel {
         this.revalidate(); // 确保面板更新
         this.repaint();
     }
+
 
     @Override
     public Dimension getPreferredSize() {

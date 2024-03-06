@@ -84,7 +84,7 @@ public class GameControleur {
             Player choisi = accepter.get(rd.nextInt(accepter.size()));
             currentPlayer.trade(choisi);
         }else if (currentPlayer.isBot()) {
-            currentPlayer.tradeWithBank();
+            currentPlayer.trade(currentPlayer.getSaleList(),currentPlayer.getBank(),currentPlayer.getWishList(),currentPlayer.getMyCards());
         }
     }
 
