@@ -26,7 +26,7 @@ public class Player implements Trade {
     private int points;
     private Color color;
 
-    public Player(boolean bot, String nom, Bank bank) {
+    public Player(boolean bot, String nom, Bank bank, Color color) {
         this.name = nom;
         this.bot = bot;
 
@@ -38,6 +38,7 @@ public class Player implements Trade {
         this.saleList = new CardBox();
         this.wishList = new CardBox();
         this.bank = bank;
+        this.color = color;
     }
 
     public void setRoads(List<Road> roads) {
