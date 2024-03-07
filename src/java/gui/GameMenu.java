@@ -32,7 +32,7 @@ public class GameMenu extends JPanel {
         JButton playButton = createButton("src/ressources/play.png", "src/ressources/play_click.png", ViewControleur::jouer);
         buttonPanel.add(playButton, BorderLayout.NORTH);
     
-        JButton extraButton = createButton("src/ressources/parametres.png", "src/ressources/parametres_click.png", () -> {});
+        JButton extraButton = createButton("src/ressources/parametres.png", "src/ressources/parametres_click.png", ViewControleur::option);
         buttonPanel.add(extraButton, BorderLayout.CENTER);
     
         JButton quitButton = createButton("src/ressources/quit.png", "src/ressources/quit_click.png", ViewControleur::quitter);

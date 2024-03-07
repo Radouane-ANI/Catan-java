@@ -1,9 +1,13 @@
 package controleur;
 
 import gui.MainFrame;
+import gui.Options;
 import gui.GameMenu;
 import gui.GameView;
 import map.Board;
+
+import javax.swing.text.html.Option;
+
 import gui.CatanBoardView;
 
 public class ViewControleur {
@@ -32,6 +36,11 @@ public class ViewControleur {
 
         gameView.revalidate();
         gameView.repaint();
+    }
+
+    public static void option() {
+        Options opt = new Options();
+        frame.setPanel(opt);
     }
 
     public static CatanBoardControleur getCatanControleur() {
