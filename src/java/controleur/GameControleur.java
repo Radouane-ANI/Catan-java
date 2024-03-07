@@ -4,70 +4,77 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import map.Node;
+import logic.HumanGroup;
 import logic.Player;
-import logic.Player.DemandeResult;
 import logic.TupleDice;
 import map.Board;
+import map.Tile;
+import util.TerrainType;
+
 
 public class GameControleur {
 
     private List<Player> playersList;
     private int currentPlayerIndex;
 
-    private Board board;
-
     public GameControleur(List<Player> players) {
         Board.createBoard();
         playersList = players;
         currentPlayerIndex = 0; // Commence avec le premier joueur
         startGame(playersList, currentPlayerIndex);
-
+        
     }
 
-    private void startGame(List<Player> players, int currentPlayerIndex) {
-        while (!isOver(players)) {
-            tour(playersList, currentPlayerIndex);
+    private void startGame(List<Player> players, int currentPlayerIndex){
+        while (!isOver(players)){
+            tour(playersList,currentPlayerIndex);
             currentPlayerIndex++;
         }
     }
 
-    private boolean isOver(List<Player> players) {
-        for (Player p : players)
-            if (p.getPoints() == 10)
-                return true;
+    private boolean isOver(List<Player> players){
+        for (Player p : players) if (p.getPoints() == 10) return true;
         return false;
     }
 
-    private void tour(List<Player> players, int currentPlayerIndex) {
-        Player player = playersList.get(currentPlayerIndex);
-
+    private void tour(List<Player> players, int currentPlayerIndex){
         TupleDice dices = new TupleDice();
-        recupRessources(players, dices.lancer());
-        if (player.isBot()) {
-            DemandeResult result = player.demande();
-            trade(result, player);
-        }
+        recupRessources(players,dices.lancer());
+        echange();
         creationCity();
         buyCard();
     }
 
-    private void recupRessources(List<Player> players, int sumDices) {
-        // récuperer les ressources
+    private void recupRessources(List<Player> players, int sumDices){
+        ArrayList<Tile> tiles = Board.getTileByDiceNumberArray(sumDices);
+        for (Tile t : tiles){
+            if (t.getTerrain() == TerrainType.DESERT) continue;
+            Node[] nodes = t.getNeighbors();
+            for (Node n : nodes){
+                HumanGroup hG = n.getHumanGroup();
+                if (hG != null){
+                    hG.getOwner().addCard(t.getTerrain().toCard(),1);
+                }
+            }
+        }
     }
 
-    private void trade(DemandeResult result, Player currentPlayer) {
-        if (result == null || result.getOfferQuantite() < 0 || result.getRequestQuantity() < 0) {
+    private void echange(){
+        Player currentPlayer = playersList.get(currentPlayerIndex);
+
+        if (!currentPlayer.exchangeSuggestion()) {
             return;
         }
-
         List<Player> accepter = new ArrayList<>();
         for (Player p : playersList) {
             if (p != currentPlayer && p.isBot()) {
-                if (p.accepte(result)) {
+                p.updateTradeLists();
+                if (currentPlayer.isTradeInteresting(p)) {
                     accepter.add(p);
                 }
             } else if (!p.isBot()) {
-                if (proposeEchange(result)) {
+                if (proposeEchange(currentPlayer)) {
                     accepter.add(p);
                 }
             }
@@ -75,26 +82,23 @@ public class GameControleur {
         if (accepter.size() > 0) {
             Random rd = new Random();
             Player choisi = accepter.get(rd.nextInt(accepter.size()));
-            currentPlayer.echange(choisi, result);
+            currentPlayer.trade(choisi);
+        }else if (currentPlayer.isBot()) {
+            currentPlayer.tradeWithBank();
         }
     }
 
-    public void playerTrade(DemandeResult ressources) {
-        Player currentPlayer = playersList.get(currentPlayerIndex);
-        if (currentPlayer.canTrade(ressources)) {
-            trade(ressources, currentPlayer);
-        }
-    }
+    private void creationCity(){}
 
-    private void creationCity() {
-    }
+    private void buyCard(){}
 
-    private void buyCard() {
-    }
-
-    public boolean proposeEchange(DemandeResult echange) {
+    private boolean proposeEchange(Player p) {
         // affiche a l'ecran un echange que le joueur peut accepeter ou non
         return false;
     }
 
+    public void playerTrade() {
+        echange();
+    }
+  
 }
