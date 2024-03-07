@@ -17,7 +17,7 @@ public class WeatherMarkovChain {
         int currentStateIndex = getIndexForState(currentWeather);
         double[] probabilities = transitionMatrix[currentStateIndex];
 
-        // Randomly select the next weather state based on transition probabilities
+        // Select the next weather randomly based on transition probabilities
         double randomValue = random.nextDouble();
         double cumulativeProbability = 0.0;
         for (int i = 0; i < probabilities.length; i++) {
@@ -26,7 +26,7 @@ public class WeatherMarkovChain {
                 return weatherStates[i];
             }
         }
-        // In case of numerical errors, return last state
+        // Return the last state in case of numerical errors
         return weatherStates[probabilities.length - 1];
     }
 
@@ -39,21 +39,60 @@ public class WeatherMarkovChain {
         throw new IllegalArgumentException("Invalid weather state");
     }
 
-    public static void main(String[] args) {
-        double[][] transitionMatrix = {
-            {0.6, 0.2, 0.2}, // Transition probabilities for "rain"
-            {0.3, 0.5, 0.2}, // Transition probabilities for "sun"
-            {0.2, 0.3, 0.5}  // Transition probabilities for "clouds"
-        };
-
-        String[] weatherStates = {"rain", "sun", "clouds"};
-
-        WeatherMarkovChain weatherChain = new WeatherMarkovChain(transitionMatrix, weatherStates);
-
-        String currentWeather = "sun";
-        for (int i = 0; i < 12; i++) { // 12 turns in a year
-            System.out.println("Turn " + (i + 1) + ": " + currentWeather);
-            currentWeather = weatherChain.getNextWeather(currentWeather);
+    // Method to handle the effects of weather on gameplay
+    public void applyWeatherEffects(String weather) {
+        switch (weather) {
+            case "Pluie":
+                // Implement rain effects
+                break;
+            case "Soleil":
+                // Implement sunshine effects
+                break;
+            case "Nuageux":
+                // Implement cloudy weather effects
+                break;
+            case "Neige":
+                // Implement snow effects
+                break;
+            case "Brouillard":
+                // Implement fog effects
+                break;
+            case "Tempête":
+                // Implement storm effects
+                break;
+            case "Vent":
+                // Implement wind effects
+                break;
+            case "Canicule":
+                // Implement heatwave effects
+                break;
+            default:
+                // Unknown weather, do nothing
+                break;
         }
     }
+
+    public static void main(String[] args) {
+        double[][] transitionMatrix = {
+            {0.5, 0.2, 0.1, 0.1, 0.0, 0.0, 0.1, 0.0}, // Transition probabilities for "Pluie"
+            {0.2, 0.4, 0.2, 0.1, 0.0, 0.0, 0.1, 0.0}, // Transition probabilities for "Soleil"
+            {0.1, 0.2, 0.4, 0.1, 0.0, 0.0, 0.2, 0.0}, // Transition probabilities for "Nuageux"
+            {0.0, 0.1, 0.1, 0.5, 0.2, 0.0, 0.0, 0.1}, // Transition probabilities for "Neige"
+            {0.0, 0.0, 0.0, 0.2, 0.6, 0.1, 0.0, 0.1}, // Transition probabilities for "Brouillard"
+            {0.0, 0.0, 0.0, 0.0, 0.1, 0.7, 0.1, 0.1}, // Transition probabilities for "Tempête"
+            {0.1, 0.1, 0.1, 0.0, 0.0, 0.1, 0.6, 0.0}, // Transition probabilities for "Vent"
+            {0.0, 0.0, 0.0, 0.1, 0.1, 0.1, 0.0, 0.7}  // Transition probabilities for "Canicule"
+        };
+    
+        String[] weatherStates = {"Pluie", "Soleil", "Nuageux", "Neige", "Brouillard", "Tempête", "Vent", "Canicule"};
+    
+        WeatherMarkovChain weatherChain = new WeatherMarkovChain(transitionMatrix, weatherStates);
+    
+        String currentWeather = "Soleil";
+        for (int i = 0; i < 12; i++) { // 12 turns in a year
+            System.out.println("Turn " + (i + 1) + ": " + currentWeather);
+            weatherChain.applyWeatherEffects(currentWeather);
+            currentWeather = weatherChain.getNextWeather(currentWeather);
+        }
+    }    
 }

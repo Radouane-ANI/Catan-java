@@ -1,10 +1,14 @@
 package controleur;
 
 import gui.MainFrame;
+import logic.Player;
 import gui.GameMenu;
 import gui.GameView;
 import map.Board;
 import gui.CatanBoardView;
+
+import java.awt.Color;
+
 
 public class ViewControleur {
 
@@ -27,6 +31,7 @@ public class ViewControleur {
 
         CatanBoardView mapComponent = new CatanBoardView(gameView.getSize());
         catanControleur = new CatanBoardControleur(mapComponent);
+        catanControleur.firstBuild(new Player(true, null, null, new Color(35,26,211)));
 
         gameView.add(mapComponent);
 
