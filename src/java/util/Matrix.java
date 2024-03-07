@@ -11,14 +11,6 @@ public class Matrix {
         this.matrix = new double[rows][columns];
     }
 
-    public int getRows() {
-        return rows;
-    }
-
-    public int getColumns() {
-        return columns;
-    }
-
     public void set(int i, int j, double value) {
         if (i < 0 || i >= rows || j < 0 || j >= columns) {
             throw new IndexOutOfBoundsException("Index out of bounds");
