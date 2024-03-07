@@ -1,4 +1,4 @@
-package map;
+package src.java.map;
 
 public class Vector {
     protected double x;

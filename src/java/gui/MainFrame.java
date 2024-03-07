@@ -1,4 +1,4 @@
-package gui;
+package src.java.gui;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;

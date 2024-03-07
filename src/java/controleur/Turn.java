@@ -1,15 +1,15 @@
-package controleur;
+package src.java.controleur;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import map.Node;
-import logic.HumanGroup;
-import logic.Player;
-import logic.TupleDice;
-import map.Board;
-import map.Tile;
-import util.TerrainType;
+import src.java.map.Node;
+import src.java.logic.Player;
+import src.java.logic.TupleDice;
+import src.java.map.Board;
+import src.java.map.Tile;
+import src.java.util.TerrainType;
+
 
 
 public class Turn {
@@ -66,7 +66,7 @@ public class Turn {
             Player choisi = accepter.get(rd.nextInt(accepter.size()));
             currentPlayer.trade(choisi);
         }else if (currentPlayer.isBot()) {
-            currentPlayer.tradeWithBank();
+            currentPlayer.trade(currentPlayer.getSaleList(),currentPlayer.getBank(),currentPlayer.getWishList(),currentPlayer.getMyCards());
         }
     }
 

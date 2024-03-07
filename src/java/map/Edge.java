@@ -1,11 +1,10 @@
-package map;
+package src.java.map;
 
 import java.util.ArrayList;
 
-import logic.Player;
-import logic.Road;
-import util.Tuple;
-
+import src.java.logic.Road;
+import src.java.util.Tuple;
+import src.java.logic.Player;
 public class Edge extends Tuple<Vector> {
     private Road road;
 

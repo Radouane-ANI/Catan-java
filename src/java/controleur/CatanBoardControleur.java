@@ -1,18 +1,18 @@
-package controleur;
+package src.java.controleur;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import gui.CatanBoardView;
-import gui.CityComponent;
+import src.java.gui.CatanBoardView;
+import src.java.gui.CityComponent;
 import gui.RoadComponent;
-import logic.City;
-import logic.Player;
-import logic.Road;
-import logic.Settlement;
-import map.*;
+import src.java.logic.City;
+import src.java.logic.Player;
+import src.java.logic.Road;
+import src.java.logic.Settlement;
+import src.java.map.*;
 
 public class CatanBoardControleur {
     private CatanBoardView view;

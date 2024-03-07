@@ -1,4 +1,4 @@
-package logic;
+package src.java.logic;
 
 import java.util.List;
 import java.awt.Color;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import static logic.Card.*;
+import static src.java.logic.Card.*;
 
 public class Player implements Trade {
     private String name;
@@ -25,7 +25,9 @@ public class Player implements Trade {
 
     private int points;
     private Color color;
+    private boolean isMyTurn;
 
+    private boolean isDiced;
     public Player(boolean bot, String nom, Bank bank, Color color) {
         this.name = nom;
         this.bot = bot;
@@ -49,6 +51,14 @@ public class Player implements Trade {
         return name;
     }
 
+    public boolean isMyTurn() {
+        return isMyTurn;
+    }
+
+    public boolean isDiced() {
+        return isDiced;
+    }
+
     public void setMonney(int monney) {
         this.monney = monney;
     }
@@ -57,6 +67,19 @@ public class Player implements Trade {
         return bot;
     }
 
+
+    public TradePort getTradePorts() {
+        return tradePorts;
+    }
+
+    public void setTradePorts(TradePort tradePorts) {
+        this.tradePorts = tradePorts;
+    }
+
+    //setMyCards -> for test
+    public void setMyCards(CardBox myCards) {
+        this.myCards = myCards;
+    }
     public Color getColor() {
         return color;
     }
@@ -69,6 +92,16 @@ public class Player implements Trade {
         return myCards;
     }
 
+    public CardBox getSaleList() {
+        return saleList;
+    }
+
+    public CardBox getWishList() {
+        return wishList;
+    }
+
+    public Bank getBank() { return  bank; }
+
     public boolean addInSaleList(Card c) {
         if (myCards.removeCard(c, 1)) {
             saleList.addCard(c, 1);
@@ -77,7 +110,32 @@ public class Player implements Trade {
         return false;
     }
 
-    public void addCard(Card c, int number) {
+    public boolean rmFromSaleList(Card c) {
+        if (saleList.removeCard(c,1)) {
+            myCards.addCard(c,1);
+            return true;
+        }
+        return false;
+    }
+
+    public void rmFromWishList(Card c) {
+        wishList.removeCard(c,1);
+    }
+
+    public void revertFromSaleList() {
+        while (!saleList.isEmpty()) {
+            for(int i = 0; i < 5; i++) {
+                Card card = Card.values()[i];
+                int cardNumber = saleList.getNumber(card);
+                if(cardNumber!=0) {
+                    myCards.addCard(card,cardNumber);
+                    saleList.removeCard(card,cardNumber);
+                }
+            }
+        }
+    }
+
+    public void addCard(Card c, int number){
         myCards.addCard(c, number);
     }
 
@@ -212,12 +270,6 @@ public class Player implements Trade {
     
     public void trade(Player player) {
         trade(saleList, player.myCards, wishList, myCards);
-    }
-
-    public void tradeWithBank() {
-        if (isTradableInBank(saleList, tradePorts)) {
-            TradBank(saleList, wishList.getFirst(), myCards, tradePorts, bank);
-        }
     }
 
     public boolean buyRessourceCard(Card c){

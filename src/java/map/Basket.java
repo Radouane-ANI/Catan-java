@@ -1,4 +1,4 @@
-package map;
+package src.java.map;
 
 import java.util.ArrayList;
 import java.util.Arrays;
