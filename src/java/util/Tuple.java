@@ -1,7 +1,6 @@
 package util;
 
 public class Tuple<T> {
-    
     private T x;
     private T y;
 

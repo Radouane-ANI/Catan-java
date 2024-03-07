@@ -1,8 +1,10 @@
 package controleur;
 
+import gui.MainFrame;
 import gui.GameMenu;
 import gui.GameView;
-import gui.MainFrame;
+import map.Board;
+import gui.CatanBoardView;
 
 public class ViewControleur {
     
@@ -13,11 +15,20 @@ public class ViewControleur {
         frame.setPanel(new GameMenu());
     }
 
-    public static void quitter() {
+    public static void quitter(){
         System.exit(0);
     }
 
-    public static void jouer() {
-        frame.setPanel(new GameView());
+    public static void jouer(){
+        GameView gameView = new GameView();
+        frame.setPanel(gameView);
+        Board.createBoard();
+        
+        CatanBoardView mapComponent = new CatanBoardView(gameView.getSize());
+        
+        gameView.add(mapComponent);
+        
+        gameView.revalidate();
+        gameView.repaint();
     }
 }

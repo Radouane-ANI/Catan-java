@@ -1,24 +1,41 @@
 package map;
 
-class Vector {
-    private int x;
-    private int y;
+public class Vector {
+    protected double x;
+    protected int y;
 
-    Vector(int x, int y) {
+    public Vector(double x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    void add(int x, int y) {
+    void add(double x, int y) {
         this.x += x;
         this.y += y;
     }
 
-    int getX() {
+    public double getX() {
         return x;
     }
 
-    int getY() {
+    public int getY() {
         return y;
     }
+
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+
+    boolean isNeighbor(Vector v) {
+        int deltaX = (int) Math.abs(v.getX() - x);
+        int deltaY = Math.abs(v.getY() - y);
+    
+        if ((deltaX == 1 && deltaY == 1) || // Diagonal 
+            (deltaX == 1 && deltaY == 0) || // Horizontal
+            (deltaX == 0 && deltaY == 1)) {  // Vertical
+            return true;
+        }
+        return false;
+    }
+    
 }

@@ -1,17 +1,22 @@
 package logic;
 
-public class Card {
-    private String type;
+public enum Card {
+    TREE,
+    GRAIN,
+    SHEEP,
+    BRICK,
+    STONE,
 
-    public Card(String type) {
-        this.type = type;
+    KNIGHT,
+    ROAD_BUILD,
+    YEAR_PLENTY,
+    MONOPOLY,
+    ONE_POINT;
+
+    boolean isRessourceCard(){
+        return this.ordinal() <= 4;
     }
 
-    public String getType() {
-        return type;
-    }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+
 }
