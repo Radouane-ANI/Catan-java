@@ -215,4 +215,10 @@ public class Player implements Trade {
             TradBank(saleList, wishList.getFirst(), myCards, tradePorts, bank);
         }
     }
+
+    @Override
+    public String toString() {
+        String s = name + " " + bot + " " + color + " " + bank;
+        return s;
+    }
 }
