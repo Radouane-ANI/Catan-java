@@ -6,8 +6,6 @@ import gui.GameMenu;
 import gui.GameView;
 import map.Board;
 
-import javax.swing.text.html.Option;
-
 import gui.CatanBoardView;
 
 public class ViewControleur {
