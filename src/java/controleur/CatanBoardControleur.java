@@ -84,6 +84,9 @@ public class CatanBoardControleur {
                 if (p.getRoads().size() < 2) {
                     firstBuild(p);
                 }
+                if (p.getRoads().size() == 2) { // PROVISOIRE a enlever quand on peut mettre fin a son tour
+                    ViewControleur.setNextTurn(true);
+                }
             }
         });
     }
@@ -106,6 +109,7 @@ public class CatanBoardControleur {
                 }
             }
         });
+        view.repaint();
     }
 
     private void avaibleCity(Node n, Player p, Settlement s) {
