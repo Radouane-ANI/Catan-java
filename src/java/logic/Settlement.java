@@ -1,3 +1,4 @@
+
 package logic;
 
 public class Settlement extends HumanGroup {
@@ -6,3 +7,4 @@ public class Settlement extends HumanGroup {
         super(owner);
     }
 }
+

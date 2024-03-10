@@ -3,7 +3,6 @@ package controleur;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import map.Node;
 import logic.HumanGroup;
 import logic.Player;
@@ -13,37 +12,22 @@ import map.Tile;
 import util.TerrainType;
 
 
-public class GameControleur {
 
-    private List<Player> playersList;
-    private int currentPlayerIndex;
+public class Turn {
 
-    public GameControleur(List<Player> players) {
-        Board.createBoard();
+    protected List<Player> playersList;
+    protected int currentPlayerIndex;
+
+    public Turn(List<Player> players) {
         playersList = players;
         currentPlayerIndex = 0; // Commence avec le premier joueur
-        startGame(playersList, currentPlayerIndex);
-        
     }
 
-    private void startGame(List<Player> players, int currentPlayerIndex){
-        while (!isOver(players)){
-            tour(playersList,currentPlayerIndex);
-            currentPlayerIndex++;
-        }
-    }
-
-    private boolean isOver(List<Player> players){
-        for (Player p : players) if (p.getPoints() == 10) return true;
-        return false;
-    }
-
-    private void tour(List<Player> players, int currentPlayerIndex){
+    void tour(List<Player> players, int currentPlayerIndex){
         TupleDice dices = new TupleDice();
         recupRessources(players,dices.lancer());
         echange();
         creationCity();
-        buyCard();
     }
 
     private void recupRessources(List<Player> players, int sumDices){
@@ -62,7 +46,6 @@ public class GameControleur {
 
     private void echange(){
         Player currentPlayer = playersList.get(currentPlayerIndex);
-
         if (!currentPlayer.exchangeSuggestion()) {
             return;
         }
@@ -84,21 +67,20 @@ public class GameControleur {
             Player choisi = accepter.get(rd.nextInt(accepter.size()));
             currentPlayer.trade(choisi);
         }else if (currentPlayer.isBot()) {
-            currentPlayer.tradeWithBank();
+            currentPlayer.trade(currentPlayer.getSaleList(),currentPlayer.getBank(),currentPlayer.getWishList(),currentPlayer.getMyCards());
         }
     }
 
-    private void creationCity(){}
+    /* 
+    private boolean buyRessourceCard(Player p,Card c){
+        return p.buyRessourceCard(c);
+    }
+    */
 
-    private void buyCard(){}
+    private void creationCity(){}
 
     private boolean proposeEchange(Player p) {
         // affiche a l'ecran un echange que le joueur peut accepeter ou non
         return false;
     }
-
-    public void playerTrade() {
-        echange();
-    }
-  
 }

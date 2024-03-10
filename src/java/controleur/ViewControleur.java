@@ -8,10 +8,11 @@ import map.Board;
 
 import gui.CatanBoardView;
 
+
 public class ViewControleur {
 
     private static MainFrame frame;
-    private static CatanBoardControleur catanControleur;
+    private static controleur.CatanBoardControleur catanControleur;
 
     public ViewControleur(MainFrame mainFrame) {
         frame = mainFrame;
@@ -28,7 +29,7 @@ public class ViewControleur {
         Board.createBoard();
 
         CatanBoardView mapComponent = new CatanBoardView(gameView.getSize());
-        catanControleur = new CatanBoardControleur(mapComponent);
+        catanControleur = new controleur.CatanBoardControleur(mapComponent);
 
         gameView.add(mapComponent);
 

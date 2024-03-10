@@ -54,7 +54,6 @@ public class Options extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 difficulte = difficulteComboBox.getSelectedIndex() + 1;
                 completeJoueur();
-                System.out.println(players);
             }
         });
 

@@ -1,3 +1,4 @@
+
 package logic;
 
 public class City extends HumanGroup {
@@ -7,3 +8,4 @@ public class City extends HumanGroup {
     }
     
 }
+

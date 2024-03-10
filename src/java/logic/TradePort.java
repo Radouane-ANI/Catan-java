@@ -8,6 +8,9 @@ public class TradePort {
     }
 
     public boolean hasPort(Card c) {
+        if(c == null) {
+            return tradePorts[5];
+        }
         return tradePorts[c.ordinal()];
     }
 
