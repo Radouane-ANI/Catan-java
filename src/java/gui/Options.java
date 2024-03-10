@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import controleur.ViewControleur;
 import logic.Bank;
 import logic.Player;
 
@@ -54,6 +55,7 @@ public class Options extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 difficulte = difficulteComboBox.getSelectedIndex() + 1;
                 completeJoueur();
+                 ViewControleur.menu();;
             }
         });
 
@@ -66,7 +68,7 @@ public class Options extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(new ImageIcon("src/ressources/menu_2.jpeg").getImage(), 0, 0, getWidth(), getHeight(), this);
+        g.drawImage(new ImageIcon("src/ressources/menu.jpeg").getImage(), 0, 0, getWidth(), getHeight(), this);
     }
 
     private void buildPlayerPanel() {
@@ -121,7 +123,7 @@ public class Options extends JPanel {
         return players;
     }
 
-    private void completeJoueur() {
+    public void completeJoueur() {
         if (players.size() != 4) {
             int length = 4 - players.size();
             for (int i = 0; i < length; i++) {

@@ -4,19 +4,19 @@ import gui.MainFrame;
 import gui.Options;
 import gui.GameMenu;
 import gui.GameView;
-import map.Board;
 
 import gui.CatanBoardView;
-
 
 public class ViewControleur {
 
     private static MainFrame frame;
     private static controleur.CatanBoardControleur catanControleur;
+    private static Options gameOption;
 
     public ViewControleur(MainFrame mainFrame) {
         frame = mainFrame;
         frame.setPanel(new GameMenu());
+        gameOption = new Options();
     }
 
     public static void quitter() {
@@ -26,7 +26,10 @@ public class ViewControleur {
     public static void jouer() {
         GameView gameView = new GameView();
         frame.setPanel(gameView);
-        Board.createBoard();
+        if (gameOption.getPlayers().size() != 4) {
+            gameOption.completeJoueur();
+        }
+        Game game = new Game(gameOption.getPlayers());
 
         CatanBoardView mapComponent = new CatanBoardView(gameView.getSize());
         catanControleur = new controleur.CatanBoardControleur(mapComponent);
@@ -38,8 +41,11 @@ public class ViewControleur {
     }
 
     public static void option() {
-        Options opt = new Options();
-        frame.setPanel(opt);
+        frame.setPanel(gameOption);
+    }
+
+    public static void menu() {
+        frame.setPanel(new GameMenu());
     }
 
     public static CatanBoardControleur getCatanControleur() {

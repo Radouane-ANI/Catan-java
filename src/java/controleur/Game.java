@@ -29,7 +29,7 @@ public class Game extends Turn {
     }
 
     private boolean isOver(List<Player> players){
-        for (Player p : players) if (p.getPoints() == 10) return true;
+        for (Player p : players) if (p.win()) return true;
         return false;
     }
 }
