@@ -2,8 +2,6 @@ package map;
 
 import java.util.ArrayList;
 
-import map.Tile;
-
 /**
  * MapElementsInterface
  */
