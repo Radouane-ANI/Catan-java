@@ -8,17 +8,12 @@ import map.*;
 
 public class CatanBoardView extends JPanel {
 
-    public static final int TILE_SIZE = 60;
+    public static final int TILE_SIZE = 110;
 
-    private Dimension dim;
-    private Point center;
-
-    private Hexagon hex;
+    // private Hexagon hex;
 
     public CatanBoardView(Dimension d) {
-        dim = d;
-        center = new Point((int) d.getWidth() / 2, (int) d.getHeight() / 2);
-        hex = new Hexagon(TILE_SIZE);
+        // hex = new Hexagon(TILE_SIZE);
         setPreferredSize(d);
         setLayout(null);
     }
@@ -48,40 +43,55 @@ public class CatanBoardView extends JPanel {
     }
 
     private void drawTile(Tile t, Graphics2D g2d, double screenX, double screenY) {
-        Shape pointer = hex.translate(new Point((int) screenX, (int) screenY));
-        g2d.setColor(TerrainColor.getTerrainColors(t.getTerrain()));
-        g2d.fill(pointer);
-        g2d.setColor(Color.BLACK);
-        g2d.draw(pointer);
+        // Shape pointer = hex.translate(new Point((int) screenX, (int) screenY));
 
-        // numéro de dé
-        int diceNumber = t.getDiceNumber();
-        if (diceNumber != 0) {
-            String diceNumberText = Integer.toString(diceNumber);
-            FontMetrics fm = g2d.getFontMetrics();
-            int textWidth = fm.stringWidth(diceNumberText);
-            int textHeight = fm.getHeight();
-            int textX = (int) screenX + (TILE_SIZE - textWidth) / 2;
-            int textY = (int) screenY + (TILE_SIZE + textHeight) / 2;
-            g2d.drawString(diceNumberText, textX, textY);
+        try {
+            // Charger l'image hexagonale
+            ImageIcon imageIcon = new ImageIcon("/home/radouane/k-catan/src/ressources/20240311_134102.png");
+
+            // Ajuster la taille de l'image
+            int imageWidth = imageIcon.getIconWidth();
+            System.out.println(imageWidth);
+            int imageHeight = imageIcon.getIconHeight();
+            System.out.println(imageHeight);
+            imageIcon = new ImageIcon(
+                    imageIcon.getImage().getScaledInstance(TILE_SIZE, (int) (TILE_SIZE * 1.15), Image.SCALE_SMOOTH));
+
+            // Dessiner l'image
+            g2d.drawImage(imageIcon.getImage(), (int) screenX - imageIcon.getIconWidth() / 2, (int) screenY, null);
+
+            // Numéro de dé
+            int diceNumber = t.getDiceNumber();
+            if (diceNumber != 0) {
+                String diceNumberText = Integer.toString(diceNumber);
+                FontMetrics fm = g2d.getFontMetrics();
+                int textWidth = fm.stringWidth(diceNumberText);
+                int textHeight = fm.getHeight();
+                int textX = (int) screenX + (TILE_SIZE - textWidth) / 2;
+                int textY = (int) screenY + (TILE_SIZE + textHeight) / 2;
+                g2d.drawString(diceNumberText, textX, textY);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private double calculateScreenX(double x) {
-        int spacing = TILE_SIZE - 13; // peut être ajusté
+        int spacing = TILE_SIZE / 10; // peut être ajusté
         int padding = 10;
 
         return x * (TILE_SIZE + spacing) + padding;
     }
 
     private int calculateScreenY(double x, int y) {
-        int spacing = TILE_SIZE - 27; // peut être ajusté
+        int spacing = -TILE_SIZE / 4;
+        int tileHeight = (int) (TILE_SIZE * 1.15);
         int padding = 10;
-        return y * (TILE_SIZE + spacing) + padding;
+        return y * (tileHeight + spacing)+padding;
     }
 
     private double centerIntersection(double x, int y, double screenY) {
-        return screenY += (x != (int) x) ^ (y % 2 == 0) ? TILE_SIZE / 2 : 0;
+        return screenY += (x != (int) x) ^ (y % 2 == 0) ? TILE_SIZE / 4 : 0;
     }
 
     public void addCity(JLabel component, Node pos, Graphics g) {
@@ -99,15 +109,15 @@ public class CatanBoardView extends JPanel {
         int centerX = (int) (screenX - (TILE_SIZE / 6));
         int centerY = (int) (screenY - (TILE_SIZE / 6));
         if (component != null) {
-            component.setBounds(centerX, centerY, TILE_SIZE / 3 + 1, TILE_SIZE / 3 + 1);
+            component.setBounds(centerX, centerY, TILE_SIZE / 4 + 1, TILE_SIZE / 4 + 1);
             add(component);
         } else if (g != null) {
             if (pos.getGroup() instanceof Settlement) {
                 g.setColor(pos.getGroup().getColor());
-                g.fillOval(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3);
+                g.fillOval(centerX, centerY, TILE_SIZE / 4, TILE_SIZE / 4);
             } else if (pos.getGroup() instanceof City) {
                 g.setColor(pos.getGroup().getColor());
-                g.fill3DRect(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3, true);
+                g.fill3DRect(centerX, centerY, TILE_SIZE / 4, TILE_SIZE / 4, true);
             }
         }
     }

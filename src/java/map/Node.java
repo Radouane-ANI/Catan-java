@@ -1,6 +1,7 @@
 package map;
 
 import logic.HumanGroup;
+import logic.Settlement;
 
 import java.util.ArrayList;
 
@@ -16,7 +17,7 @@ public class Node extends Vector {
 
     Node(float x, int y) {
         super(x, y);
-        group = null;
+        group = new Settlement(null);
         neighbors = new ArrayList<>();
     }
 
