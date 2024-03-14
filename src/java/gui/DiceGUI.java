@@ -30,14 +30,6 @@ public class DiceGUI extends JPanel {
     private void rollDice() {
         dicePanel.roll();
     }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Dice Roll");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new DiceGUI());
-        frame.pack();
-        frame.setVisible(true);
-    }
 }
 
 class TupleDice extends JPanel {
@@ -56,12 +48,22 @@ class TupleDice extends JPanel {
     public void roll(){
         dice1.roll();
         dice2.roll();
+        int result = dice1.getValue() + dice2.getValue();
+        System.out.println("Result: " + result);
+    }
+
+    public int getResult() {
+        return dice1.getValue() + dice2.getValue();
     }
 }
 
 class Dice extends JPanel {
     
     private int value;
+
+    public int getValue() {
+        return this.value;
+    }
 
     public Dice(){
         this.setPreferredSize(new Dimension(100, 100));
