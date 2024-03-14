@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import src.java.map.Node;
 import src.java.logic.Player;
+import src.java.logic.HumanGroup;
 import src.java.logic.TupleDice;
 import src.java.map.Board;
 import src.java.map.Tile;

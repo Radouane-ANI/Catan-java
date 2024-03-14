@@ -4,13 +4,13 @@ import src.java.gui.GameMenu;
 import src.java.gui.GameView;
 import src.java.gui.MainFrame;
 import src.java.map.Board;
-import gui.CatanBoardView;
+import src.java.gui.CatanBoardView;
 
 
 public class ViewControleur {
 
     private static MainFrame frame;
-    private static controleur.CatanBoardControleur catanControleur;
+    private static src.java.controleur.CatanBoardControleur catanControleur;
 
     public ViewControleur(MainFrame mainFrame) {
         frame = mainFrame;

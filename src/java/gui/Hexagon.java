@@ -1,4 +1,4 @@
-package gui;
+package src.java.gui;
 
 import java.awt.Point;
 import java.awt.Shape;
