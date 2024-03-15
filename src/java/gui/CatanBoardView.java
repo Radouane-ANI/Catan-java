@@ -46,18 +46,11 @@ public class CatanBoardView extends JPanel {
         // Shape pointer = hex.translate(new Point((int) screenX, (int) screenY));
 
         try {
-            // Charger l'image hexagonale
             ImageIcon imageIcon = new ImageIcon("/home/radouane/k-catan/src/ressources/20240311_134102.png");
 
-            // Ajuster la taille de l'image
-            int imageWidth = imageIcon.getIconWidth();
-            System.out.println(imageWidth);
-            int imageHeight = imageIcon.getIconHeight();
-            System.out.println(imageHeight);
             imageIcon = new ImageIcon(
                     imageIcon.getImage().getScaledInstance(TILE_SIZE, (int) (TILE_SIZE * 1.15), Image.SCALE_SMOOTH));
 
-            // Dessiner l'image
             g2d.drawImage(imageIcon.getImage(), (int) screenX - imageIcon.getIconWidth() / 2, (int) screenY, null);
 
             // Numéro de dé
@@ -87,7 +80,7 @@ public class CatanBoardView extends JPanel {
         int spacing = -TILE_SIZE / 4;
         int tileHeight = (int) (TILE_SIZE * 1.15);
         int padding = 10;
-        return y * (tileHeight + spacing)+padding;
+        return y * (tileHeight + spacing) + padding;
     }
 
     private double centerIntersection(double x, int y, double screenY) {
@@ -139,7 +132,7 @@ public class CatanBoardView extends JPanel {
         screenY1 = centerIntersection(x1, y1, screenY1);
         screenY2 = centerIntersection(x2, y2, screenY2);
         if (g2d != null) {
-            g2d.setStroke(new BasicStroke(5.0f));
+            g2d.setStroke(new BasicStroke(TILE_SIZE / 10 + 1));
             g2d.setColor(e.getRoad().getColor());
             g2d.drawLine((int) screenX1, (int) screenY1, (int) screenX2, (int) screenY2);
         } else if (component != null) {
@@ -149,8 +142,7 @@ public class CatanBoardView extends JPanel {
             y1 = Math.min((int) screenY1, (int) screenY2);
             x2 = Math.max((int) screenX1, (int) screenX2);
             y2 = Math.max((int) screenY1, (int) screenY2);
-
-            component.setBounds((int) x1 - 1, y1, (int) (x2 - x1) + 10, y2 - y1);
+            component.setBounds((int) x1 - TILE_SIZE / 20, y1, (int) (x2 + TILE_SIZE / 10 - x1), y2 - y1);
             add(component);
         }
     }
