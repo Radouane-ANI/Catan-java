@@ -32,6 +32,7 @@ public class ViewControleur {
         game = new Game(gameOption.getPlayers());
 
         CatanBoardView mapComponent = new CatanBoardView(gameView.getSize());
+        mapComponent.setOpaque(false);
         catanControleur = new controleur.CatanBoardControleur(mapComponent);
 
         gameView.add(mapComponent);
