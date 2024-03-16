@@ -3,6 +3,7 @@ package src.java.gui;
 
 import src.java.logic.*;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -15,8 +16,6 @@ public class ExchangePanel extends JPanel {
     private CardSuit wishList;
     private CardPropose proposeList;
     private ImageIcon scaledIcon;
-
-
 
     public ExchangePanel(Player player) {
         this.player = player;
@@ -238,9 +237,24 @@ public class ExchangePanel extends JPanel {
         this.repaint();
     }
 
-    public static void main(String[] args) {
+    public static ExchangePanel createTestExchangePanel() {
         Bank bank = new Bank();
-        Player player = new Player(false,"Sam",bank);
+        Player player = new Player(false, "Sam", bank, Color.BLUE);
+        CardBox cardBox = new CardBox();
+        TradePort tradePort = new TradePort();
+        player.setTradePorts(tradePort);
+        int[] x = {1, 2, 3, 4, 5};
+        cardBox.setCardsNumbers(x);
+        player.setMyCards(cardBox);
+    
+        ExchangePanel exchangePanel = new ExchangePanel(player);
+        return exchangePanel;
+    }    
+
+    public static void main(String[] args) {
+        
+        Bank bank = new Bank();
+        Player player = new Player(false,"Sam",bank,Color.BLUE);
         CardBox cardBox = new CardBox();
         TradePort tradePort = new TradePort();
         for (int i = 0; i < 6; i++) {

@@ -1,9 +1,9 @@
-package controleur;
+package src.java.controleur;
 
 import java.util.List;
 
-import logic.Player;
-import map.Board;
+import src.java.logic.Player;
+import src.java.map.Board;
 
 public class Game extends Turn {
     
@@ -12,9 +12,9 @@ public class Game extends Turn {
         Board.createBoard();
     }
 
-    public void startGame(List<Player> players, int currentPlayerIndex){
-        while (!isOver(players)){
-            tour(playersList,currentPlayerIndex);
+    public void startGame(){
+        while (!isOver(playersList)){
+            tour();
             nextPlayer();
         }
     }
@@ -25,7 +25,6 @@ public class Game extends Turn {
             return;
         }
         currentPlayerIndex++;
-
     }
 
     private boolean isOver(List<Player> players){

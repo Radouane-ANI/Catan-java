@@ -52,7 +52,7 @@ public class CardSuit extends JLayeredPane {
 
 
     private void loadScaledIcon() {
-        ImageIcon iconO = new ImageIcon("/Users/juliazhula/k-catan/src/ressources/cardTest.jpg");
+        ImageIcon iconO = new ImageIcon("src/ressources/cardTest.jpg");
         Image scaledImage = iconO.getImage().getScaledInstance((int) (iconO.getIconWidth() * 0.5), (int) (iconO.getIconHeight() * 0.5), Image.SCALE_SMOOTH);
         scaledIcon = new ImageIcon(scaledImage);
     }
@@ -127,7 +127,7 @@ public class CardSuit extends JLayeredPane {
     }
 
     public static void main(String[] args) {
-        Player player = new Player(false,"Sam",new Bank());
+        Player player = new Player(false,"Sam",new Bank(),Color.BLUE);
         CardBox cardBox = new CardBox();
         int[] x = {1,2,3,4,5};
         cardBox.setCardsNumbers(x);

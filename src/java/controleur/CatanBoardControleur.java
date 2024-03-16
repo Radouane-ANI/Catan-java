@@ -7,7 +7,7 @@ import java.util.List;
 
 import src.java.gui.CatanBoardView;
 import src.java.gui.CityComponent;
-import gui.RoadComponent;
+import src.java.gui.RoadComponent;
 import src.java.logic.City;
 import src.java.logic.Player;
 import src.java.logic.Road;
