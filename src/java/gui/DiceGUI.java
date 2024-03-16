@@ -19,7 +19,7 @@ public class DiceGUI extends JPanel {
         rollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                rollDice();
+                roll();
             }
         });
 
@@ -27,8 +27,12 @@ public class DiceGUI extends JPanel {
         add(rollButton);
     }
 
-    private void rollDice() {
+    public void roll() {
         dicePanel.roll();
+    }
+
+    public int getResult() {
+        return dicePanel.getResult();
     }
 }
 
@@ -49,7 +53,7 @@ class TupleDice extends JPanel {
         dice1.roll();
         dice2.roll();
         int result = dice1.getValue() + dice2.getValue();
-        System.out.println("Result: " + result);
+        System.out.println("Result(GUI): " + result);
     }
 
     public int getResult() {
