@@ -132,7 +132,7 @@ public class Options extends JPanel {
         }
     }
 
-    private static void setLabelFont(JLabel label, int size, Color color) {
+    private void setLabelFont(JLabel label, int size, Color color) {
         Font currentFont = label.getFont();
         Font newFont = new Font(currentFont.getName(), Font.BOLD, size);
         label.setFont(newFont);

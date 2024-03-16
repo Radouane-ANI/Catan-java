@@ -10,10 +10,15 @@ public class CatanBoardView extends JPanel {
 
     public static final int TILE_SIZE = 110;
 
-    // private Hexagon hex;
+    private Dimension dim;
+    private Point center;
+
+    private TerrainImage tuileImage;
 
     public CatanBoardView(Dimension d) {
-        // hex = new Hexagon(TILE_SIZE);
+        dim = d;
+        center = new Point((int) d.getWidth() / 2, (int) d.getHeight() / 2);
+        tuileImage = new TerrainImage();
         setPreferredSize(d);
         setLayout(null);
     }
@@ -43,34 +48,24 @@ public class CatanBoardView extends JPanel {
     }
 
     private void drawTile(Tile t, Graphics2D g2d, double screenX, double screenY) {
-        // Shape pointer = hex.translate(new Point((int) screenX, (int) screenY));
+        ImageIcon image = tuileImage.getTerrainImageIcons(t.getTerrain());
+        image = new ImageIcon(
+                image.getImage().getScaledInstance(TILE_SIZE, (int) (TILE_SIZE * 1.15), Image.SCALE_SMOOTH));
+        g2d.drawImage(image.getImage(), (int) screenX - image.getIconWidth() / 2, (int) screenY, null);
 
-        try {
-            ImageIcon imageIcon = new ImageIcon("/home/radouane/k-catan/src/ressources/20240311_134102.png");
-
-            imageIcon = new ImageIcon(
-                    imageIcon.getImage().getScaledInstance(TILE_SIZE, (int) (TILE_SIZE * 1.15), Image.SCALE_SMOOTH));
-
-            g2d.drawImage(imageIcon.getImage(), (int) screenX - imageIcon.getIconWidth() / 2, (int) screenY, null);
-
-            // Numéro de dé
-            int diceNumber = t.getDiceNumber();
-            if (diceNumber != 0) {
-                String diceNumberText = Integer.toString(diceNumber);
-                FontMetrics fm = g2d.getFontMetrics();
-                int textWidth = fm.stringWidth(diceNumberText);
-                int textHeight = fm.getHeight();
-                int textX = (int) screenX + (TILE_SIZE - textWidth) / 2;
-                int textY = (int) screenY + (TILE_SIZE + textHeight) / 2;
-                g2d.drawString(diceNumberText, textX, textY);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Numéro de dé
+        int diceNumber = t.getDiceNumber();
+        if (diceNumber != 0) {
+            int textX = (int) screenX;
+            int textY = (int) screenY + TILE_SIZE / 2;
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 20));
+            g2d.drawString(diceNumber + "", textX, textY);
         }
     }
 
     private double calculateScreenX(double x) {
-        int spacing = TILE_SIZE / 10; // peut être ajusté
+        int spacing = TILE_SIZE / 20; // peut être ajusté
         int padding = 10;
 
         return x * (TILE_SIZE + spacing) + padding;
