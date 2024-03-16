@@ -14,12 +14,12 @@ public class ButtonsPanel extends JPanel {
     private Player player;
     private static final int NUMBER_OF_BUTTONS = 6;
     private static final String[] IMAGE_PATH = {
-            "src/java/gui/button1.png",
-            "src/java/gui/button1.png",
-            "src/java/gui/button1.png",
-            "src/java/gui/button1.png",
-            "src/java/gui/button1.png",
-            "src/java/gui/button1.png"
+            "src/ressources/button1.png",
+            "src/ressources/button1.png",
+            "src/ressources/button1.png",
+            "src/ressources/button1.png",
+            "src/ressources/button1.png",
+            "src/ressources/button1.png"
     };
     private ImageIcon[] buttonIcons = new ImageIcon[NUMBER_OF_BUTTONS];
 
