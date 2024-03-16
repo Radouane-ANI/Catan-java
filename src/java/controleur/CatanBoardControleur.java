@@ -30,6 +30,7 @@ public class CatanBoardControleur {
                 avaibleCity(node, p, settlement);
             }
         }
+        view.repaint();
     }
 
     public void buildSettlement(Player p) {
@@ -44,6 +45,7 @@ public class CatanBoardControleur {
                 avaibleSettelement(posY, p);
             }
         }
+        view.repaint();
     }
 
     public void buildRoad(Player p) {
@@ -61,6 +63,7 @@ public class CatanBoardControleur {
                 avaibleSettelement(node, p);
             }
         }
+        view.repaint();
     }
 
     private void firstBuildRoad(Player p, Node n) {
@@ -80,12 +83,8 @@ public class CatanBoardControleur {
                 p.buildRoad(r);
                 edge.setRoad(r);
                 removeRoadComponents();
-                view.repaint();
                 if (p.getRoads().size() < 2) {
                     firstBuild(p);
-                }
-                if (p.getRoads().size() == 2) { // PROVISOIRE a enlever quand on peut mettre fin a son tour
-                    ViewControleur.setNextTurn(true);
                 }
             }
         });
@@ -103,13 +102,11 @@ public class CatanBoardControleur {
                 p.buildSettlement(c);
                 n.setNode(c);
                 removeCityComponents();
-                view.repaint();
                 if (p.getRoads().size() < 2) {
                     firstBuildRoad(p, n);
                 }
             }
         });
-        view.repaint();
     }
 
     private void avaibleCity(Node n, Player p, Settlement s) {
@@ -124,7 +121,6 @@ public class CatanBoardControleur {
                 p.buildCity(c, s);
                 n.setNode(c);
                 removeCityComponents();
-                view.repaint();
             }
         });
     }

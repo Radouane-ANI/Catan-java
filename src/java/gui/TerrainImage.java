@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.ImageIcon;
+import java.awt.Image;
 
 import util.TerrainType;
 
@@ -13,12 +14,24 @@ class TerrainImage {
     private static ImageIcon DESERT;
 
     public TerrainImage() {
-        FOREST = new ImageIcon(getClass().getResource("/src/ressources/tuile_foret.png"));
-        FIELD = new ImageIcon(getClass().getResource("/src/ressources/tuile_champ.png"));
-        PASTURE = new ImageIcon(getClass().getResource("/src/ressources/tuile_plaine.png"));
-        BRICK = new ImageIcon(getClass().getResource("/src/ressources/tuile_carriere.png"));
-        MOUNTAIN = new ImageIcon(getClass().getResource("/src/ressources/tuile_montagne.png"));
-        DESERT = new ImageIcon(getClass().getResource("/src/ressources/tuile_desert.png"));
+        FOREST = createResizedImageIcon("/src/ressources/tuile_foret.png", CatanBoardView.TILE_SIZE,
+                (int) (CatanBoardView.TILE_SIZE * 1.15));
+        FIELD = createResizedImageIcon("/src/ressources/tuile_champ.png", CatanBoardView.TILE_SIZE,
+                (int) (CatanBoardView.TILE_SIZE * 1.15));
+        PASTURE = createResizedImageIcon("/src/ressources/tuile_plaine.png", CatanBoardView.TILE_SIZE,
+                (int) (CatanBoardView.TILE_SIZE * 1.15));
+        BRICK = createResizedImageIcon("/src/ressources/tuile_carriere.png", CatanBoardView.TILE_SIZE,
+                (int) (CatanBoardView.TILE_SIZE * 1.15));
+        MOUNTAIN = createResizedImageIcon("/src/ressources/tuile_montagne.png", CatanBoardView.TILE_SIZE,
+                (int) (CatanBoardView.TILE_SIZE * 1.15));
+        DESERT = createResizedImageIcon("/src/ressources/tuile_desert.png", CatanBoardView.TILE_SIZE,
+                (int) (CatanBoardView.TILE_SIZE * 1.15));
+    }
+
+    private ImageIcon createResizedImageIcon(String imagePath, int width, int height) {
+        ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
+        Image image = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(image);
     }
 
     public ImageIcon getTerrainImageIcons(TerrainType terrain) {

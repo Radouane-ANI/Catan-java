@@ -1,9 +1,14 @@
 package gui;
 
 import javax.swing.*;
+
+import controleur.ViewControleur;
 import logic.City;
 import logic.Settlement;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import map.*;
 
 public class CatanBoardView extends JPanel {
@@ -21,6 +26,17 @@ public class CatanBoardView extends JPanel {
         tuileImage = new TerrainImage();
         setPreferredSize(d);
         setLayout(null);
+        JButton turnButton = new JButton("Next Turn"); // mis ici pour l'instant
+        turnButton.setBounds(700, 500, 125, 25);
+        turnButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                ViewControleur.NextTurn();
+            }
+
+        });
+        add(turnButton);
     }
 
     @Override
@@ -49,8 +65,6 @@ public class CatanBoardView extends JPanel {
 
     private void drawTile(Tile t, Graphics2D g2d, double screenX, double screenY) {
         ImageIcon image = tuileImage.getTerrainImageIcons(t.getTerrain());
-        image = new ImageIcon(
-                image.getImage().getScaledInstance(TILE_SIZE, (int) (TILE_SIZE * 1.15), Image.SCALE_SMOOTH));
         g2d.drawImage(image.getImage(), (int) screenX - image.getIconWidth() / 2, (int) screenY, null);
 
         // Numéro de dé

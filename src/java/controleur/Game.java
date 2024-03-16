@@ -13,13 +13,13 @@ public class Game extends Turn implements Runnable{
         Board.createBoard();
     }
 
-    public void startGame() {
+    public void startGame() {        
         while (!isOver(playersList)) {
             nextTurn =false;
             tour(playersList, currentPlayerIndex);
             while (!nextTurn) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                 }
             }
@@ -46,8 +46,8 @@ public class Game extends Turn implements Runnable{
         startGame();
     }
 
-    public void setNextTurn(boolean nextTurn) {
-        this.nextTurn = nextTurn;
+    public void NextTurn() {
+        this.nextTurn = true;
     }
 
 }

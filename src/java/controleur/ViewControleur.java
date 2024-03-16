@@ -60,7 +60,7 @@ public class ViewControleur {
         return game;
     }
 
-    public static void setNextTurn(boolean b) {
-        game.setNextTurn(b);
+    public static void NextTurn() {
+        game.NextTurn();
     }
 }
