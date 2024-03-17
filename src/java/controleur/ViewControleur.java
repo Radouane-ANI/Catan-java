@@ -1,10 +1,12 @@
 package controleur;
 
+import java.util.List;
+
 import gui.MainFrame;
 import gui.Options;
 import gui.GameMenu;
 import gui.GameView;
-
+import logic.Player;
 import gui.CatanBoardView;
 
 public class ViewControleur {
@@ -54,6 +56,10 @@ public class ViewControleur {
 
     public static CatanBoardControleur getCatanControleur() {
         return catanControleur;
+    }
+
+    public static List<Player> getPlayers() {
+        return gameOption.getPlayers();
     }
 
     public static Game getGame() {

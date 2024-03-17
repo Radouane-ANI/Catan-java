@@ -11,19 +11,24 @@ import java.awt.event.ActionListener;
 
 import map.*;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
 public class CatanBoardView extends JPanel {
 
-    public static final int TILE_SIZE = 110;
+    public static final int TILE_SIZE = 130;
 
     private Dimension dim;
     private Point center;
 
-    private TerrainImage tuileImage;
+    private BoardImage tuileImage;
 
     public CatanBoardView(Dimension d) {
         dim = d;
         center = new Point((int) d.getWidth() / 2, (int) d.getHeight() / 2);
-        tuileImage = new TerrainImage();
+        tuileImage = new BoardImage();
         setPreferredSize(d);
         setLayout(null);
         JButton turnButton = new JButton("Next Turn"); // mis ici pour l'instant
@@ -58,7 +63,7 @@ public class CatanBoardView extends JPanel {
             addRoad(null, e, g2d);
         }
         for (Node n : Node.getNodesIntern()) {
-            addCity(null, n, g);
+            addCity(null, n, g2d);
         }
         g2d.dispose();
     }
@@ -96,7 +101,7 @@ public class CatanBoardView extends JPanel {
         return screenY += (x != (int) x) ^ (y % 2 == 0) ? TILE_SIZE / 4 : 0;
     }
 
-    public void addCity(JLabel component, Node pos, Graphics g) {
+    public void addCity(JLabel component, Node pos, Graphics2D g) {
         if (g != null && pos.getGroup() == null) {
             return;
         }
@@ -114,13 +119,30 @@ public class CatanBoardView extends JPanel {
             component.setBounds(centerX, centerY, TILE_SIZE / 4 + 1, TILE_SIZE / 4 + 1);
             add(component);
         } else if (g != null) {
-            if (pos.getGroup() instanceof Settlement) {
-                g.setColor(pos.getGroup().getColor());
-                g.fillOval(centerX, centerY, TILE_SIZE / 4, TILE_SIZE / 4);
-            } else if (pos.getGroup() instanceof City) {
-                g.setColor(pos.getGroup().getColor());
-                g.fill3DRect(centerX, centerY, TILE_SIZE / 4, TILE_SIZE / 4, true);
-            }
+
+            ImageIcon image = tuileImage.getCityImageIcons(pos.getGroup().getOwner());
+            g.drawImage(image.getImage(), (int) screenX - image.getIconWidth() / 2, (int) screenY, null);
+
+            // File file = new File("/home/radouane/k-catan/output.png");
+            // BufferedImage originalImage;
+            // try {
+            //     originalImage = resizeImage(file, TILE_SIZE / 2, TILE_SIZE / 2);
+            //     g.drawImage(originalImage, centerX, centerY, null);
+
+            // } catch (IOException e) {
+            //     // TODO Auto-generated catch block
+            //     e.printStackTrace();
+            // }
+
+
+
+            // if (pos.getGroup() instanceof Settlement) {
+            // g.setColor(pos.getGroup().getColor());
+            // g.fillOval(centerX, centerY, TILE_SIZE / 4, TILE_SIZE / 4);
+            // } else if (pos.getGroup() instanceof City) {
+            // g.setColor(pos.getGroup().getColor());
+            // g.fill3DRect(centerX, centerY, TILE_SIZE / 4, TILE_SIZE / 4, true);
+            // }
         }
     }
 
@@ -154,5 +176,14 @@ public class CatanBoardView extends JPanel {
             component.setBounds((int) x1 - TILE_SIZE / 20, y1, (int) (x2 + TILE_SIZE / 10 - x1), y2 - y1);
             add(component);
         }
+    }
+
+    public static BufferedImage resizeImage(File file, int width, int height) throws IOException {
+        BufferedImage originalImage = ImageIO.read(file);
+        BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = resizedImage.createGraphics();
+        g2d.drawImage(originalImage, 0, 0, width, height, null);
+        g2d.dispose();
+        return resizedImage;
     }
 }
