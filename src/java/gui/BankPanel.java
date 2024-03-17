@@ -11,13 +11,13 @@ public class BankPanel extends JPanel {
     private static final int IMAGE_COUNT = 7; // 总共7张图片
     // 假定图片路径和数字已经正确设置
     private String[] imagePaths = {
-            "/Users/juliazhula/k-catan/src/ressources/cardTest.jpg",
-            "/Users/juliazhula/k-catan/src/ressources/cardTest.jpg",
-            "/Users/juliazhula/k-catan/src/ressources/cardTest.jpg",
-            "/Users/juliazhula/k-catan/src/ressources/cardTest.jpg",
-            "/Users/juliazhula/k-catan/src/ressources/cardTest.jpg",
-            "/Users/juliazhula/k-catan/src/ressources/cardTest.jpg",
-            "/Users/juliazhula/k-catan/src/ressources/cardTest.jpg"
+            "src/ressources/cardTest.jpg",
+            "src/ressources/cardTest.jpg",
+            "src/ressources/cardTest.jpg",
+            "src/ressources/cardTest.jpg",
+            "src/ressources/cardTest.jpg",
+            "src/ressources/cardTest.jpg",
+            "src/ressources/cardTest.jpg"
     };
     private int[] numbers;
 
@@ -38,7 +38,7 @@ public class BankPanel extends JPanel {
     }
 
     private void loadScaledIcon() {
-        ImageIcon iconO = new ImageIcon("/Users/juliazhula/k-catan/src/ressources/cardTest.jpg");
+        ImageIcon iconO = new ImageIcon("src/ressources/cardTest.jpg");
         Image scaledImage = iconO.getImage().getScaledInstance((int) (iconO.getIconWidth() * 0.3), (int) (iconO.getIconHeight() * 0.3), Image.SCALE_SMOOTH);
         scaledIcon = new ImageIcon(scaledImage);
     }

@@ -5,12 +5,15 @@ import gui.GameView;
 import gui.MainFrame;
 import map.Board;
 import gui.CatanBoardView;
+import logic.Player;
 
+import java.awt.Color;
 
 public class ViewControleur {
 
     private static MainFrame frame;
-    private static controleur.CatanBoardControleur catanControleur;
+    private static CatanBoardControleur catanControleur;
+    private static Player player;
 
     public ViewControleur(MainFrame mainFrame) {
         frame = mainFrame;
@@ -27,7 +30,10 @@ public class ViewControleur {
         Board.createBoard();
 
         CatanBoardView mapComponent = new CatanBoardView(gameView.getSize());
-        catanControleur = new controleur.CatanBoardControleur(mapComponent);
+        catanControleur = new CatanBoardControleur(mapComponent);
+
+        player = new Player(false, "Sam", null, Color.BLUE);
+        catanControleur.firstBuild(player);;
 
         gameView.add(mapComponent);
 
