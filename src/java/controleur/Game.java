@@ -1,9 +1,9 @@
-package src.java.controleur;
+package controleur;
 
 import java.util.List;
 
-import src.java.logic.Player;
-import src.java.map.Board;
+import logic.Player;
+import map.Board;
 
 public class Game extends Turn {
     

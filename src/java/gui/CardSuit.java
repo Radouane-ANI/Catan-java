@@ -1,9 +1,9 @@
-package src.java.gui;
+package gui;
 
-import src.java.logic.Bank;
-import src.java.logic.Card;
-import src.java.logic.CardBox;
-import src.java.logic.Player;
+import logic.Bank;
+import logic.Card;
+import logic.CardBox;
+import logic.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -126,7 +126,9 @@ public class CardSuit extends JLayeredPane {
         return new Dimension(500, 60);
     }
 
-    public static void main(String[] args) {
+    /*
+     * 
+     * public static void main(String[] args) {
         Player player = new Player(false,"Sam",new Bank(),Color.BLUE);
         CardBox cardBox = new CardBox();
         int[] x = {1,2,3,4,5};
@@ -145,4 +147,6 @@ public class CardSuit extends JLayeredPane {
         frame.setSize(1000, 700);
         frame.setVisible(true);
     }
+     */
+
 }

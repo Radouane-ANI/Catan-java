@@ -1,14 +1,13 @@
-package src.java.controleur;
+package controleur;
+
+import gui.GameMenu;
+import gui.GameView;
+import gui.MainFrame;
+import map.Board;
+import gui.CatanBoardView;
+import logic.Player;
 
 import java.awt.Color;
-
-import src.java.gui.GameMenu;
-import src.java.gui.GameView;
-import src.java.gui.MainFrame;
-import src.java.logic.Player;
-import src.java.map.Board;
-import src.java.gui.CatanBoardView;
-
 
 public class ViewControleur {
 
