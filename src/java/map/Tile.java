@@ -14,15 +14,15 @@ public class Tile extends Vector {
     }
 
     private static Tile[] tileArray;
-    private Position position; // positions simplifiées à utiliser
+    private Vector position; // positions simplifiées à utiliser
 
     static {
         tileArray = new Tile[19];
     }
 
-    Tile(double x, int y, int diceNumber, TerrainType terrain) {
+    Tile(double x, double y, int diceNumber, TerrainType terrain) {
         super(x, y);
-        this.position = new Position((int) x, y);
+        this.position = new Vector(x, y);
         this.diceNumber = diceNumber;
         this.terrain = terrain;
     }
@@ -82,11 +82,11 @@ public class Tile extends Vector {
         return null;
     }
 
-    public Position getPosition() {
+    public Vector getPosition() {
         return position;
     }
 
-    public void setPosition(Position position) {
+    public void setPosition(Vector position) {
         this.position = position;
     }
 

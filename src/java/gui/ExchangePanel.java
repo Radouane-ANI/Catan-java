@@ -240,7 +240,7 @@ public class ExchangePanel extends JPanel {
 
     public static void main(String[] args) {
         Bank bank = new Bank();
-        Player player = new Player(false,"Sam",bank);
+        Player player = new Player(false,"Sam",bank,null);
         CardBox cardBox = new CardBox();
         TradePort tradePort = new TradePort();
         for (int i = 0; i < 6; i++) {

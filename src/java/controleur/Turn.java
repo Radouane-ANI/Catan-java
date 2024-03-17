@@ -9,6 +9,7 @@ import logic.TupleDice;
 import map.Board;
 import map.Tile;
 import util.TerrainType;
+import logic.HumanGroup;
 
 
 

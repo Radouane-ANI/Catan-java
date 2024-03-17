@@ -127,7 +127,7 @@ public class CardSuit extends JLayeredPane {
     }
 
     public static void main(String[] args) {
-        Player player = new Player(false,"Sam",new Bank());
+        Player player = new Player(false,"Sam",new Bank(),null);
         CardBox cardBox = new CardBox();
         int[] x = {1,2,3,4,5};
         cardBox.setCardsNumbers(x);

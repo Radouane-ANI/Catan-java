@@ -31,7 +31,7 @@ public class CatanBoardView extends JPanel {
 
         for (Tile t : Tile.getTilesIntern()) {
             double x = t.getX();
-            int y = t.getY();
+            double y = t.getY();
 
             double screenX = calculateScreenX(x);
             double screenY = calculateScreenY(x, y);
@@ -74,13 +74,13 @@ public class CatanBoardView extends JPanel {
         return x * (TILE_SIZE + spacing) + padding;
     }
 
-    private int calculateScreenY(double x, int y) {
+    private int calculateScreenY(double x, double y) {
         int spacing = TILE_SIZE - 27; // peut être ajusté
         int padding = 10;
-        return y * (TILE_SIZE + spacing) + padding;
+        return (int) (y * (TILE_SIZE + spacing) + padding);
     }
 
-    private double centerIntersection(double x, int y, double screenY) {
+    private double centerIntersection(double x, double y, double screenY) {
         return screenY += (x != (int) x) ^ (y % 2 == 0) ? TILE_SIZE / 2 : 0;
     }
 
@@ -89,7 +89,7 @@ public class CatanBoardView extends JPanel {
             return;
         }
         double x = pos.getX();
-        int y = pos.getY();
+        double y = pos.getY();
 
         double screenX = calculateScreenX(x);
         double screenY = calculateScreenY(x, y);
@@ -117,9 +117,9 @@ public class CatanBoardView extends JPanel {
             return;
         }
         double x1 = e.getX().getX();
-        int y1 = e.getX().getY();
+        double y1 = e.getX().getY();
         double x2 = e.getY().getX();
-        int y2 = e.getY().getY();
+        double y2 = e.getY().getY();
 
         double screenX1 = calculateScreenX(x1);
         double screenY1 = calculateScreenY(x1, y1);
@@ -140,7 +140,7 @@ public class CatanBoardView extends JPanel {
             x2 = Math.max((int) screenX1, (int) screenX2);
             y2 = Math.max((int) screenY1, (int) screenY2);
 
-            component.setBounds((int) x1 - 1, y1, (int) (x2 - x1) + 10, y2 - y1);
+            component.setBounds((int) x1 - 1, (int) y1, (int) (x2 - x1) + 10, (int) (y2 - y1));
             add(component);
         }
     }
