@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import map.Node;
+import logic.City;
 import logic.HumanGroup;
 import logic.Player;
+import logic.Settlement;
 import logic.TupleDice;
 import map.Board;
 import map.Tile;
@@ -46,8 +48,23 @@ public class Turn {
             for (Node n : nodes){
                 HumanGroup hG = n.getHumanGroup();
                 if (hG != null){
+                    int nb =1;
+                    if (hG instanceof City) {
+                        nb =2;
+                    }
                     hG.getOwner().addCard(t.getTerrain().toCard(),1);
                 }
+            }
+        }
+    }
+
+    protected void recupFirstRessources(){
+        for (Player player : playersList) {
+            Settlement s = player.getSettlements().get(1);
+            Node n = Node.getNode(s);
+            List<Tile> t = Tile.getTileAdjacents(n);
+            for (Tile tile : t) {
+                player.addCard(tile.getTerrain().toCard(), 1);
             }
         }
     }

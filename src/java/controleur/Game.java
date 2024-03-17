@@ -3,11 +3,10 @@ package controleur;
 import java.util.List;
 
 import logic.Player;
-import logic.Settlement;
 import map.Board;
 
 public class Game extends Turn implements Runnable {
-    private boolean nextTurn;
+    private boolean nextTurn, finishedTurn;
 
     Game(List<Player> playersList) {
         super(playersList);
@@ -15,7 +14,9 @@ public class Game extends Turn implements Runnable {
     }
 
     public void startGame() {
+        finishedTurn = true;
         firstTurn();
+        recupFirstRessources();
         while (!isOver(playersList)) {
             nextTurn = false;
             tour(playersList, currentPlayerIndex);
@@ -25,7 +26,7 @@ public class Game extends Turn implements Runnable {
     }
 
     private void waitNextTurn() {
-        while (!nextTurn) {
+        while (!nextTurn || !finishedTurn) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -40,10 +41,10 @@ public class Game extends Turn implements Runnable {
             waitNextTurn();
         }
         for (int i = playersList.size() - 1; i >= 0; i--) {
+            currentPlayerIndex = i;
             Player currentPlayer = playersList.get(i);
             super.firstBuild(currentPlayer);
             waitNextTurn();
-            Settlement s = currentPlayer.getSettlements().get(1);
         }
     }
 
@@ -70,7 +71,11 @@ public class Game extends Turn implements Runnable {
 
     public void NextTurn(boolean bot) {
         Player currentPlayer = playersList.get(currentPlayerIndex);
-        this.nextTurn = currentPlayer.isBot() == bot;
+        this.nextTurn = currentPlayer.isBot() == bot && finishedTurn;
+    }
+
+    public void setFinishedTurn(boolean f) {
+        finishedTurn = f;
     }
 
 }

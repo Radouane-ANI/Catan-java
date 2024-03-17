@@ -63,4 +63,9 @@ public class ViewControleur {
     public static void NextTurn(boolean bot) {
         game.NextTurn(bot);
     }
+
+    public static void setFinishedTurn(boolean f) {
+        game.setFinishedTurn(f);
+    }
+
 }
