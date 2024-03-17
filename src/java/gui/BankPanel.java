@@ -1,7 +1,7 @@
-package src.java.gui;
+package gui;
 
-import src.java.logic.Bank;
-import src.java.logic.Card;
+import logic.Bank;
+import logic.Card;
 
 import javax.swing.*;
 import java.awt.*;

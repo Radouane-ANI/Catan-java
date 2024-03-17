@@ -1,6 +1,6 @@
-package src.java.map;
+package map;
 
-import src.java.logic.HumanGroup;
+import logic.HumanGroup;
 
 import java.util.ArrayList;
 

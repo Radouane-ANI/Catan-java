@@ -1,4 +1,4 @@
-package ai;
+package util;
 
 public class Matrix {
     private final int rows;

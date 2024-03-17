@@ -1,6 +1,6 @@
-package src.java.gui;
+package gui;
 
-import src.java.logic.Player;
+import logic.Player;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

@@ -1,10 +1,10 @@
-package src.java.gui;
+package gui;
 
 import javax.swing.*;
-import src.java.logic.City;
-import src.java.logic.Settlement;
+import logic.City;
+import logic.Settlement;
 import java.awt.*;
-import src.java.map.*;
+import map.*;
 
 public class CatanBoardView extends JPanel {
 

@@ -1,6 +1,6 @@
-package src.java.gui;
+package gui;
 
-import src.java.logic.Bank;
+import logic.Bank;
 
 import javax.swing.*;
 import java.awt.*;

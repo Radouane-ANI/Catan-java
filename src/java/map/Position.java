@@ -1,4 +1,4 @@
-package src.java.map;
+package map;
 
 public class Position {
     private double x;

@@ -1,15 +1,15 @@
-package src.java.controleur;
+package controleur;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import src.java.gui.DiceGUI;
-import src.java.map.Node;
-import src.java.logic.Player;
-import src.java.logic.HumanGroup;
-import src.java.map.Board;
-import src.java.map.Tile;
-import src.java.util.TerrainType;
+import gui.DiceGUI;
+import map.Node;
+import logic.Player;
+import logic.HumanGroup;
+import map.Board;
+import map.Tile;
+import util.TerrainType;
 
 
 

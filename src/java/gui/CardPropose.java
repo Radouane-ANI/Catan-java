@@ -1,6 +1,6 @@
-package src.java.gui;
+package gui;
 
-import src.java.logic.Card;
+import logic.Card;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;

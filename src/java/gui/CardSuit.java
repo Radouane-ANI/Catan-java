@@ -1,9 +1,9 @@
-package src.java.gui;
+package gui;
 
-import src.java.logic.Bank;
-import src.java.logic.Card;
-import src.java.logic.CardBox;
-import src.java.logic.Player;
+import logic.Bank;
+import logic.Card;
+import logic.CardBox;
+import logic.Player;
 
 import javax.swing.*;
 import java.awt.*;

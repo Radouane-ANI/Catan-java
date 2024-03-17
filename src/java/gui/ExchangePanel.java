@@ -1,7 +1,7 @@
-package src.java.gui;
+package gui;
 
 
-import src.java.logic.*;
+import logic.*;
 
 
 import javax.swing.*;
