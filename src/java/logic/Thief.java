@@ -1,4 +1,4 @@
-package logic;
+package src.java.logic;
 
 public class Thief {
     private int position;

@@ -1,9 +1,16 @@
-package logic;
+package src.java.logic;
 
 public class CardBox {
     protected int[] cardsNumbers = new int[Card.values().length];
 
     public CardBox() {}
+
+    //setCardsNumbers -> for test
+    public void setCardsNumbers(int[] x) {
+        for(int i = 0; i < x.length; i++) {
+            cardsNumbers[i] = x[i];
+        }
+    }
 
     public void addCard(Card c, int number) {
         cardsNumbers[c.ordinal()] += number;
@@ -52,4 +59,14 @@ public class CardBox {
             }
         }return null;
     }
+
+    public boolean isEmpty() {
+        for(Card card : Card.values()) {
+            if (cardsNumbers[card.ordinal()] > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

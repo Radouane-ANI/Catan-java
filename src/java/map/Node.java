@@ -1,6 +1,6 @@
-package map;
+package src.java.map;
 
-import logic.HumanGroup;
+import src.java.logic.HumanGroup;
 
 import java.util.ArrayList;
 
@@ -39,6 +39,19 @@ public class Node extends Vector {
         }
 
         connectNodesToTiles();
+        connectToNeighbors();
+    }
+
+    private static void connectToNeighbors() {
+        for (int i = 0; i < nodeArray.length; i++) {
+            for (int j = 0; j < nodeArray.length; j++) {
+                Node vi = nodeArray[i];
+                Node vj = nodeArray[j];
+                if (vi.isNeighbor(vj)) {
+                    vi.neighbors.add(vj);
+                }
+            }
+        }
     }
 
     boolean isAdjacentToTile(Tile tile) {
@@ -63,7 +76,7 @@ public class Node extends Vector {
         return nodeArray;
     }
 
-    void setNode(HumanGroup group) {
+    public void setNode(HumanGroup group) {
         this.group = group;
     }
 
@@ -81,6 +94,33 @@ public class Node extends Vector {
 
     public HumanGroup getGroup() {
         return group;
+    }
+
+    public static Node canBuildSettlement(Vector v) {
+        Node pos = null;
+        for (int i = 0; i < nodeArray.length; i++) {
+            if (nodeArray[i].equals(v)) {
+                pos = nodeArray[i];
+                if (nodeArray[i].group != null) {
+                    return null;
+                }
+                for (Node node : nodeArray[i].neighbors) {
+                    if (node.group != null) {
+                        return null;
+                    }
+                }
+            }
+        }
+        return pos;
+    }
+
+    public static Node getNode(HumanGroup group) {
+        for (int i = 0; i < nodeArray.length; i++) {
+            if (nodeArray[i].group == group) {
+                return nodeArray[i];
+            }
+        }
+        return null;
     }
 
 }

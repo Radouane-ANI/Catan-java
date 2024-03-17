@@ -1,4 +1,5 @@
-package logic;
+
+package src.java.logic;
 
 public class Settlement extends HumanGroup {
 
@@ -6,3 +7,4 @@ public class Settlement extends HumanGroup {
         super(owner);
     }
 }
+

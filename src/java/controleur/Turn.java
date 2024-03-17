@@ -1,35 +1,40 @@
-package controleur;
+package src.java.controleur;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import map.Node;
-import logic.HumanGroup;
-import logic.Player;
-import logic.TupleDice;
-import map.Board;
-import map.Tile;
-import util.TerrainType;
+import src.java.gui.DiceGUI;
+import src.java.map.Node;
+import src.java.logic.Player;
+import src.java.logic.HumanGroup;
+import src.java.map.Board;
+import src.java.map.Tile;
+import src.java.util.TerrainType;
+
 
 
 public class Turn {
 
     protected List<Player> playersList;
     protected int currentPlayerIndex;
+    private DiceGUI diceGUI;
 
     public Turn(List<Player> players) {
         playersList = players;
         currentPlayerIndex = 0; // Commence avec le premier joueur
+        this.diceGUI = new DiceGUI(); 
+        diceGUI.roll();
     }
 
-    void tour(List<Player> players, int currentPlayerIndex){
-        TupleDice dices = new TupleDice();
-        recupRessources(players,dices.lancer());
+    void tour() {
+        int sumDices = diceGUI.getResult();
+        recupRessources(playersList, sumDices);
         echange();
         creationCity();
     }
 
     private void recupRessources(List<Player> players, int sumDices){
+        System.out.println("result(Turn): " + sumDices);
         ArrayList<Tile> tiles = Board.getTileByDiceNumberArray(sumDices);
         for (Tile t : tiles){
             if (t.getTerrain() == TerrainType.DESERT) continue;
@@ -66,7 +71,7 @@ public class Turn {
             Player choisi = accepter.get(rd.nextInt(accepter.size()));
             currentPlayer.trade(choisi);
         }else if (currentPlayer.isBot()) {
-            currentPlayer.tradeWithBank();
+            currentPlayer.trade(currentPlayer.getSaleList(),currentPlayer.getBank(),currentPlayer.getWishList(),currentPlayer.getMyCards());
         }
     }
 

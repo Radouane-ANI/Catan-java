@@ -1,4 +1,4 @@
-package map;
+package src.java.map;
 
 public class Vector {
     protected double x;
@@ -27,15 +27,31 @@ public class Vector {
     }
 
     boolean isNeighbor(Vector v) {
-        int deltaX = (int) Math.abs(v.getX() - x);
-        int deltaY = Math.abs(v.getY() - y);
-    
-        if ((deltaX == 1 && deltaY == 1) || // Diagonal 
-            (deltaX == 1 && deltaY == 0) || // Horizontal
-            (deltaX == 0 && deltaY == 1)) {  // Vertical
-            return true;
+        if (x == v.x && y == v.y) {
+            return false;
+        }
+        if (y == v.y) {
+            if (Math.abs(x - v.x) == 0.5) {
+                return true;
+            }
+        } else if (Math.abs(y - v.y) == 1) {
+            if (Math.min(y, v.y) % 2 == 0) {
+                if (x == v.x && (x - (int) x) == 0) {
+                    return true;
+                }
+            } else {
+                if (x == v.x && (x - (int) x) == 0.5) {
+                    return true;
+                }
+            }
         }
         return false;
     }
-    
+
+    public boolean equals(Vector v) {
+        if (v == null) {
+            return false;
+        }
+        return Double.compare(x, v.x) == 0 && y == v.y;
+    }
 }

@@ -1,4 +1,4 @@
-package logic;
+package src.java.logic;
 
 public class TradePort {
     private boolean[] tradePorts = new boolean[6];
@@ -8,6 +8,9 @@ public class TradePort {
     }
 
     public boolean hasPort(Card c) {
+        if(c == null) {
+            return tradePorts[5];
+        }
         return tradePorts[c.ordinal()];
     }
 
