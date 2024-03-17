@@ -24,17 +24,17 @@ public class Turn {
     }
 
     void tour(List<Player> players, int currentPlayerIndex){
-        firstBuild();
         TupleDice dices = new TupleDice();
         recupRessources(players,dices.lancer());
         echange();
         creationCity();
     }
 
-    private void firstBuild() {
-        Player currentPlayer = playersList.get(currentPlayerIndex);
+    protected void firstBuild(Player currentPlayer) {
         if (!currentPlayer.isBot() && currentPlayer.getRoads().size() < 2) {
             ViewControleur.getCatanControleur().firstBuild(currentPlayer);
+        }else if (currentPlayer.isBot()) {
+            // placement des batiments pour le bot
         }
     }
 

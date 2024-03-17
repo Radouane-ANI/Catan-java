@@ -32,7 +32,7 @@ public class CatanBoardView extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                ViewControleur.NextTurn();
+                ViewControleur.NextTurn(false);
             }
 
         });

@@ -83,9 +83,6 @@ public class CatanBoardControleur {
                 p.buildRoad(r);
                 edge.setRoad(r);
                 removeRoadComponents();
-                if (p.getRoads().size() < 2) {
-                    firstBuild(p);
-                }
             }
         });
     }
