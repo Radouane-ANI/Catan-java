@@ -1,6 +1,5 @@
 package gui;
 
-
 import controleur.ViewControleur;
 import logic.City;
 import logic.Settlement;
@@ -24,7 +23,7 @@ import map.*;
 
 public class CatanBoardView extends JPanel {
 
-    public static final int TILE_SIZE = 130;
+    public static final int TILE_SIZE = 110;
 
     private Dimension dim;
     private Point center;
@@ -38,7 +37,7 @@ public class CatanBoardView extends JPanel {
         setPreferredSize(d);
         setLayout(null);
         JButton turnButton = new JButton("Next Turn"); // mis ici pour l'instant
-        turnButton.setBounds(700, 500, 125, 25);
+        turnButton.setBounds(500, 500, 125, 25);
         turnButton.addActionListener(new ActionListener() {
 
             @Override
@@ -58,7 +57,7 @@ public class CatanBoardView extends JPanel {
 
         for (Tile t : Tile.getTilesIntern()) {
             double x = t.getX();
-            int y = t.getY();
+            double y = t.getY();
 
             double screenX = calculateScreenX(x);
             double screenY = calculateScreenY(x, y);
@@ -96,14 +95,14 @@ public class CatanBoardView extends JPanel {
         return x * (TILE_SIZE + spacing) + padding;
     }
 
-    private int calculateScreenY(double x, int y) {
+    private double calculateScreenY(double x, double y) {
         int spacing = -TILE_SIZE / 4;
         int tileHeight = (int) (TILE_SIZE * 1.15);
         int padding = 10;
         return y * (tileHeight + spacing) + padding;
     }
 
-    private double centerIntersection(double x, int y, double screenY) {
+    private double centerIntersection(double x, double y, double screenY) {
         return screenY += (x != (int) x) ^ (y % 2 == 0) ? TILE_SIZE / 4 : 0;
     }
 
@@ -112,7 +111,7 @@ public class CatanBoardView extends JPanel {
             return;
         }
         double x = pos.getX();
-        int y = pos.getY();
+        double y = pos.getY();
 
         double screenX = calculateScreenX(x);
         double screenY = calculateScreenY(x, y);
@@ -144,9 +143,9 @@ public class CatanBoardView extends JPanel {
             return;
         }
         double x1 = e.getX().getX();
-        int y1 = e.getX().getY();
+        double y1 = e.getX().getY();
         double x2 = e.getY().getX();
-        int y2 = e.getY().getY();
+        double y2 = e.getY().getY();
 
         double screenX1 = calculateScreenX(x1);
         double screenY1 = calculateScreenY(x1, y1);
@@ -166,7 +165,7 @@ public class CatanBoardView extends JPanel {
             y1 = Math.min((int) screenY1, (int) screenY2);
             x2 = Math.max((int) screenX1, (int) screenX2);
             y2 = Math.max((int) screenY1, (int) screenY2);
-            component.setBounds((int) x1 - TILE_SIZE / 20, y1, (int) (x2 + TILE_SIZE / 10 - x1), y2 - y1);
+            component.setBounds((int) x1 - TILE_SIZE / 20, (int) y1, (int) (x2 + TILE_SIZE / 10 - x1), (int) (y2 - y1));
             add(component);
         }
     }

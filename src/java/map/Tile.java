@@ -16,15 +16,15 @@ public class Tile extends Vector {
     }
 
     private static Tile[] tileArray;
-    private Position position; // positions simplifiées à utiliser
+    private Vector position; // positions simplifiées à utiliser
 
     static {
         tileArray = new Tile[19];
     }
 
-    Tile(double x, int y, int diceNumber, TerrainType terrain) {
+    Tile(double x, double y, int diceNumber, TerrainType terrain) {
         super(x, y);
-        this.position = new Position((int) x, y);
+        this.position = new Vector(x, y);
         this.diceNumber = diceNumber;
         this.terrain = terrain;
     }
@@ -84,11 +84,11 @@ public class Tile extends Vector {
         return null;
     }
 
-    public Position getPosition() {
+    public Vector getPosition() {
         return position;
     }
 
-    public void setPosition(Position position) {
+    public void setPosition(Vector position) {
         this.position = position;
     }
 
@@ -115,9 +115,9 @@ public class Tile extends Vector {
     public static ArrayList<Tile> getTileAdjacents(Node n) {
         ArrayList<Tile> l = new ArrayList<>();
         if (n != null) {
-            Tile t = getTile(n.getX(), n.getY());
-            Tile t1 = getTile(n.getX() + 0.5, n.getY());
-            Tile t2 = getTile(n.getX() - 0.5, n.getY());
+            Tile t = getTile(n.getX(), (int) n.getY());
+            Tile t1 = getTile(n.getX() + 0.5, (int) n.getY());
+            Tile t2 = getTile(n.getX() - 0.5, (int) n.getY());
             if (t == null) l.add(t);
             if (t1 == null) l.add(t1);
             if (t2 == null) l.add(t2);

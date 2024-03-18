@@ -19,7 +19,7 @@ public class Game extends Turn implements Runnable {
         recupFirstRessources();
         while (!isOver(playersList)) {
             nextTurn = false;
-            tour(playersList, currentPlayerIndex);
+            tour();
             waitNextTurn();
             nextPlayer();
         }
@@ -54,7 +54,6 @@ public class Game extends Turn implements Runnable {
             return;
         }
         currentPlayerIndex++;
-
     }
 
     private boolean isOver(List<Player> players) {

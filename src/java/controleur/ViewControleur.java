@@ -1,18 +1,18 @@
 package controleur;
 
-import java.util.List;
-
-import gui.MainFrame;
-import gui.Options;
 import gui.GameMenu;
 import gui.GameView;
+import gui.MainFrame;
+import java.util.List;
+
+import gui.Options;
 import logic.Player;
-import gui.CatanBoardView;
 
 public class ViewControleur {
     private static Game game;
     private static MainFrame frame;
-    private static controleur.CatanBoardControleur catanControleur;
+    private static CatanBoardControleur catanControleur;
+    private static Player player;
     private static Options gameOption;
 
     public ViewControleur(MainFrame mainFrame) {
@@ -26,18 +26,15 @@ public class ViewControleur {
     }
 
     public static void jouer() {
-        GameView gameView = new GameView();
-        frame.setPanel(gameView);
         if (gameOption.getPlayers().size() != 4) {
             gameOption.completeJoueur();
         }
+        GameView gameView = new GameView();
+        frame.setPanel(gameView);
+
         game = new Game(gameOption.getPlayers());
 
-        CatanBoardView mapComponent = new CatanBoardView(gameView.getSize());
-        mapComponent.setOpaque(false);
-        catanControleur = new controleur.CatanBoardControleur(mapComponent);
-
-        gameView.add(mapComponent);
+        catanControleur = new controleur.CatanBoardControleur(gameView.getBoardView());
 
         gameView.revalidate();
         gameView.repaint();
