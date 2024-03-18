@@ -5,14 +5,13 @@ import java.util.List;
 import java.util.Random;
 import map.Node;
 import logic.Player;
-import logic.TupleDice;
+import logic.City;
+import logic.HumanGroup;
+import logic.Settlement;
 import map.Board;
 import map.Tile;
 import util.TerrainType;
-import logic.HumanGroup;
 import gui.DiceGUI;
-
-
 
 public class Turn {
 
@@ -34,6 +33,14 @@ public class Turn {
         creationCity();
     }
 
+    protected void firstBuild(Player currentPlayer) {
+        if (!currentPlayer.isBot() && currentPlayer.getRoads().size() < 2) {
+            ViewControleur.getCatanControleur().firstBuild(currentPlayer);
+        }else if (currentPlayer.isBot()) {
+            // placement des batiments pour le bot
+        }
+    }
+
     private void recupRessources(List<Player> players, int sumDices){
         System.out.println("result(Turn): " + sumDices);
         ArrayList<Tile> tiles = Board.getTileByDiceNumberArray(sumDices);
@@ -43,8 +50,23 @@ public class Turn {
             for (Node n : nodes){
                 HumanGroup hG = n.getHumanGroup();
                 if (hG != null){
+                    int nb =1;
+                    if (hG instanceof City) {
+                        nb =2;
+                    }
                     hG.getOwner().addCard(t.getTerrain().toCard(),1);
                 }
+            }
+        }
+    }
+
+    protected void recupFirstRessources(){
+        for (Player player : playersList) {
+            Settlement s = player.getSettlements().get(1);
+            Node n = Node.getNode(s);
+            List<Tile> t = Tile.getTileAdjacents(n);
+            for (Tile tile : t) {
+                player.addCard(tile.getTerrain().toCard(), 1);
             }
         }
     }

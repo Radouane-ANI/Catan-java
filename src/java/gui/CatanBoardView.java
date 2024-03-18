@@ -1,26 +1,52 @@
 package gui;
 
-import javax.swing.*;
+import controleur.ViewControleur;
 import logic.City;
 import logic.Settlement;
-import java.awt.*;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import map.*;
 
 public class CatanBoardView extends JPanel {
 
-    public static final int TILE_SIZE = 60;
+    public static final int TILE_SIZE = 110;
 
     private Dimension dim;
     private Point center;
 
-    private Hexagon hex;
+    private BoardImage tuileImage;
 
     public CatanBoardView(Dimension d) {
         dim = d;
         center = new Point((int) d.getWidth() / 2, (int) d.getHeight() / 2);
-        hex = new Hexagon(TILE_SIZE);
+        tuileImage = new BoardImage();
         setPreferredSize(d);
         setLayout(null);
+        JButton turnButton = new JButton("Next Turn"); // mis ici pour l'instant
+        turnButton.setBounds(500, 500, 125, 25);
+        turnButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                ViewControleur.NextTurn(false);
+            }
+
+        });
+        add(turnButton);
     }
 
     @Override
@@ -42,49 +68,45 @@ public class CatanBoardView extends JPanel {
             addRoad(null, e, g2d);
         }
         for (Node n : Node.getNodesIntern()) {
-            addCity(null, n, g);
+            addCity(null, n, g2d);
         }
         g2d.dispose();
     }
 
     private void drawTile(Tile t, Graphics2D g2d, double screenX, double screenY) {
-        Shape pointer = hex.translate(new Point((int) screenX, (int) screenY));
-        g2d.setColor(TerrainColor.getTerrainColors(t.getTerrain()));
-        g2d.fill(pointer);
-        g2d.setColor(Color.BLACK);
-        g2d.draw(pointer);
+        ImageIcon image = tuileImage.getTerrainImageIcon(t.getTerrain());
+        g2d.drawImage(image.getImage(), (int) screenX - image.getIconWidth() / 2, (int) screenY, null);
 
-        // numéro de dé
+        // Numéro de dé
         int diceNumber = t.getDiceNumber();
         if (diceNumber != 0) {
-            String diceNumberText = Integer.toString(diceNumber);
-            FontMetrics fm = g2d.getFontMetrics();
-            int textWidth = fm.stringWidth(diceNumberText);
-            int textHeight = fm.getHeight();
-            int textX = (int) screenX + (TILE_SIZE - textWidth) / 2;
-            int textY = (int) screenY + (TILE_SIZE + textHeight) / 2;
-            g2d.drawString(diceNumberText, textX, textY);
+            int textX = (int) screenX;
+            int textY = (int) screenY + TILE_SIZE / 2;
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 20));
+            g2d.drawString(diceNumber + "", textX, textY);
         }
     }
 
     private double calculateScreenX(double x) {
-        int spacing = TILE_SIZE - 13; // peut être ajusté
+        int spacing = TILE_SIZE / 20; // peut être ajusté
         int padding = 10;
 
         return x * (TILE_SIZE + spacing) + padding;
     }
 
-    private int calculateScreenY(double x, double y) {
-        int spacing = TILE_SIZE - 27; // peut être ajusté
+    private double calculateScreenY(double x, double y) {
+        int spacing = -TILE_SIZE / 4;
+        int tileHeight = (int) (TILE_SIZE * 1.15);
         int padding = 10;
-        return (int) (y * (TILE_SIZE + spacing) + padding);
+        return y * (tileHeight + spacing) + padding;
     }
 
     private double centerIntersection(double x, double y, double screenY) {
-        return screenY += (x != (int) x) ^ (y % 2 == 0) ? TILE_SIZE / 2 : 0;
+        return screenY += (x != (int) x) ^ (y % 2 == 0) ? TILE_SIZE / 4 : 0;
     }
 
-    public void addCity(JLabel component, Node pos, Graphics g) {
+    public void addCity(JLabel component, Node pos, Graphics2D g) {
         if (g != null && pos.getGroup() == null) {
             return;
         }
@@ -99,15 +121,19 @@ public class CatanBoardView extends JPanel {
         int centerX = (int) (screenX - (TILE_SIZE / 6));
         int centerY = (int) (screenY - (TILE_SIZE / 6));
         if (component != null) {
-            component.setBounds(centerX, centerY, TILE_SIZE / 3 + 1, TILE_SIZE / 3 + 1);
+            component.setBounds(centerX, centerY, TILE_SIZE / 4 + 1, TILE_SIZE / 4 + 1);
             add(component);
         } else if (g != null) {
+
             if (pos.getGroup() instanceof Settlement) {
-                g.setColor(pos.getGroup().getColor());
-                g.fillOval(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3);
+                ImageIcon image = tuileImage.getSettlementImageIcon(pos.getGroup().getOwner());
+                int decalage = image.getIconWidth() / 2;
+                g.drawImage(image.getImage(), (int) screenX - decalage, (int) screenY - decalage, null);
             } else if (pos.getGroup() instanceof City) {
-                g.setColor(pos.getGroup().getColor());
-                g.fill3DRect(centerX, centerY, TILE_SIZE / 3, TILE_SIZE / 3, true);
+                ImageIcon image = tuileImage.getCityImageIcon(pos.getGroup().getOwner());
+                int decalage = image.getIconWidth() / 2;
+
+                g.drawImage(image.getImage(), (int) screenX - decalage, (int) screenY - decalage, null);
             }
         }
     }
@@ -129,7 +155,7 @@ public class CatanBoardView extends JPanel {
         screenY1 = centerIntersection(x1, y1, screenY1);
         screenY2 = centerIntersection(x2, y2, screenY2);
         if (g2d != null) {
-            g2d.setStroke(new BasicStroke(5.0f));
+            g2d.setStroke(new BasicStroke(TILE_SIZE / 12 + 1));
             g2d.setColor(e.getRoad().getColor());
             g2d.drawLine((int) screenX1, (int) screenY1, (int) screenX2, (int) screenY2);
         } else if (component != null) {
@@ -139,9 +165,9 @@ public class CatanBoardView extends JPanel {
             y1 = Math.min((int) screenY1, (int) screenY2);
             x2 = Math.max((int) screenX1, (int) screenX2);
             y2 = Math.max((int) screenY1, (int) screenY2);
-
-            component.setBounds((int) x1 - 1, (int) y1, (int) (x2 - x1) + 10, (int) (y2 - y1));
+            component.setBounds((int) x1 - TILE_SIZE / 20, (int) y1, (int) (x2 + TILE_SIZE / 10 - x1), (int) (y2 - y1));
             add(component);
         }
     }
+
 }

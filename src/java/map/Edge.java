@@ -62,7 +62,7 @@ public class Edge extends Tuple<Node> {
     }
 
     public static ArrayList<Edge> listBuildRoad(Player p) {
-        ArrayList<Edge> possible = new ArrayList<>();System.out.println(p.getRoads());
+        ArrayList<Edge> possible = new ArrayList<>();
         for (Road road : p.getRoads()) {
             Edge edge = getEdge(road);
             if (edge == null) {
@@ -79,7 +79,6 @@ public class Edge extends Tuple<Node> {
                 }
             }
         }
-        System.out.println(possible);
         return possible;
     }
 }

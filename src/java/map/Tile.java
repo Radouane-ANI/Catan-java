@@ -1,5 +1,7 @@
 package map;
 
+import java.util.ArrayList;
+
 import logic.Thief;
 import util.TerrainType;
 
@@ -28,36 +30,36 @@ public class Tile extends Vector {
     }
 
     private static final Vector[] TILE_COORDINATES = {
-        new Vector(1.5, 0), new Vector(2.5, 0), new Vector(3.5, 0),
-        new Vector(1, 1), new Vector(2, 1), new Vector(3, 1), new Vector(4, 1),
-        new Vector(0.5, 2), new Vector(1.5, 2), new Vector(2.5, 2), new Vector(3.5, 2), new Vector(4.5, 2),
-        new Vector(1, 3), new Vector(2, 3), new Vector(3, 3), new Vector(4, 3),
-        new Vector(1.5, 4), new Vector(2.5, 4), new Vector(3.5, 4)
+            new Vector(1.5, 0), new Vector(2.5, 0), new Vector(3.5, 0),
+            new Vector(1, 1), new Vector(2, 1), new Vector(3, 1), new Vector(4, 1),
+            new Vector(0.5, 2), new Vector(1.5, 2), new Vector(2.5, 2), new Vector(3.5, 2), new Vector(4.5, 2),
+            new Vector(1, 3), new Vector(2, 3), new Vector(3, 3), new Vector(4, 3),
+            new Vector(1.5, 4), new Vector(2.5, 4), new Vector(3.5, 4)
     };
 
     static void createTiles() {
         tileArray = new Tile[TILE_COORDINATES.length];
 
-        Basket<Integer> diceBasket = new Basket<Integer>(new Integer[]{
-            2,
-            3, 3,
-            4, 4,
-            5, 5,
-            6, 6,
-            8, 8,
-            9, 9,
-            10, 10,
-            11, 11,
-            12
+        Basket<Integer> diceBasket = new Basket<Integer>(new Integer[] {
+                2,
+                3, 3,
+                4, 4,
+                5, 5,
+                6, 6,
+                8, 8,
+                9, 9,
+                10, 10,
+                11, 11,
+                12
         });
 
-        Basket<TerrainType> terrainBasket = new Basket<TerrainType>(new TerrainType[]{
-            TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST,
-            TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD,
-            TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE,
-            TerrainType.BRICK, TerrainType.BRICK, TerrainType.BRICK,
-            TerrainType.MOUNTAIN, TerrainType.MOUNTAIN, TerrainType.MOUNTAIN,
-            TerrainType.DESERT
+        Basket<TerrainType> terrainBasket = new Basket<TerrainType>(new TerrainType[] {
+                TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST, TerrainType.FOREST,
+                TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD, TerrainType.FIELD,
+                TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE, TerrainType.PASTURE,
+                TerrainType.BRICK, TerrainType.BRICK, TerrainType.BRICK,
+                TerrainType.MOUNTAIN, TerrainType.MOUNTAIN, TerrainType.MOUNTAIN,
+                TerrainType.DESERT
         });
 
         for (int i = 0; i < TILE_COORDINATES.length; i++) {
@@ -108,5 +110,18 @@ public class Tile extends Vector {
 
     void setNeighbors(Node[] neighbors) {
         this.neighbors = neighbors;
+    }
+
+    public static ArrayList<Tile> getTileAdjacents(Node n) {
+        ArrayList<Tile> l = new ArrayList<>();
+        if (n != null) {
+            Tile t = getTile(n.getX(), (int) n.getY());
+            Tile t1 = getTile(n.getX() + 0.5, (int) n.getY());
+            Tile t2 = getTile(n.getX() - 0.5, (int) n.getY());
+            if (t == null) l.add(t);
+            if (t1 == null) l.add(t1);
+            if (t2 == null) l.add(t2);
+        }
+        return l;
     }
 }

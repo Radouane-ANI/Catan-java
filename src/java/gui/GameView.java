@@ -2,8 +2,13 @@ package gui;
 
 import logic.Bank;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 
 public class GameView extends JPanel {
 
@@ -19,10 +24,11 @@ public class GameView extends JPanel {
         boardView = new CatanBoardView(size);
         bankPanel = new BankPanel(new Bank());
         exchangePanel = ExchangePanel.createTestExchangePanel();
-
+        dicePanel.setOpaque(false);
+        boardView.setOpaque(false);
         add(dicePanel, BorderLayout.EAST);
         add(boardView, BorderLayout.CENTER);
-        add(bankPanel, BorderLayout.NORTH); 
+        add(bankPanel, BorderLayout.NORTH);
         add(exchangePanel, BorderLayout.SOUTH);
     }
 
@@ -32,5 +38,12 @@ public class GameView extends JPanel {
 
     public CatanBoardView getBoardView() {
         return boardView;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Image backgroundImage = new ImageIcon(getClass().getResource("/src/ressources/background.jpg")).getImage();
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
     }
 }
