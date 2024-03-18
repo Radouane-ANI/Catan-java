@@ -1,20 +1,26 @@
 package gui;
 
-import javax.swing.*;
 
 import controleur.ViewControleur;
 import logic.City;
 import logic.Settlement;
-import java.awt.*;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import map.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
+import map.*;
 
 public class CatanBoardView extends JPanel {
 
@@ -69,7 +75,7 @@ public class CatanBoardView extends JPanel {
     }
 
     private void drawTile(Tile t, Graphics2D g2d, double screenX, double screenY) {
-        ImageIcon image = tuileImage.getTerrainImageIcons(t.getTerrain());
+        ImageIcon image = tuileImage.getTerrainImageIcon(t.getTerrain());
         g2d.drawImage(image.getImage(), (int) screenX - image.getIconWidth() / 2, (int) screenY, null);
 
         // Numéro de dé
@@ -120,29 +126,16 @@ public class CatanBoardView extends JPanel {
             add(component);
         } else if (g != null) {
 
-            ImageIcon image = tuileImage.getCityImageIcons(pos.getGroup().getOwner());
-            g.drawImage(image.getImage(), (int) screenX - image.getIconWidth() / 2, (int) screenY, null);
+            if (pos.getGroup() instanceof Settlement) {
+                ImageIcon image = tuileImage.getSettlementImageIcon(pos.getGroup().getOwner());
+                int decalage = image.getIconWidth() / 2;
+                g.drawImage(image.getImage(), (int) screenX - decalage, (int) screenY - decalage, null);
+            } else if (pos.getGroup() instanceof City) {
+                ImageIcon image = tuileImage.getCityImageIcon(pos.getGroup().getOwner());
+                int decalage = image.getIconWidth() / 2;
 
-            // File file = new File("/home/radouane/k-catan/output.png");
-            // BufferedImage originalImage;
-            // try {
-            //     originalImage = resizeImage(file, TILE_SIZE / 2, TILE_SIZE / 2);
-            //     g.drawImage(originalImage, centerX, centerY, null);
-
-            // } catch (IOException e) {
-            //     // TODO Auto-generated catch block
-            //     e.printStackTrace();
-            // }
-
-
-
-            // if (pos.getGroup() instanceof Settlement) {
-            // g.setColor(pos.getGroup().getColor());
-            // g.fillOval(centerX, centerY, TILE_SIZE / 4, TILE_SIZE / 4);
-            // } else if (pos.getGroup() instanceof City) {
-            // g.setColor(pos.getGroup().getColor());
-            // g.fill3DRect(centerX, centerY, TILE_SIZE / 4, TILE_SIZE / 4, true);
-            // }
+                g.drawImage(image.getImage(), (int) screenX - decalage, (int) screenY - decalage, null);
+            }
         }
     }
 
@@ -163,7 +156,7 @@ public class CatanBoardView extends JPanel {
         screenY1 = centerIntersection(x1, y1, screenY1);
         screenY2 = centerIntersection(x2, y2, screenY2);
         if (g2d != null) {
-            g2d.setStroke(new BasicStroke(TILE_SIZE / 10 + 1));
+            g2d.setStroke(new BasicStroke(TILE_SIZE / 12 + 1));
             g2d.setColor(e.getRoad().getColor());
             g2d.drawLine((int) screenX1, (int) screenY1, (int) screenX2, (int) screenY2);
         } else if (component != null) {
@@ -178,12 +171,4 @@ public class CatanBoardView extends JPanel {
         }
     }
 
-    public static BufferedImage resizeImage(File file, int width, int height) throws IOException {
-        BufferedImage originalImage = ImageIO.read(file);
-        BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = resizedImage.createGraphics();
-        g2d.drawImage(originalImage, 0, 0, width, height, null);
-        g2d.dispose();
-        return resizedImage;
-    }
 }

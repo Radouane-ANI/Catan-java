@@ -126,6 +126,7 @@ public class CatanBoardControleur {
                 n.setNode(c);
                 removeCityComponents();
                 ViewControleur.setFinishedTurn(true);
+                view.repaint();
             }
         });
     }

@@ -15,7 +15,7 @@ public class RoadComponent extends JLabel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
 
-        g2d.setStroke(new BasicStroke(CatanBoardView.TILE_SIZE / 10));
+        g2d.setStroke(new BasicStroke(CatanBoardView.TILE_SIZE / 15));
         g2d.setColor(new Color(0, 0, 0, 200));
         if (screenX2 == 0) {
             screenX2 += CatanBoardView.TILE_SIZE / 20;
