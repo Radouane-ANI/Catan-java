@@ -3,6 +3,12 @@ package src.java.logic;
 public class TradePort {
     private boolean[] tradePorts = new boolean[6];
 
+    public TradePort() {
+        for (int i = 0; i < tradePorts.length; i++) {
+            tradePorts[i] = false;
+        }
+    }
+
     public boolean[] getTradePorts() {
         return tradePorts;
     }

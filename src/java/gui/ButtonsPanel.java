@@ -11,16 +11,13 @@ import java.io.File;
 import java.io.IOException;
 
 public class ButtonsPanel extends JPanel {
+    private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
     private Player player;
-    private static final int NUMBER_OF_BUTTONS = 6;
+    private static final int NUMBER_OF_BUTTONS = 3;
     private static final String[] IMAGE_PATH = {
-            "/Users/juliazhula/k-catan/src/java/gui/button1.png",
-            "/Users/juliazhula/k-catan/src/java/gui/button1.png",
-            "/Users/juliazhula/k-catan/src/java/gui/button1.png",
-            "/Users/juliazhula/k-catan/src/java/gui/button1.png",
-            "/Users/juliazhula/k-catan/src/java/gui/button1.png",
-            "/Users/juliazhula/k-catan/src/java/gui/button1.png"
-
+            BASE_PATH+"exchange.png",
+            BASE_PATH+"devButton.png",
+            BASE_PATH+"go.png"
     };
     private ImageIcon[] buttonIcons = new ImageIcon[NUMBER_OF_BUTTONS];
 
@@ -30,21 +27,17 @@ public class ButtonsPanel extends JPanel {
     public ButtonsPanel(Player player) {
         this.player = player;
         setLayout(new GridLayout(1, NUMBER_OF_BUTTONS, 5, 0));
-        for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-            loadAndResizeImage(IMAGE_PATH[i],i);
-        }
+        loadScaledIcon();
         initializeButtons();
     }
 
-    private void loadAndResizeImage(String imagePath, int i) {
-        try {
-            BufferedImage originalImage = ImageIO.read(new File(imagePath));
-            int size = 60;
-            Image resizedImage = originalImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
-            buttonIcons[i] = new ImageIcon(resizedImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Load image failed", "Error", JOptionPane.ERROR_MESSAGE);
+    private void loadScaledIcon() {
+        String imagFile = "";
+        for (int i = 0; i < buttonIcons.length; i++) {
+            imagFile = IMAGE_PATH[i];
+            ImageIcon icon = new ImageIcon(imagFile);
+            Image scaledImage = icon.getImage().getScaledInstance((int) (icon.getIconWidth() * 0.6), (int) (icon.getIconHeight() * 0.6), Image.SCALE_SMOOTH);
+            buttonIcons[i] = new ImageIcon(scaledImage);
         }
     }
 
@@ -59,7 +52,7 @@ public class ButtonsPanel extends JPanel {
                 case 1 : button.setActionCommand("Get DevCard");
                          button.setNumber(-1);
                          break;
-                case 2 : button.setActionCommand("Build Road");
+                /*case 2 : button.setActionCommand("Build Road");
                          button.setNumber(14);
                          break;
                 case 3 : button.setActionCommand("Build Settlement");
@@ -67,8 +60,8 @@ public class ButtonsPanel extends JPanel {
                          break;
                 case 4 : button.setActionCommand("Build City");
                          button.setNumber(4);
-                         break;
-                case 5 : button.setActionCommand("Go");
+                         break;*/
+                case 2 : button.setActionCommand("Go");
                          button.setNumber(-1);
                          break;
             }
@@ -84,10 +77,10 @@ public class ButtonsPanel extends JPanel {
         switch (NUMBER_OF_BUTTON) {
             case 0 : setExchangeButton();break;
             case 1 : setGetDevButton();break;
-            case 2 : setBuildRoadButton();break;
+           /* case 2 : setBuildRoadButton();break;
             case 3 : setBuildSettlementButton();break;
-            case 4 : setBuildCityButton();break;
-            case 5 : setGoButton();break;
+            case 4 : setBuildCityButton();break;*/
+            case 2 : setGoButton();break;
         }
     }
 
@@ -137,7 +130,7 @@ public class ButtonsPanel extends JPanel {
     }
 
     public void setGoButton() {
-        buttons[5].addActionListener(new ActionListener() {
+        buttons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -163,5 +156,10 @@ public class ButtonsPanel extends JPanel {
                 buttons[i].setEnabled(false);
             }
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(100, 80);
     }
 }

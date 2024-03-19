@@ -3,6 +3,8 @@ package src.java.controleur;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import src.java.logic.HumanGroup;
 import src.java.map.Node;
 import src.java.logic.Player;
 import src.java.logic.TupleDice;
