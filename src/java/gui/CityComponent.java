@@ -1,4 +1,4 @@
-package src.java.gui;
+package gui;
 
 import java.awt.Graphics;
 
@@ -9,6 +9,6 @@ public class CityComponent extends JLabel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawRect(0, 0, CatanBoardView.TILE_SIZE / 3, CatanBoardView.TILE_SIZE / 3);
+        g.drawRect(0, 0, CatanBoardView.TILE_SIZE / 4, CatanBoardView.TILE_SIZE / 4);
     }
 }

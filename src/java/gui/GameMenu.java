@@ -1,4 +1,4 @@
-package src.java.gui;
+package gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -10,7 +10,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import src.java.controleur.ViewControleur;
+import controleur.ViewControleur;
 
 public class GameMenu extends JPanel {
 
@@ -32,7 +32,7 @@ public class GameMenu extends JPanel {
         JButton playButton = createButton("src/ressources/play.png", "src/ressources/play_click.png", ViewControleur::jouer);
         buttonPanel.add(playButton, BorderLayout.NORTH);
     
-        JButton extraButton = createButton("src/ressources/parametres.png", "src/ressources/parametres_click.png", () -> {});
+        JButton extraButton = createButton("src/ressources/parametres.png", "src/ressources/parametres_click.png", ViewControleur::option);
         buttonPanel.add(extraButton, BorderLayout.CENTER);
     
         JButton quitButton = createButton("src/ressources/quit.png", "src/ressources/quit_click.png", ViewControleur::quitter);

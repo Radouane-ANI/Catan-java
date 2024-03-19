@@ -1,6 +1,6 @@
-package src.java.logic;
+package logic;
 
-import static src.java.logic.Card.*;
+import static logic.Card.*;
 
 public interface Trade {
     default boolean isTradableInBank(CardBox saleList,CardBox wishList, TradePort tradePorts) {

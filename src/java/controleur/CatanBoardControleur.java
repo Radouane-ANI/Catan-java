@@ -1,18 +1,17 @@
-package src.java.controleur;
+package controleur;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import src.java.gui.CatanBoardView;
-import src.java.gui.CityComponent;
-import src.java.gui.RoadComponent;
-import src.java.logic.City;
-import src.java.logic.Player;
-import src.java.logic.Road;
-import src.java.logic.Settlement;
-import src.java.map.*;
+import gui.CatanBoardView;
+import gui.CityComponent;
+import gui.RoadComponent;
+import logic.City;
+import logic.Player;
+import logic.Road;
+import logic.Settlement;
+import map.*;
 
 public class CatanBoardControleur {
     private CatanBoardView view;
@@ -30,6 +29,7 @@ public class CatanBoardControleur {
                 avaibleCity(node, p, settlement);
             }
         }
+        view.repaint();
     }
 
     public void buildSettlement(Player p) {
@@ -44,6 +44,7 @@ public class CatanBoardControleur {
                 avaibleSettelement(posY, p);
             }
         }
+        view.repaint();
     }
 
     public void buildRoad(Player p) {
@@ -61,6 +62,7 @@ public class CatanBoardControleur {
                 avaibleSettelement(node, p);
             }
         }
+        view.repaint();
     }
 
     private void firstBuildRoad(Player p, Node n) {
@@ -73,6 +75,8 @@ public class CatanBoardControleur {
         RoadComponent road = new RoadComponent();
         view.addRoad(road, edge, null);
         roadComponents.add(road);
+        ViewControleur.setFinishedTurn(false);
+
         road.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -80,10 +84,7 @@ public class CatanBoardControleur {
                 p.buildRoad(r);
                 edge.setRoad(r);
                 removeRoadComponents();
-                view.repaint();
-                if (p.getRoads().size() < 2) {
-                    firstBuild(p);
-                }
+                ViewControleur.setFinishedTurn(true);
             }
         });
     }
@@ -92,6 +93,7 @@ public class CatanBoardControleur {
         CityComponent city = new CityComponent();
         view.addCity(city, n, null);
         cityComponents.add(city);
+        ViewControleur.setFinishedTurn(false);
 
         city.addMouseListener(new MouseAdapter() {
             @Override
@@ -100,9 +102,10 @@ public class CatanBoardControleur {
                 p.buildSettlement(c);
                 n.setNode(c);
                 removeCityComponents();
-                view.repaint();
                 if (p.getRoads().size() < 2) {
                     firstBuildRoad(p, n);
+                } else {
+                    ViewControleur.setFinishedTurn(true);
                 }
             }
         });
@@ -112,6 +115,7 @@ public class CatanBoardControleur {
         CityComponent city = new CityComponent();
         view.addCity(city, n, null);
         cityComponents.add(city);
+        ViewControleur.setFinishedTurn(false);
 
         city.addMouseListener(new MouseAdapter() {
             @Override
@@ -120,6 +124,7 @@ public class CatanBoardControleur {
                 p.buildCity(c, s);
                 n.setNode(c);
                 removeCityComponents();
+                ViewControleur.setFinishedTurn(true);
                 view.repaint();
             }
         });

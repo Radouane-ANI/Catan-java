@@ -1,6 +1,6 @@
-package src.java.controleur;
+package controleur;
 
-import src.java.gui.MainFrame;
+import gui.MainFrame;
 
 public class App {
     public static void main(String[] args) {

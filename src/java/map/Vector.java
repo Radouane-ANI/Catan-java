@@ -1,15 +1,15 @@
-package src.java.map;
+package map;
 
 public class Vector {
     protected double x;
-    protected int y;
+    protected double y;
 
-    public Vector(double x, int y) {
+    public Vector(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    void add(double x, int y) {
+    void add(double x, double y) {
         this.x += x;
         this.y += y;
     }
@@ -18,7 +18,7 @@ public class Vector {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 

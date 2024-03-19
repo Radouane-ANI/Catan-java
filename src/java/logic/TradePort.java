@@ -1,4 +1,4 @@
-package src.java.logic;
+package logic;
 
 public class TradePort {
     private boolean[] tradePorts = new boolean[6];

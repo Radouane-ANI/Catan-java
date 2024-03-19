@@ -1,4 +1,4 @@
-package src.java.logic;
+package logic;
 
 import java.util.List;
 import java.awt.Color;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import static src.java.logic.Card.*;
+import static logic.Card.*;
 
 public class Player implements Trade {
     private String name;

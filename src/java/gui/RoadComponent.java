@@ -1,4 +1,4 @@
-package src.java.gui;
+package gui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -15,8 +15,12 @@ public class RoadComponent extends JLabel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
 
-        g2d.setStroke(new BasicStroke(5.0f));
+        g2d.setStroke(new BasicStroke(CatanBoardView.TILE_SIZE / 15));
         g2d.setColor(new Color(0, 0, 0, 200));
+        if (screenX2 == 0) {
+            screenX2 += CatanBoardView.TILE_SIZE / 20;
+            screenX1 += CatanBoardView.TILE_SIZE / 20;
+        }
         g2d.drawLine(screenX1, screenY1, screenX2, screenY2);
         g2d.dispose();
     }
@@ -28,14 +32,12 @@ public class RoadComponent extends JLabel {
         int x1 = Math.min((int) screenX1, (int) screenX2);
         int y1 = Math.min((int) screenY1, (int) screenY2);
         if (x1 == (int) screenX1 && y1 == (int) screenY1) {
-            this.screenX1 = 0;
             this.screenY1 = 0;
         } else {
-            this.screenX1 = screenX1 - screenX1;
             this.screenY1 = screenY1 - screenY2;
-            this.screenX2 += this.screenX1;
             this.screenY2 += this.screenY1;
         }
+        this.screenX1 = 0;
 
     }
 

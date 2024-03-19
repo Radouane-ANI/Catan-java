@@ -1,5 +1,5 @@
 
-package src.java.logic;
+package logic;
 
 import java.awt.Color;
 

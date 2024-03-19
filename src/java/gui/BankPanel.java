@@ -1,7 +1,7 @@
-package src.java.gui;
+package gui;
 
-import src.java.logic.Bank;
-import src.java.logic.Card;
+import logic.Bank;
+import logic.Card;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +12,7 @@ public class BankPanel extends JPanel {
     private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
     Bank bank;
     private static final int IMAGE_COUNT = 7;
+
     private int[] numbers;
 
     private JLabel[] labels;

@@ -1,8 +1,8 @@
-package src.java.gui;
+package gui;
 
 import java.awt.Color;
 
-import src.java.util.TerrainType;
+import util.TerrainType;
 
 class TerrainColor {
     private static final Color DARK_GREEN = new Color(0, 100, 0);

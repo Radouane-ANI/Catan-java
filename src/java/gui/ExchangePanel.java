@@ -1,7 +1,7 @@
-package src.java.gui;
+package gui;
 
 
-import src.java.logic.*;
+import logic.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +15,6 @@ public class ExchangePanel extends JPanel {
     private CardSuit wishList;
     private CardPropose proposeList;
     private ImageIcon scaledIcon;
-
-
 
     public ExchangePanel(Player player) {
         this.player = player;
@@ -257,15 +255,16 @@ public class ExchangePanel extends JPanel {
         this.repaint();
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args)  {
         Bank bank = new Bank();
-        Player player = new Player(false,"Sam",bank,Color.red);
+
+        Player player = new Player(false, "Sam", bank, Color.red);
         CardBox cardBox = new CardBox();
         TradePort tradePort = new TradePort();
 
         player.setTradePorts(tradePort);
         player.getTradePorts().addPort(Card.SHEEP);
-        int[] x = {1,2,3,4,5};
+        int[] x = {1, 2, 3, 4, 5};
         cardBox.setCardsNumbers(x);
         player.setMyCards(cardBox);
 
@@ -275,17 +274,17 @@ public class ExchangePanel extends JPanel {
         ExchangePanel exchangePanel = new ExchangePanel(player);
         ButtonsPanel buttonsPanel = new ButtonsPanel(player);
 
-        frame.setLayout(new GridLayout(1,2));
+        frame.setLayout(new GridLayout(1, 2));
 
 
         JPanel jPanel1 = new JPanel(new BorderLayout());
-        jPanel1.add(exchangePanel,BorderLayout.SOUTH);
+        jPanel1.add(exchangePanel, BorderLayout.SOUTH);
         BankPanel bankPanel = new BankPanel(bank);
-        jPanel1.add(bankPanel,BorderLayout.NORTH);
+        jPanel1.add(bankPanel, BorderLayout.NORTH);
         frame.add(jPanel1);
 
         JPanel jPanel2 = new JPanel(new BorderLayout());
-        jPanel2.add(buttonsPanel,BorderLayout.SOUTH);
+        jPanel2.add(buttonsPanel, BorderLayout.SOUTH);
         frame.add(jPanel2);
 
         frame.getContentPane().setBackground(Color.pink);
@@ -294,7 +293,6 @@ public class ExchangePanel extends JPanel {
         frame.setVisible(true);
 
         bankPanel.start(1);
-    }
-
+    }*/
 
 }

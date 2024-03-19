@@ -1,9 +1,9 @@
-package src.java.gui;
+package gui;
 
-import src.java.logic.Bank;
-import src.java.logic.Card;
-import src.java.logic.CardBox;
-import src.java.logic.Player;
+import logic.Bank;
+import logic.Card;
+import logic.CardBox;
+import logic.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -74,7 +74,6 @@ public class CardSuit extends JLayeredPane {
 
         String[] matchingFiles = dir.list(filter);
 
-        // 假设只有一个匹配的文件，并返回其完整路径
         if (matchingFiles != null && matchingFiles.length > 0) {
             return BASE_PATH + matchingFiles[0];
         } else {
@@ -196,4 +195,6 @@ public class CardSuit extends JLayeredPane {
         frame.setSize(1000, 700);
         frame.setVisible(true);
     }
+
+
 }

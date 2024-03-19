@@ -1,4 +1,4 @@
-package src.java.logic;
+package logic;
 
 public class CardBox {
     protected int[] cardsNumbers = new int[Card.values().length];
