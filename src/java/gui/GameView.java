@@ -5,6 +5,8 @@ import logic.Bank;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import controleur.Game;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -16,10 +18,12 @@ public class GameView extends JPanel {
     private CatanBoardView boardView;
     private BankPanel bankPanel;
     private ExchangePanel exchangePanel;
+    public Game game;
 
-    public GameView() {
+    public GameView(Game game) {
+        this.game = game;
         setLayout(new BorderLayout());
-        dicePanel = new DiceGUI();
+        dicePanel = game.getDiceGUI();
         Dimension size = getSize();
         boardView = new CatanBoardView(size);
         bankPanel = new BankPanel(new Bank());

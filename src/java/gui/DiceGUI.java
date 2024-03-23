@@ -9,17 +9,20 @@ public class DiceGUI extends JPanel {
 
     private TupleDice dicePanel;
     private JButton rollButton;
+    private boolean rollDice;
 
     public DiceGUI() {
         setLayout(new FlowLayout());
 
         dicePanel = new TupleDice();
-        
+
         rollButton = new JButton("Roll");
         rollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 roll();
+                rollDice = true;
+
             }
         });
 
@@ -34,14 +37,23 @@ public class DiceGUI extends JPanel {
     public int getResult() {
         return dicePanel.getResult();
     }
+
+    public boolean isRollDice() {
+        return rollDice;
+    }
+
+    public void setRollDice(boolean rollDice) {
+        this.rollDice = rollDice;
+    }
+
 }
 
 class TupleDice extends JPanel {
-    
+
     private Dice dice1;
     private Dice dice2;
 
-    public TupleDice(){
+    public TupleDice() {
         setLayout(new FlowLayout());
         dice1 = new Dice();
         dice2 = new Dice();
@@ -49,7 +61,7 @@ class TupleDice extends JPanel {
         add(dice2);
     }
 
-    public void roll(){
+    public void roll() {
         dice1.roll();
         dice2.roll();
         int result = dice1.getValue() + dice2.getValue();
@@ -62,19 +74,19 @@ class TupleDice extends JPanel {
 }
 
 class Dice extends JPanel {
-    
+
     private int value;
 
     public int getValue() {
         return this.value;
     }
 
-    public Dice(){
+    public Dice() {
         this.setPreferredSize(new Dimension(100, 100));
     }
 
-    public void roll(){
-        this.value = (int) (1 + Math.random()*6);
+    public void roll() {
+        this.value = (int) (1 + Math.random() * 6);
         repaint();
     }
 

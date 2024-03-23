@@ -29,10 +29,10 @@ public class ViewControleur {
         if (gameOption.getPlayers().size() != 4) {
             gameOption.completeJoueur();
         }
-        GameView gameView = new GameView();
-        frame.setPanel(gameView);
-
         game = new Game(gameOption.getPlayers());
+
+        GameView gameView = new GameView(game);
+        frame.setPanel(gameView);
 
         catanControleur = new controleur.CatanBoardControleur(gameView.getBoardView());
 

@@ -23,10 +23,14 @@ public class Turn {
         playersList = players;
         currentPlayerIndex = 0; // Commence avec le premier joueur
         this.diceGUI = new DiceGUI(); 
-        diceGUI.roll();
     }
 
     void tour() {
+        if (playersList.get(currentPlayerIndex).isBot()) {
+            diceGUI.roll();
+        } else {
+            waitRollDice();
+        }
         int sumDices = diceGUI.getResult();
         recupRessources(playersList, sumDices);
         echange();
@@ -66,7 +70,9 @@ public class Turn {
             Node n = Node.getNode(s);
             List<Tile> t = Tile.getTileAdjacents(n);
             for (Tile tile : t) {
-                player.addCard(tile.getTerrain().toCard(), 1);
+                if (tile.getTerrain() != TerrainType.DESERT) {
+                    player.addCard(tile.getTerrain().toCard(), 1);
+                }
             }
         }
     }
@@ -110,4 +116,19 @@ public class Turn {
         // affiche a l'ecran un echange que le joueur peut accepeter ou non
         return false;
     }
+
+    private void waitRollDice() {
+        while (!diceGUI.isRollDice()) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+            }
+        }
+        diceGUI.setRollDice(false);
+    }
+
+    public DiceGUI getDiceGUI() {
+        return diceGUI;
+    }
+
 }
