@@ -18,7 +18,8 @@ public class GameView extends JPanel {
     private CatanBoardView boardView;
     private BankPanel bankPanel;
     private ExchangePanel exchangePanel;
-    public Game game;
+    private Game game;
+    private ButtonsPanel buttonsPanel;
 
     public GameView(Game game) {
         this.game = game;
@@ -28,12 +29,14 @@ public class GameView extends JPanel {
         boardView = new CatanBoardView(size);
         bankPanel = new BankPanel(new Bank());
         exchangePanel = ExchangePanel.createTestExchangePanel();
+        buttonsPanel = new ButtonsPanel(game);
         dicePanel.setOpaque(false);
         boardView.setOpaque(false);
         add(dicePanel, BorderLayout.EAST);
         add(boardView, BorderLayout.CENTER);
         add(bankPanel, BorderLayout.NORTH);
-        add(new ButtonsPanel(game), BorderLayout.SOUTH);
+        add(buttonsPanel, BorderLayout.SOUTH);
+        game.setGameView(this);
     }
 
     public DiceGUI getDicePanel() {
@@ -49,5 +52,9 @@ public class GameView extends JPanel {
         super.paintComponent(g);
         Image backgroundImage = new ImageIcon(getClass().getResource("/src/ressources/background.jpg")).getImage();
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+    }
+
+    public void update() {
+        buttonsPanel.update();
     }
 }

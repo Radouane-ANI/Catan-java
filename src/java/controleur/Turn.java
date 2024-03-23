@@ -12,9 +12,10 @@ import map.Board;
 import map.Tile;
 import util.TerrainType;
 import gui.DiceGUI;
+import gui.GameView;
 
 public class Turn {
-
+    private GameView gameView;
     protected List<Player> playersList;
     protected int currentPlayerIndex;
     private DiceGUI diceGUI;
@@ -28,7 +29,9 @@ public class Turn {
     }
 
     void tour() {
+        currentPlayer.setDiced(false);
         currentPlayer = playersList.get(currentPlayerIndex);
+        update();
         if (currentPlayer.isBot()) {
             diceGUI.roll();
         } else {
@@ -37,9 +40,9 @@ public class Turn {
         currentPlayer.setDiced(true);
         int sumDices = diceGUI.getResult();
         recupRessources(playersList, sumDices);
+        update();
         echange();
         creationCity();
-        currentPlayer.setDiced(false);
     }
 
     protected void firstBuild(Player player) {
@@ -137,5 +140,13 @@ public class Turn {
 
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public void setGameView(GameView gameView) {
+        this.gameView = gameView;
+    }
+
+    protected void update(){
+        gameView.update();
     }
 }

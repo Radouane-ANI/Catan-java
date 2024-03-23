@@ -74,6 +74,9 @@ public class Game extends Turn implements Runnable {
 
     public void setFinishedTurn(boolean f) {
         finishedTurn = f;
+        if (f && currentPlayer.getRoads().size() > 1 && !currentPlayer.isBot()) {
+            update();
+        }
     }
 
 }
