@@ -33,7 +33,7 @@ public class GameView extends JPanel {
         add(dicePanel, BorderLayout.EAST);
         add(boardView, BorderLayout.CENTER);
         add(bankPanel, BorderLayout.NORTH);
-        add(exchangePanel, BorderLayout.SOUTH);
+        add(new ButtonsPanel(game), BorderLayout.SOUTH);
     }
 
     public DiceGUI getDicePanel() {

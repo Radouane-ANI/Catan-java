@@ -26,8 +26,8 @@ public class Player implements Trade {
     private int points;
     private Color color;
     private boolean isMyTurn;
-
     private boolean isDiced;
+
     public Player(boolean bot, String nom, Bank bank, Color color) {
         this.name = nom;
         this.bot = bot;
@@ -57,6 +57,10 @@ public class Player implements Trade {
 
     public boolean isDiced() {
         return isDiced;
+    }
+
+    public void setDiced(boolean isDiced) {
+        this.isDiced = isDiced;
     }
 
     public void setMonney(int monney) {

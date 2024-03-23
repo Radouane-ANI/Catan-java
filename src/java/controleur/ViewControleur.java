@@ -29,6 +29,7 @@ public class ViewControleur {
         if (gameOption.getPlayers().size() != 4) {
             gameOption.completeJoueur();
         }
+
         game = new Game(gameOption.getPlayers());
 
         GameView gameView = new GameView(game);

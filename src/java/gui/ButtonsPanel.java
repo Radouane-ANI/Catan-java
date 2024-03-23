@@ -3,6 +3,10 @@ package gui;
 import logic.Player;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import controleur.Game;
+import controleur.ViewControleur;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,10 +28,20 @@ public class ButtonsPanel extends JPanel {
     private ImageIcon[] buttonIcons = new ImageIcon[NUMBER_OF_BUTTONS];
 
     private NumberedButton[] buttons = new NumberedButton[NUMBER_OF_BUTTONS];
-
+    private Game game;
 
     public ButtonsPanel(Player player) {
         this.player = player;
+        setLayout(new GridLayout(1, NUMBER_OF_BUTTONS, 5, 0));
+        for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
+            loadAndResizeImage(IMAGE_PATH[i],i);
+        }
+        initializeButtons();
+    }
+
+    public ButtonsPanel(Game game) {
+        this.game = game;
+        this.player = game.getCurrentPlayer();
         setLayout(new GridLayout(1, NUMBER_OF_BUTTONS, 5, 0));
         for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
             loadAndResizeImage(IMAGE_PATH[i],i);
@@ -59,24 +73,24 @@ public class ButtonsPanel extends JPanel {
                          button.setNumber(-1);
                          break;
                 case 2 : button.setActionCommand("Build Road");
-                         button.setNumber(14);
+                         button.setNumber(2);
                          break;
                 case 3 : button.setActionCommand("Build Settlement");
-                         button.setNumber(4);
+                         button.setNumber(3);
                          break;
                 case 4 : button.setActionCommand("Build City");
                          button.setNumber(4);
                          break;
                 case 5 : button.setActionCommand("Go");
-                         button.setNumber(-1);
+                         button.setNumber(5);
                          break;
             }
             button.setIcon(buttonIcons[i]);
-            button.setEnabled(false);
             buttons[i] = button;
             setButtons(i);
             add(button);
         }
+        update();
     }
 
     public void setButtons(int NUMBER_OF_BUTTON) {
@@ -112,7 +126,7 @@ public class ButtonsPanel extends JPanel {
         buttons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                ViewControleur.getCatanControleur().buildRoad(player);
             }
         });
     }
@@ -121,7 +135,7 @@ public class ButtonsPanel extends JPanel {
         buttons[3].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                ViewControleur.getCatanControleur().buildSettlement(player);
             }
         });
     }
@@ -130,7 +144,7 @@ public class ButtonsPanel extends JPanel {
         buttons[4].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                ViewControleur.getCatanControleur().buildCity(player);
             }
         });
     }
@@ -139,7 +153,8 @@ public class ButtonsPanel extends JPanel {
         buttons[5].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                ViewControleur.NextTurn(false);
+                update();
             }
         });
     }
@@ -147,7 +162,8 @@ public class ButtonsPanel extends JPanel {
 
 
     public void update() {
-        if(player.isMyTurn()) {
+        this.player = game.getCurrentPlayer();
+        if(!player.isBot()) {
             if(player.isDiced()) {
                 buttons[5].setEnabled(true);
                 buttons[0].setEnabled(player.getMyCards().getNumberOfRes()>0);

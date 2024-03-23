@@ -18,29 +18,34 @@ public class Turn {
     protected List<Player> playersList;
     protected int currentPlayerIndex;
     private DiceGUI diceGUI;
+    protected Player currentPlayer;
 
     public Turn(List<Player> players) {
         playersList = players;
         currentPlayerIndex = 0; // Commence avec le premier joueur
         this.diceGUI = new DiceGUI(); 
+        currentPlayer = playersList.get(currentPlayerIndex);
     }
 
     void tour() {
-        if (playersList.get(currentPlayerIndex).isBot()) {
+        currentPlayer = playersList.get(currentPlayerIndex);
+        if (currentPlayer.isBot()) {
             diceGUI.roll();
         } else {
             waitRollDice();
         }
+        currentPlayer.setDiced(true);
         int sumDices = diceGUI.getResult();
         recupRessources(playersList, sumDices);
         echange();
         creationCity();
+        currentPlayer.setDiced(false);
     }
 
-    protected void firstBuild(Player currentPlayer) {
-        if (!currentPlayer.isBot() && currentPlayer.getRoads().size() < 2) {
-            ViewControleur.getCatanControleur().firstBuild(currentPlayer);
-        }else if (currentPlayer.isBot()) {
+    protected void firstBuild(Player player) {
+        if (!player.isBot() && player.getRoads().size() < 2) {
+            ViewControleur.getCatanControleur().firstBuild(player);
+        }else if (player.isBot()) {
             // placement des batiments pour le bot
         }
     }
@@ -58,7 +63,7 @@ public class Turn {
                     if (hG instanceof City) {
                         nb =2;
                     }
-                    hG.getOwner().addCard(t.getTerrain().toCard(),1);
+                    hG.getOwner().addCard(t.getTerrain().toCard(), nb);
                 }
             }
         }
@@ -78,7 +83,6 @@ public class Turn {
     }
 
     private void echange(){
-        Player currentPlayer = playersList.get(currentPlayerIndex);
         if (!currentPlayer.exchangeSuggestion()) {
             return;
         }
@@ -131,4 +135,7 @@ public class Turn {
         return diceGUI;
     }
 
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
 }

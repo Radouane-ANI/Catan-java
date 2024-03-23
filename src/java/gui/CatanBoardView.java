@@ -1,6 +1,5 @@
 package gui;
 
-import controleur.ViewControleur;
 import logic.City;
 import logic.Settlement;
 
@@ -11,11 +10,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -36,17 +32,6 @@ public class CatanBoardView extends JPanel {
         tuileImage = new BoardImage();
         setPreferredSize(d);
         setLayout(null);
-        JButton turnButton = new JButton("Next Turn"); // mis ici pour l'instant
-        turnButton.setBounds(500, 500, 125, 25);
-        turnButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                ViewControleur.NextTurn(false);
-            }
-
-        });
-        add(turnButton);
     }
 
     @Override

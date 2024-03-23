@@ -52,6 +52,7 @@ public class CatanBoardControleur {
         for (Edge edge : Edge.listBuildRoad(p)) {
             avaibleRoad(p, edge);
         }
+        view.repaint();
     }
 
     public void firstBuild(Player p) {
@@ -108,6 +109,7 @@ public class CatanBoardControleur {
                 } else {
                     ViewControleur.setFinishedTurn(true);
                 }
+                view.repaint();
             }
         });
     }
