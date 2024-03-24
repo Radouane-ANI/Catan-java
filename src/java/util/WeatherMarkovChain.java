@@ -3,11 +3,11 @@ package util;
 import java.util.Random;
 
 public class WeatherMarkovChain {
-    private double[][] transitionMatrix;
+    private Matrix transitionMatrix;
     private String[] weatherStates;
     private Random random;
 
-    public WeatherMarkovChain(double[][] transitionMatrix, String[] weatherStates) {
+    public WeatherMarkovChain(Matrix transitionMatrix, String[] weatherStates) {
         this.transitionMatrix = transitionMatrix;
         this.weatherStates = weatherStates;
         this.random = new Random();
@@ -15,9 +15,14 @@ public class WeatherMarkovChain {
 
     public String getNextWeather(String currentWeather) {
         int currentStateIndex = getIndexForState(currentWeather);
-        double[] probabilities = transitionMatrix[currentStateIndex];
+        double[] probabilities = new double[weatherStates.length];
 
-        // Select the next weather randomly based on transition probabilities
+        // Obtenir les probabilités de transition pour l'état météorologique actuel
+        for (int i = 0; i < weatherStates.length; i++) {
+            probabilities[i] = transitionMatrix.get(currentStateIndex, i);
+        }
+
+        // Sélectionner le prochain état météorologique de manière aléatoire en fonction des probabilités de transition
         double randomValue = random.nextDouble();
         double cumulativeProbability = 0.0;
         for (int i = 0; i < probabilities.length; i++) {
@@ -26,73 +31,41 @@ public class WeatherMarkovChain {
                 return weatherStates[i];
             }
         }
-        // Return the last state in case of numerical errors
+        // Retourner le dernier état en cas d'erreurs numériques
         return weatherStates[probabilities.length - 1];
     }
 
     private int getIndexForState(String state) {
+        // Trouver l'indice de l'état météorologique donné
         for (int i = 0; i < weatherStates.length; i++) {
             if (weatherStates[i].equals(state)) {
                 return i;
             }
         }
-        throw new IllegalArgumentException("Invalid weather state");
+        throw new IllegalArgumentException("État météorologique invalide");
     }
 
-    // Method to handle the effects of weather on gameplay
+    // Méthode pour appliquer les effets de la météo sur le gameplay
     public void applyWeatherEffects(String weather) {
         switch (weather) {
             case "Pluie":
-                // Implement rain effects
+                // Implémenter les effets de la pluie
                 break;
             case "Soleil":
-                // Implement sunshine effects
+                // Implémenter les effets du soleil
                 break;
             case "Nuageux":
-                // Implement cloudy weather effects
+                // Implémenter les effets du temps nuageux
                 break;
             case "Neige":
-                // Implement snow effects
-                break;
-            case "Brouillard":
-                // Implement fog effects
-                break;
-            case "Tempête":
-                // Implement storm effects
+                // Implémenter les effets de la neige
                 break;
             case "Vent":
-                // Implement wind effects
-                break;
-            case "Canicule":
-                // Implement heatwave effects
+                // Implémenter les effets du vent
                 break;
             default:
-                // Unknown weather, do nothing
+                // Météo inconnue, ne rien faire
                 break;
         }
     }
-
-    public static void main(String[] args) {
-        double[][] transitionMatrix = {
-            {0.5, 0.2, 0.1, 0.1, 0.0, 0.0, 0.1, 0.0}, // Transition probabilities for "Pluie"
-            {0.2, 0.4, 0.2, 0.1, 0.0, 0.0, 0.1, 0.0}, // Transition probabilities for "Soleil"
-            {0.1, 0.2, 0.4, 0.1, 0.0, 0.0, 0.2, 0.0}, // Transition probabilities for "Nuageux"
-            {0.0, 0.1, 0.1, 0.5, 0.2, 0.0, 0.0, 0.1}, // Transition probabilities for "Neige"
-            {0.0, 0.0, 0.0, 0.2, 0.6, 0.1, 0.0, 0.1}, // Transition probabilities for "Brouillard"
-            {0.0, 0.0, 0.0, 0.0, 0.1, 0.7, 0.1, 0.1}, // Transition probabilities for "Tempête"
-            {0.1, 0.1, 0.1, 0.0, 0.0, 0.1, 0.6, 0.0}, // Transition probabilities for "Vent"
-            {0.0, 0.0, 0.0, 0.1, 0.1, 0.1, 0.0, 0.7}  // Transition probabilities for "Canicule"
-        };
-    
-        String[] weatherStates = {"Pluie", "Soleil", "Nuageux", "Neige", "Brouillard", "Tempête", "Vent", "Canicule"};
-    
-        WeatherMarkovChain weatherChain = new WeatherMarkovChain(transitionMatrix, weatherStates);
-    
-        String currentWeather = "Soleil";
-        for (int i = 0; i < 12; i++) { // 12 turns in a year
-            System.out.println("Turn " + (i + 1) + ": " + currentWeather);
-            weatherChain.applyWeatherEffects(currentWeather);
-            currentWeather = weatherChain.getNextWeather(currentWeather);
-        }
-    }    
 }

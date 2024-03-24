@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * Generation
- */
+ 
 public class Generation {
 
     ArrayList<> list;
@@ -24,3 +24,4 @@ public class Generation {
     }
     
 }
+*/
