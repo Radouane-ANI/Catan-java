@@ -82,7 +82,6 @@ public class CatanBoardControleur {
         road.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                ViewControleur.setFinishedTurn(true);
                 if (p.getRoads().size() < 2) {
                     ViewControleur.NextTurn(false);
                 }

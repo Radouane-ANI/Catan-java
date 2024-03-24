@@ -154,7 +154,6 @@ public class ButtonsPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ViewControleur.NextTurn(false);
-                update();
             }
         });
     }
@@ -163,7 +162,6 @@ public class ButtonsPanel extends JPanel {
 
     public void update() {
         this.player = game.getCurrentPlayer();
-        System.out.println(player.getMyCards());
         if (!player.isBot() && player.isDiced()) {
             buttons[5].setEnabled(true);
             buttons[0].setEnabled(player.getMyCards().getNumberOfRes() > 0);

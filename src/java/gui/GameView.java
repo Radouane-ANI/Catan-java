@@ -10,10 +10,11 @@ import controleur.Game;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 
 public class GameView extends JPanel {
-
+    private StateGUI stateGUI;
     private DiceGUI dicePanel;
     private CatanBoardView boardView;
     private BankPanel bankPanel;
@@ -25,22 +26,23 @@ public class GameView extends JPanel {
         this.game = game;
         setLayout(new BorderLayout());
         dicePanel = game.getDiceGUI();
+        stateGUI = new StateGUI();
+        JPanel panelLateral = new JPanel(new GridLayout(2, 1, 0, -180));
+        panelLateral.add(dicePanel);
+        panelLateral.add(stateGUI);
+        panelLateral.setOpaque(false);
+
         Dimension size = getSize();
         boardView = new CatanBoardView(size);
         bankPanel = new BankPanel(new Bank());
         exchangePanel = ExchangePanel.createTestExchangePanel();
         buttonsPanel = new ButtonsPanel(game);
-        dicePanel.setOpaque(false);
         boardView.setOpaque(false);
-        add(dicePanel, BorderLayout.EAST);
+        add(panelLateral, BorderLayout.EAST);
         add(boardView, BorderLayout.CENTER);
         add(bankPanel, BorderLayout.NORTH);
         add(buttonsPanel, BorderLayout.SOUTH);
         game.setGameView(this);
-    }
-
-    public DiceGUI getDicePanel() {
-        return dicePanel;
     }
 
     public CatanBoardView getBoardView() {
@@ -56,5 +58,6 @@ public class GameView extends JPanel {
 
     public void update() {
         buttonsPanel.update();
+        stateGUI.update(game.getCurrentPlayer());
     }
 }

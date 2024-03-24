@@ -37,12 +37,15 @@ public class Game extends Turn implements Runnable {
 
     private void firstTurn() {
         for (Player player : playersList) {
+            currentPlayer = player;
+            update();
             super.firstBuild(player);
             waitNextTurn();
         }
         for (int i = playersList.size() - 1; i >= 0; i--) {
             currentPlayerIndex = i;
             currentPlayer = playersList.get(i);
+            update();
             super.firstBuild(currentPlayer);
             waitNextTurn();
         }
@@ -69,12 +72,12 @@ public class Game extends Turn implements Runnable {
     }
 
     public void NextTurn(boolean bot) {
-        this.nextTurn = currentPlayer.isBot() == bot && finishedTurn;
+        this.nextTurn = currentPlayer.isBot() == bot;
     }
 
     public void setFinishedTurn(boolean f) {
         finishedTurn = f;
-        if (f && currentPlayer.getRoads().size() > 1 && !currentPlayer.isBot()) {
+        if (f) {
             update();
         }
     }

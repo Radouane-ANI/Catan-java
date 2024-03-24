@@ -29,8 +29,8 @@ public class Turn {
     }
 
     void tour() {
-        currentPlayer.setDiced(false);
         currentPlayer = playersList.get(currentPlayerIndex);
+        currentPlayer.setDiced(false);
         update();
         if (currentPlayer.isBot()) {
             diceGUI.roll();
@@ -125,13 +125,13 @@ public class Turn {
     }
 
     private void waitRollDice() {
+        diceGUI.setRollDice(false);
         while (!diceGUI.isRollDice()) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
             }
         }
-        diceGUI.setRollDice(false);
     }
 
     public DiceGUI getDiceGUI() {
@@ -146,7 +146,9 @@ public class Turn {
         this.gameView = gameView;
     }
 
-    protected void update(){
-        gameView.update();
+    protected void update() {
+        if (gameView != null) {
+            gameView.update();
+        }
     }
 }

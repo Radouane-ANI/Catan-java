@@ -13,16 +13,17 @@ public class DiceGUI extends JPanel {
 
     public DiceGUI() {
         setLayout(new FlowLayout());
-
+        setOpaque(false);
         dicePanel = new TupleDice();
 
         rollButton = new JButton("Roll");
+        rollButton.setEnabled(false);
         rollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 roll();
                 rollDice = true;
-
+                rollButton.setEnabled(false);
             }
         });
 
@@ -44,6 +45,7 @@ public class DiceGUI extends JPanel {
 
     public void setRollDice(boolean rollDice) {
         this.rollDice = rollDice;
+        rollButton.setEnabled(!rollDice);
     }
 
 }
