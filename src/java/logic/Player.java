@@ -139,8 +139,14 @@ public class Player implements Trade {
         }
     }
 
-    public void addCard(Card c, int number){
-        myCards.addCard(c, number);
+    public void calculePoints() {
+        points = cities.size() * 2 + settlements.size();
+    }
+
+    public void addCard(Card c, int number) {
+        if (bank.removeCard(c, number)) {
+            myCards.addCard(c, number);
+        }
     }
 
     public void addInWishList(Card c) {
@@ -176,6 +182,7 @@ public class Player implements Trade {
     }
 
     public boolean win() {
+        calculePoints();
         return points >= 10;
     }
 
@@ -195,7 +202,10 @@ public class Player implements Trade {
     public void buildRoad(Road route) {
         myCards.removeCard(TREE, 1);
         myCards.removeCard(BRICK, 1);
-        roads.add(route);
+        if (roads.size() >= 2) {
+            bank.addCard(BRICK, 1);
+            bank.addCard(TREE, 1);
+        }roads.add(route);
     }
 
     public void buildSettlement(Settlement colonie) {
@@ -204,6 +214,12 @@ public class Player implements Trade {
         myCards.removeCard(GRAIN, 1);
         myCards.removeCard(SHEEP, 1);
         settlements.add(colonie);
+        if (roads.size() >= 2) {
+            bank.addCard(BRICK, 1);
+            bank.addCard(TREE, 1);
+            bank.addCard(GRAIN, 1);
+            bank.addCard(SHEEP, 1);
+        }
     }
 
     public void buildCity(City ville, Settlement colonie) {
@@ -211,6 +227,9 @@ public class Player implements Trade {
         myCards.removeCard(STONE, 3);
         cities.add(ville);
         settlements.remove(colonie);
+        bank.addCard(GRAIN, 2);
+        bank.addCard(STONE, 3);
+
     }
 
     private HashMap<Card, Integer> getMissingCardsForBuildings() {

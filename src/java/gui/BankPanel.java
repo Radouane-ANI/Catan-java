@@ -19,9 +19,9 @@ public class BankPanel extends JPanel {
             "src/ressources/cardTest.jpg",
             "src/ressources/cardTest.jpg"
     };
-    private int[] numbers;
 
     private JLabel[] labels;
+    private JLabel[] numberLabel;
 
     //private ImageIcon scaledIcon;
 
@@ -30,8 +30,7 @@ public class BankPanel extends JPanel {
     public BankPanel(Bank bank) {
         this.bank = bank;
         labels = new JLabel[IMAGE_COUNT];
-        numbers = new int[IMAGE_COUNT];
-        updateNumbers();
+        numberLabel = new JLabel[IMAGE_COUNT];
         setLayout(null);
         loadScaledIcon();
         initializeLabels();
@@ -66,11 +65,11 @@ public class BankPanel extends JPanel {
             transparentPanel.setOpaque(false); // 使面板透明
 
             if ( i > 0) { // 第一张图片除外
-                JLabel numberLabel = new JLabel(String.valueOf(numbers[i]));
-                numberLabel.setForeground(Color.RED);
-                numberLabel.setOpaque(true);
-                numberLabel.setBackground(Color.BLUE);
-                transparentPanel.add(numberLabel); // 在透明面板上添加数字标签
+                numberLabel[i] = new JLabel(bank.getNumber(Card.values()[i-1])+"");
+                numberLabel[i].setForeground(Color.RED);
+                numberLabel[i].setOpaque(true);
+                numberLabel[i].setBackground(Color.BLUE);
+                transparentPanel.add(numberLabel[i]); // 在透明面板上添加数字标签
             }
 
             // 在图片标签上添加透明面板
@@ -83,10 +82,10 @@ public class BankPanel extends JPanel {
     }
 
     public void updateNumbers() {
-        for (int i = 0; i < 5; i++) {
-            numbers[i+1] = bank.getNumber(Card.values()[i]);
+        for (int i = 1; i < 6; i++) {
+            numberLabel[i].setText(bank.getNumber(Card.values()[i-1])+"");
         }
-        numbers[6] = bank.allDevCardsNumber();
+        numberLabel[6].setText(bank.allDevCardsNumber()+"");
     }
 
     @Override

@@ -6,6 +6,7 @@ import gui.MainFrame;
 import java.util.List;
 
 import gui.Options;
+import logic.Bank;
 import logic.Player;
 
 public class ViewControleur {
@@ -70,6 +71,10 @@ public class ViewControleur {
 
     public static void setFinishedTurn(boolean f) {
         game.setFinishedTurn(f);
+    }
+
+    public static Bank getBank() {
+        return gameOption.getBank();
     }
 
 }

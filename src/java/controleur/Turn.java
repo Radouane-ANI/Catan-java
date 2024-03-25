@@ -147,6 +147,7 @@ public class Turn {
     }
 
     protected void update() {
+        currentPlayer.calculePoints();
         if (gameView != null) {
             gameView.update();
         }

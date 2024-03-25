@@ -1,11 +1,10 @@
 package gui;
 
-import logic.Bank;
-
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import controleur.Game;
+import controleur.ViewControleur;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -34,7 +33,7 @@ public class GameView extends JPanel {
 
         Dimension size = getSize();
         boardView = new CatanBoardView(size);
-        bankPanel = new BankPanel(new Bank());
+        bankPanel = new BankPanel(ViewControleur.getBank());
         exchangePanel = ExchangePanel.createTestExchangePanel();
         buttonsPanel = new ButtonsPanel(game);
         boardView.setOpaque(false);
@@ -59,5 +58,6 @@ public class GameView extends JPanel {
     public void update() {
         buttonsPanel.update();
         stateGUI.update(game.getCurrentPlayer());
+        bankPanel.updateNumbers();
     }
 }

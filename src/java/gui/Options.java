@@ -67,6 +67,10 @@ public class Options extends JPanel {
         this.add(valider, BorderLayout.SOUTH);
     }
 
+    public Bank getBank() {
+        return bank;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
