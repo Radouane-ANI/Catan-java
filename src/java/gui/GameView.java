@@ -34,7 +34,7 @@ public class GameView extends JPanel {
         Dimension size = getSize();
         boardView = new CatanBoardView(size);
         bankPanel = new BankPanel(ViewControleur.getBank());
-        exchangePanel = ExchangePanel.createTestExchangePanel();
+        //exchangePanel = ExchangePanel.createTestExchangePanel();
         buttonsPanel = new ButtonsPanel(game);
         boardView.setOpaque(false);
         add(panelLateral, BorderLayout.EAST);

@@ -4,7 +4,6 @@ import gui.GameMenu;
 import gui.GameView;
 import gui.MainFrame;
 import java.util.List;
-
 import gui.Options;
 import logic.Bank;
 import logic.Player;
@@ -14,7 +13,9 @@ public class ViewControleur {
     private static MainFrame frame;
     private static CatanBoardControleur catanControleur;
     private static Player player;
+    private static Bank bank;
     private static Options gameOption;
+
 
     public ViewControleur(MainFrame mainFrame) {
         frame = mainFrame;

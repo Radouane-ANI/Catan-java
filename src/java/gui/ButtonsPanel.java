@@ -1,7 +1,6 @@
 package gui;
 
 import logic.Player;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import controleur.Game;
@@ -10,20 +9,18 @@ import controleur.ViewControleur;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class ButtonsPanel extends JPanel {
+    private static final String BASE_PATH = "src/ressources/";
     private Player player;
     private static final int NUMBER_OF_BUTTONS = 6;
     private static final String[] IMAGE_PATH = {
-            "src/ressources/button1.png",
-            "src/ressources/button1.png",
-            "src/ressources/button1.png",
-            "src/ressources/button1.png",
-            "src/ressources/button1.png",
-            "src/ressources/button1.png"
+            BASE_PATH+"exchange.png",
+            BASE_PATH+"devButton.png",
+            BASE_PATH+"devButton.png",
+            BASE_PATH+"settlement.png",
+            BASE_PATH+"city.png",
+            BASE_PATH+"go.png"
     };
     private ImageIcon[] buttonIcons = new ImageIcon[NUMBER_OF_BUTTONS];
 
@@ -33,9 +30,7 @@ public class ButtonsPanel extends JPanel {
     public ButtonsPanel(Player player) {
         this.player = player;
         setLayout(new GridLayout(1, NUMBER_OF_BUTTONS, 5, 0));
-        for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-            loadAndResizeImage(IMAGE_PATH[i],i);
-        }
+        loadScaledIcon();
         initializeButtons();
     }
 
@@ -43,21 +38,17 @@ public class ButtonsPanel extends JPanel {
         this.game = game;
         this.player = game.getCurrentPlayer();
         setLayout(new GridLayout(1, NUMBER_OF_BUTTONS, 5, 0));
-        for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-            loadAndResizeImage(IMAGE_PATH[i],i);
-        }
+        loadScaledIcon();
         initializeButtons();
     }
 
-    private void loadAndResizeImage(String imagePath, int i) {
-        try {
-            BufferedImage originalImage = ImageIO.read(new File(imagePath));
-            int size = 60;
-            Image resizedImage = originalImage.getScaledInstance(size, size, Image.SCALE_SMOOTH);
-            buttonIcons[i] = new ImageIcon(resizedImage);
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Load image failed", "Error", JOptionPane.ERROR_MESSAGE);
+    private void loadScaledIcon() {
+        String imagFile = "";
+        for (int i = 0; i < buttonIcons.length; i++) {
+            imagFile = IMAGE_PATH[i];
+            ImageIcon icon = new ImageIcon(imagFile);
+            Image scaledImage = icon.getImage().getScaledInstance((int) (icon.getIconWidth() * 0.6), (int) (icon.getIconHeight() * 0.6), Image.SCALE_SMOOTH);
+            buttonIcons[i] = new ImageIcon(scaledImage);
         }
     }
 
@@ -174,5 +165,10 @@ public class ButtonsPanel extends JPanel {
                 buttons[i].setEnabled(false);
             }
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(100, 80);
     }
 }
