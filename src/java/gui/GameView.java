@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 
 import controleur.Game;
 import controleur.ViewControleur;
+import logic.Card;
+import logic.Player;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -34,13 +36,19 @@ public class GameView extends JPanel {
         Dimension size = getSize();
         boardView = new CatanBoardView(size);
         bankPanel = new BankPanel(ViewControleur.getBank());
-        //exchangePanel = ExchangePanel.createTestExchangePanel();
+
+        exchangePanel = new ExchangePanel(game.getCurrentPlayer());
         buttonsPanel = new ButtonsPanel(game);
         boardView.setOpaque(false);
+        JPanel panelSuperieur = new JPanel(new GridLayout(1,2));
+        panelSuperieur.add(bankPanel);
+        panelSuperieur.add(buttonsPanel);
+        panelSuperieur.setOpaque(false);
+
         add(panelLateral, BorderLayout.EAST);
         add(boardView, BorderLayout.CENTER);
-        add(bankPanel, BorderLayout.NORTH);
-        add(buttonsPanel, BorderLayout.SOUTH);
+        add(panelSuperieur, BorderLayout.NORTH);
+        add(exchangePanel, BorderLayout.SOUTH);
         game.setGameView(this);
     }
 
@@ -56,8 +64,10 @@ public class GameView extends JPanel {
     }
 
     public void update() {
+        Player player = game.getCurrentPlayer();
         buttonsPanel.update();
-        stateGUI.update(game.getCurrentPlayer());
+        stateGUI.update(player);
         bankPanel.updateNumbers();
+        exchangePanel.update(player);
     }
 }

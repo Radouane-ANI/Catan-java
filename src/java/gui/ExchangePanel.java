@@ -4,7 +4,6 @@ package gui;
 import logic.*;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 
@@ -40,6 +39,13 @@ public class ExchangePanel extends JPanel {
         this.add(myCards);
     }
 
+    public void update(Player player2) {
+        player = player2;
+        remove(myCards);
+        myCards=new CardSuit(player, 1);
+        add(myCards);
+        initializeMyCards();
+    }
 
     private void addMouseListenerToMyCardsLabel() {
         JLabel lastLabel;
