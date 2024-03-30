@@ -86,7 +86,7 @@ public class Turn {
     }
 
     private void echange(){
-        if (!currentPlayer.exchangeSuggestion()) {
+        if (!currentPlayer.exchangeSuggestion() || !currentPlayer.isBot()) {
             return;
         }
         List<Player> accepter = new ArrayList<>();
@@ -97,7 +97,7 @@ public class Turn {
                     accepter.add(p);
                 }
             } else if (!p.isBot()) {
-                if (proposeEchange(currentPlayer)) {
+                if (proposeEchange(p)) {
                     accepter.add(p);
                 }
             }
@@ -117,6 +117,17 @@ public class Turn {
     }
     */
 
+    public void initerEchange(){
+        for (Player player : playersList) {
+            if (player != currentPlayer) {
+                if (player.isBot()) {
+                    
+                }else{
+                    proposeEchange(player);
+                }
+            }
+        }
+    }
     private void creationCity(){}
 
     private boolean proposeEchange(Player p) {

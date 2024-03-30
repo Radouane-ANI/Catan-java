@@ -41,6 +41,7 @@ public class Player implements Trade {
         this.wishList = new CardBox();
         this.bank = bank;
         this.color = color;
+        this.tradePorts = new TradePort();
     }
 
     public void setRoads(List<Road> roads) {
