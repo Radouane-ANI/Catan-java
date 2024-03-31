@@ -7,6 +7,8 @@ import logic.Player;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,24 +18,30 @@ public class CardSuit extends JLayeredPane {
     private static final int MY_CARD_LIST = 1;
     private static final int SALE_LIST = 2;
     private static final int WISH_LIST = 3;
+    private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
+
     private Player player;
     private int cardSuitType;
     private CardBox cardBox;
-    private ImageIcon scaledIcon;
+    private ImageIcon scaledIcon[] = new ImageIcon[10];
     private Map<Card, List<JLabel>> cardBoxLabel;
     private JButton button;
 
     public CardSuit(Player player, int cardSuitType) {
         this.player = player;
         this.cardSuitType = cardSuitType;
+        button = new JButton();
         switch (cardSuitType) {
-            case MY_CARD_LIST : cardBox = player.getMyCards();break;
+            case MY_CARD_LIST : cardBox = player.getMyCards();
+                                button = null;break;
             case SALE_LIST : cardBox = player.getSaleList();break;
             case WISH_LIST : cardBox = player.getWishList();break;
         }
         this.cardBoxLabel = new HashMap<>();
-        button = new JButton("BUTTON");
-        button.setEnabled(false);
+        if(button != null) {
+            loadButtonIcon();
+            button.setEnabled(false);
+        }
         loadScaledIcon();
         initializeLabels();
     }
@@ -50,11 +58,53 @@ public class CardSuit extends JLayeredPane {
         return cardBoxLabel;
     }
 
+    public String getImagePathByPrefix(int prefix) {
+        File dir = new File(BASE_PATH);
+
+        if (!dir.exists() || !dir.isDirectory()) {
+            return "Directory not found";
+        }
+
+        FilenameFilter filter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.startsWith(String.valueOf(prefix));
+            }
+        };
+
+        String[] matchingFiles = dir.list(filter);
+
+        if (matchingFiles != null && matchingFiles.length > 0) {
+            return BASE_PATH + matchingFiles[0];
+        } else {
+            return "No matching files found";
+        }
+    }
+
+
 
     private void loadScaledIcon() {
-        ImageIcon iconO = new ImageIcon("src/ressources/cardTest.jpg");
-        Image scaledImage = iconO.getImage().getScaledInstance((int) (iconO.getIconWidth() * 0.5), (int) (iconO.getIconHeight() * 0.5), Image.SCALE_SMOOTH);
-        scaledIcon = new ImageIcon(scaledImage);
+        String imagFile = "";
+        for (int i = 0; i < scaledIcon.length; i++) {
+            imagFile = getImagePathByPrefix(i);
+            ImageIcon icon = new ImageIcon(imagFile);
+            Image scaledImage = icon.getImage().getScaledInstance((int) (icon.getIconWidth() * 0.6), (int) (icon.getIconHeight() * 0.6), Image.SCALE_SMOOTH);
+            scaledIcon[i] = new ImageIcon(scaledImage);
+        }
+    }
+
+    private void loadButtonIcon() {
+        String imageFile = BASE_PATH;
+        switch (cardSuitType) {
+            case SALE_LIST -> imageFile +="no.png";
+            case WISH_LIST -> imageFile +="ppl.png";
+        }
+        ImageIcon icon = new ImageIcon(imageFile);
+        Image scaledImage = icon.getImage().getScaledInstance((int) (icon.getIconWidth() * 0.3), (int) (icon.getIconHeight() * 0.3), Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        button.setIcon(scaledIcon);
+        button.setBorder(BorderFactory.createEmptyBorder());
+
     }
 
 
@@ -67,7 +117,7 @@ public class CardSuit extends JLayeredPane {
         for(Card card : Card.values()) {
             List<JLabel> labelList = cardBoxLabel.get(card);
             for (int i = 0; i < cardBox.getNumber(card); i++) {
-                JLabel label = new JLabel(scaledIcon);
+                JLabel label = new JLabel(scaledIcon[card.ordinal()]);
                 label.setName( card.name());
                 labelList.add(label);
             }
@@ -89,17 +139,18 @@ public class CardSuit extends JLayeredPane {
                 if (!this.isAncestorOf(label)) {
                     if(i == labels.size() - 1) {
                         JPanel transparentPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+                        ImageIcon iconO = new ImageIcon("/Users/juliazhula/k-catan/src/ressources/0_tree.png");
+                        Dimension dimension = new Dimension((int)(iconO.getIconWidth() * 0.6), (int)(iconO.getIconHeight() * 0.6*0.3));
+                        transparentPanel.setPreferredSize(dimension);
 
-
-                        transparentPanel.setOpaque(false); // 使面板透明
+                        transparentPanel.setOpaque(false);
 
                         JLabel numberLabel = new JLabel(String.valueOf(labels.size()));
-                        numberLabel.setForeground(Color.RED);
-                        numberLabel.setOpaque(true);
-                        numberLabel.setBackground(Color.PINK);
-                        transparentPanel.add(numberLabel); // 在透明面板上添加数字标签
+                        numberLabel.setFont(new Font("Arial", Font.BOLD, 13));
+                        numberLabel.setForeground(Color.WHITE);
 
-                        // 在图片标签上添加透明面板
+                        transparentPanel.add(numberLabel);
+
                         label.setLayout(new BorderLayout());
                         label.add(transparentPanel, BorderLayout.NORTH);
 
@@ -112,24 +163,21 @@ public class CardSuit extends JLayeredPane {
             }
         }
         if(cardSuitType != MY_CARD_LIST) {
-            // 设置按钮的大小和位置，这里给了一个更合理的尺寸
-            button.setBounds(400, 5, 30, 30); // 注意调整按钮位置和尺寸
-            this.add(button); // 确保按钮被添加到面板上
+            button.setBounds(400, 5, 30, 30);
+            this.add(button);
         }
-        this.revalidate(); // 确保面板更新
+        this.revalidate();
         this.repaint();
     }
 
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(500, 60);
+        return new Dimension(500, 80);
     }
 
-    /*
-     * 
-     * public static void main(String[] args) {
-        Player player = new Player(false,"Sam",new Bank(),Color.BLUE);
+    public static void main(String[] args) {
+        Player player = new Player(false,"Sam",new Bank(),Color.red);
         CardBox cardBox = new CardBox();
         int[] x = {1,2,3,4,5};
         cardBox.setCardsNumbers(x);
@@ -147,6 +195,6 @@ public class CardSuit extends JLayeredPane {
         frame.setSize(1000, 700);
         frame.setVisible(true);
     }
-     */
+
 
 }

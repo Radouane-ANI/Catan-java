@@ -3,18 +3,22 @@ package gui;
 import logic.Card;
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class CardPropose extends JPanel {
+    private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
     private JButton button;
-    private ImageIcon scaledIcon;
+    private ImageIcon scaledIcon[] = new ImageIcon[5];
     private Map<Card, JLabel> cardsLabel;
 
     public CardPropose() {
-        button = new JButton("Button");
+        button = new JButton();
+        loadButtonIcon();
         button.setEnabled(false);
-        this.cardsLabel = new HashMap<>();
+        this.cardsLabel = new LinkedHashMap<>();
         setLayout(null);
         loadScaledIcon();
         initializeAllCards();
@@ -28,15 +32,53 @@ public class CardPropose extends JPanel {
         return cardsLabel;
     }
 
+    private void loadButtonIcon() {
+        String imageFile = BASE_PATH+"bank.png";
+        ImageIcon icon = new ImageIcon(imageFile);
+        Image scaledImage = icon.getImage().getScaledInstance((int) (icon.getIconWidth() * 0.3), (int) (icon.getIconHeight() * 0.3), Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        button.setIcon(scaledIcon);
+
+        button.setBorder(BorderFactory.createEmptyBorder());
+
+    }
+
+    public String getImagePathByPrefix(int prefix) {
+        File dir = new File(BASE_PATH);
+
+        if (!dir.exists() || !dir.isDirectory()) {
+            return "Directory not found";
+        }
+
+        FilenameFilter filter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.startsWith(String.valueOf(prefix));
+            }
+        };
+
+        String[] matchingFiles = dir.list(filter);
+
+        if (matchingFiles != null && matchingFiles.length > 0) {
+            return BASE_PATH +"proposeCard/"+ matchingFiles[0];
+        } else {
+            return "No matching files found";
+        }
+    }
+
     private void loadScaledIcon() {
-        ImageIcon iconO = new ImageIcon("src/ressources/cardTest.jpg");
-        Image scaledImage = iconO.getImage().getScaledInstance((int) (iconO.getIconWidth() * 0.5), (int) (iconO.getIconHeight() * 0.5), Image.SCALE_SMOOTH);
-        scaledIcon = new ImageIcon(scaledImage);
+        String imagFile = "";
+        for (int i = 0; i < scaledIcon.length; i++) {
+            imagFile = getImagePathByPrefix(i);
+            ImageIcon icon = new ImageIcon(imagFile);
+            Image scaledImage = icon.getImage().getScaledInstance((int) (icon.getIconWidth() * 0.6), (int) (icon.getIconHeight() * 0.6), Image.SCALE_SMOOTH);
+            scaledIcon[i] = new ImageIcon(scaledImage);
+        }
     }
 
     private void initializeAllCards() {
         for(int i = 0; i < 5 ;i++) {
-            JLabel label = new JLabel(scaledIcon);
+            JLabel label = new JLabel(scaledIcon[i]);
             label.setName(Card.values()[i].name());
             cardsLabel.put(Card.values()[i],label);
         }
@@ -44,25 +86,26 @@ public class CardPropose extends JPanel {
     }
 
     private void positionCards() {
-        int offsetX = 5; // 初始X偏移
-        int offsetY = 5;  // Y偏移
-        int gap = 20;     // 组件间的间隔
+        int offsetX = 5;
+        int offsetY = 5;
+        int gap = 20;
 
-        // 遍历Map中的所有JLabel，设置它们的位置
         for(JLabel label : cardsLabel.values()) {
             label.setBounds(offsetX, offsetY, label.getIcon().getIconWidth(), label.getIcon().getIconHeight());
-            this.add(label); // 将标签添加到面板上
-            offsetX += label.getIcon().getIconWidth() + gap; // 更新X偏移，为下一个标签计算位置
+            this.add(label);
+            offsetX += label.getIcon().getIconWidth() + gap;
         }
-        button.setBounds(400, 5, 30, 30); // 注意调整按钮位置和尺寸
-        this.add(button); // 确保按钮被添加到面板上
-        this.revalidate(); // 确保面板更新
+
+
+        button.setBounds(400, 5, 30, 30);
+        this.add(button);
+        this.revalidate();
         this.repaint();
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(100, 60);
+        return new Dimension(100, 80);
     }
 
     public static void main(String[] args) {

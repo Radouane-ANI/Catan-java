@@ -1,6 +1,7 @@
 package gui;
 
 import logic.Bank;
+import logic.Player;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -17,13 +18,14 @@ public class GameView extends JPanel {
     private BankPanel bankPanel;
     private ExchangePanel exchangePanel;
 
-    public GameView() {
+    public GameView(Player player, Bank bank) {
         setLayout(new BorderLayout());
         dicePanel = new DiceGUI();
         Dimension size = getSize();
         boardView = new CatanBoardView(size);
-        bankPanel = new BankPanel(new Bank());
-        exchangePanel = ExchangePanel.createTestExchangePanel();
+        bankPanel = new BankPanel(bank);
+
+        exchangePanel = new ExchangePanel(player);
         dicePanel.setOpaque(false);
         boardView.setOpaque(false);
         add(dicePanel, BorderLayout.EAST);
