@@ -118,12 +118,12 @@ public class BankPanel extends JPanel {
     }
 
 
-    private void update() {
+    public void update() {
        updateNumbers();
        initializeLabels();
     }
 
-    public void start(int framerate) {
+    /*public void start(int framerate) {
 
         Runnable runnable = new Runnable() {
             @Override
@@ -142,7 +142,7 @@ public class BankPanel extends JPanel {
         Thread thread = new Thread(runnable);
 
         thread.start();
-    }
+    }*/
 
     @Override
     public Dimension getPreferredSize() {

@@ -61,12 +61,22 @@ public interface Trade {
         saleList.clearBox();
     }
 
-    default void getDevCard(CardBox myCards, Bank bank) {
+    default Card getDevCard(CardBox myCards, Bank bank) {
         if (canExchangeDev(myCards, bank)) {
             Card dev = bank.devCardGenerator();
             bank.removeCard(dev, 1);
             myCards.addCard(dev, 1);
+
+            myCards.removeCard(SHEEP,1);
+            bank.addCard(SHEEP,1);
+            myCards.removeCard(GRAIN,1);
+            bank.addCard(GRAIN,1);
+            myCards.removeCard(STONE,1);
+            bank.addCard(STONE,1);
+
+            return dev;
         }
+        return null;
     }
 
     default boolean canExchangeDev(CardBox myCards, Bank bank) {

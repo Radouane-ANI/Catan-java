@@ -24,6 +24,8 @@ public class Player implements Trade {
     private List<City> cities;
 
     private int points;
+
+    private int extraPoint;
     private Color color;
     private boolean isMyTurn;
 
@@ -67,6 +69,13 @@ public class Player implements Trade {
         return bot;
     }
 
+    public void setExtraPoint(int x) {
+        extraPoint += x;
+    }
+
+    public int getExtraPoint() {
+        return extraPoint;
+    }
 
     public TradePort getTradePorts() {
         return tradePorts;

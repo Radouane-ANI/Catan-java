@@ -10,34 +10,57 @@ import java.util.List;
 
 public class ExchangePanel extends JPanel {
     private Player player;
-    private CardSuit myCards;
-    private CardSuit saleList;
-    private CardSuit wishList;
-    private CardPropose proposeList;
+    private Bank bank;
+    protected CardSuit myCards;
+    protected CardSuit saleList;
+    protected CardSuit wishList;
+    protected CardPropose proposeList;
+
+    protected BankPanel bankPanel;
+
+    protected ButtonsPanel buttonsPanel;
     private ImageIcon scaledIcon;
 
-    public ExchangePanel(Player player) {
+    public ExchangePanel(Player player, Bank bank) {
         this.player = player;
-
+        this.bank = bank;
         this.myCards = new CardSuit(player,1);
         this.saleList = new CardSuit(player,2);
         this.wishList = new CardSuit(player,3);
         this.proposeList = new CardPropose();
+        this.buttonsPanel = new ButtonsPanel(player,this);
+        this.bankPanel = new BankPanel(bank);
 
         addMouseListenerToMyCardsLabel();
         addMouseListenerToSaleListLabel();
         addMouseListenerToWishListLabel();
         addMouseListenerToProposeListLabel();
 
+        this.setLayout(new GridLayout(1, 2));
+        JPanel cardsExchangePanel = new JPanel();
+        cardsExchangePanel.setLayout(new BoxLayout(cardsExchangePanel,BoxLayout.Y_AXIS));
+        cardsExchangePanel.add(proposeList);
+        cardsExchangePanel.add(wishList);
+        cardsExchangePanel.add(saleList);
+        cardsExchangePanel.add(myCards);
 
-        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        this.add(proposeList);
-        proposeList.setVisible(false);
-        this.add(wishList);
-        wishList.setVisible(false);
-        this.add(saleList);
-        saleList.setVisible(false);
-        this.add(myCards);
+        JPanel bankAndExchange = new JPanel(new BorderLayout());
+        bankAndExchange.add(bankPanel,BorderLayout.NORTH);
+        bankAndExchange.add(cardsExchangePanel,BorderLayout.SOUTH);
+
+        JPanel buttonsBigPanel = new JPanel(new BorderLayout());
+        buttonsBigPanel.add(buttonsPanel,BorderLayout.SOUTH);
+
+        this.add(bankAndExchange);
+        this.add(buttonsBigPanel);
+        exchangeListVisible(false);
+    }
+
+    protected void exchangeListVisible(Boolean b) {
+        this.proposeList.setVisible(b);
+        this.wishList.setVisible(b);
+        this.saleList.setVisible(b);
+        this.saleList.getButton().setEnabled(b);
     }
 
 
@@ -79,7 +102,7 @@ public class ExchangePanel extends JPanel {
         }
     }
 
-    private void initializeMyCards() {
+    protected void initializeMyCards() {
         myCards.initializeLabels();
         addMouseListenerToMyCardsLabel();
     }
@@ -255,7 +278,29 @@ public class ExchangePanel extends JPanel {
         this.repaint();
     }
 
-    /*public static void main(String[] args)  {
+    public void start(int framerate) {
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try{
+                        Thread.sleep(1000/framerate);
+                    } catch(InterruptedException v) {
+                        v.printStackTrace();
+                    }
+                    bankPanel.update();
+                    buttonsPanel.updateButtons();
+                }
+            }
+        };
+
+        Thread thread = new Thread(runnable);
+
+        thread.start();
+    }
+
+    public static void main(String[] args)  {
         Bank bank = new Bank();
 
         Player player = new Player(false, "Sam", bank, Color.red);
@@ -271,28 +316,16 @@ public class ExchangePanel extends JPanel {
         JFrame frame = new JFrame("Overlapping Cards");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        ExchangePanel exchangePanel = new ExchangePanel(player);
-        ButtonsPanel buttonsPanel = new ButtonsPanel(player);
+        ExchangePanel exchangePanel = new ExchangePanel(player,bank);
 
-        frame.setLayout(new GridLayout(1, 2));
-
-
-        JPanel jPanel1 = new JPanel(new BorderLayout());
-        jPanel1.add(exchangePanel, BorderLayout.SOUTH);
-        BankPanel bankPanel = new BankPanel(bank);
-        jPanel1.add(bankPanel, BorderLayout.NORTH);
-        frame.add(jPanel1);
-
-        JPanel jPanel2 = new JPanel(new BorderLayout());
-        jPanel2.add(buttonsPanel, BorderLayout.SOUTH);
-        frame.add(jPanel2);
+        frame.add(exchangePanel);
 
         frame.getContentPane().setBackground(Color.pink);
 
         frame.setSize(1000, 700);
         frame.setVisible(true);
 
-        bankPanel.start(1);
-    }*/
+        exchangePanel.start(1);
+    }
 
 }

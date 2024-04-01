@@ -15,7 +15,6 @@ public class GameView extends JPanel {
 
     private DiceGUI dicePanel;
     private CatanBoardView boardView;
-    private BankPanel bankPanel;
     private ExchangePanel exchangePanel;
 
     public GameView(Player player, Bank bank) {
@@ -23,14 +22,12 @@ public class GameView extends JPanel {
         dicePanel = new DiceGUI();
         Dimension size = getSize();
         boardView = new CatanBoardView(size);
-        bankPanel = new BankPanel(bank);
 
-        exchangePanel = new ExchangePanel(player);
+        exchangePanel = new ExchangePanel(player,bank);
         dicePanel.setOpaque(false);
         boardView.setOpaque(false);
         add(dicePanel, BorderLayout.EAST);
         add(boardView, BorderLayout.CENTER);
-        add(bankPanel, BorderLayout.NORTH);
         add(exchangePanel, BorderLayout.SOUTH);
     }
 
