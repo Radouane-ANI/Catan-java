@@ -13,10 +13,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.util.List;
 
 public class GameView extends JPanel {
     private StateGUI stateGUI;
-    private DiceGUI dicePanel;
     private CatanBoardView boardView;
     private BankPanel bankPanel;
     private ExchangePanel exchangePanel;
@@ -26,9 +26,9 @@ public class GameView extends JPanel {
     public GameView(Game game) {
         this.game = game;
         setLayout(new BorderLayout());
-        dicePanel = game.getDiceGUI();
+        DiceGUI dicePanel = game.getDiceGUI();
         stateGUI = new StateGUI();
-        JPanel panelLateral = new JPanel(new GridLayout(2, 1, 0, -180));
+        JPanel panelLateral = new JPanel(new GridLayout(2, 1));
         panelLateral.add(dicePanel);
         panelLateral.add(stateGUI);
         panelLateral.setOpaque(false);
@@ -40,7 +40,7 @@ public class GameView extends JPanel {
         exchangePanel = new ExchangePanel(game.getCurrentPlayer());
         buttonsPanel = new ButtonsPanel(game);
         boardView.setOpaque(false);
-        JPanel panelSuperieur = new JPanel(new GridLayout(1,2));
+        JPanel panelSuperieur = new JPanel(new GridLayout(1, 2));
         panelSuperieur.add(bankPanel);
         panelSuperieur.add(buttonsPanel);
         panelSuperieur.setOpaque(false);
@@ -61,6 +61,11 @@ public class GameView extends JPanel {
         super.paintComponent(g);
         Image backgroundImage = new ImageIcon(getClass().getResource("/src/ressources/background.jpg")).getImage();
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+    }
+
+    public void proposeEchange(Player currentPlayer, List<Player> accepter, Player p) {
+        ProposeEchange prop = new ProposeEchange(currentPlayer, accepter, p, game);
+        exchangePanel.add(prop);
     }
 
     public void update() {

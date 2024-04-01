@@ -4,7 +4,6 @@ import logic.*;
 
 import javax.swing.*;
 
-import controleur.Game;
 import controleur.ViewControleur;
 
 import java.awt.event.*;
@@ -43,7 +42,8 @@ public class ExchangePanel extends JPanel {
 
     public void update(Player player) {
         this.player = player;
-        if (player.isBot() || player.getMyCards().getNumberOfRes()==0) {
+        if (player.isBot()
+                || (player.getMyCards().getNumberOfRes() == 0 && player.getWishList().getNumberOfRes() == 0)) {
             setVisible(false);
             return;
         }setVisible(true);
@@ -193,7 +193,7 @@ public class ExchangePanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ViewControleur.getGame().initerEchange();
+                ViewControleur.getGame().initierEchange();
                 iniinitializeCard();                
                 addMouseListenerToProposeListLabel();
                 proposeList.setVisible(false);

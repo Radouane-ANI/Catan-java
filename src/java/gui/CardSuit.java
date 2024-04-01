@@ -16,6 +16,7 @@ import java.util.Map;
 public class CardSuit extends JLayeredPane {
     private static final int MY_CARD_LIST = 1;
     private static final int SALE_LIST = 2;
+    private static final int WISH_LIST2 = 4;
     private static final int WISH_LIST = 3;
     private static final String BASE_PATH = "src/ressources/";
 
@@ -32,6 +33,7 @@ public class CardSuit extends JLayeredPane {
             case MY_CARD_LIST : cardBox = player.getMyCards();
                                 button = null;break;
             case SALE_LIST : cardBox = player.getSaleList();break;
+            case WISH_LIST2 : cardBox = player.getWishList();break;
             case WISH_LIST : cardBox = player.getWishList();break;
         }
         this.cardBoxLabel = new HashMap<>();
@@ -98,6 +100,7 @@ public class CardSuit extends JLayeredPane {
         String imageFile = BASE_PATH;
         switch (cardSuitType) {
             case SALE_LIST -> imageFile +="no.png";
+            case WISH_LIST2 -> imageFile +="yes.png";
             case WISH_LIST -> imageFile +="ppl.png";
         }
         ImageIcon icon = new ImageIcon(imageFile);

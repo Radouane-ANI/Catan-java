@@ -133,7 +133,7 @@ public class Options extends JPanel {
         if (players.size() != 4) {
             int length = 4 - players.size();
             for (int i = 0; i < length; i++) {
-                players.add(new Player(false, "bot" + i, bank, couleursDisponibles.get(i)));
+                players.add(new Player(true, "bot" + i, bank, couleursDisponibles.get(i)));
             }
         }
         Collections.shuffle(players);

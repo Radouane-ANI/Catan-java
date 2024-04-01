@@ -20,16 +20,15 @@ public class StateGUI extends JPanel {
         backgroundImage = new ImageIcon(getClass().getResource("/src/ressources/planche.png")).getImage();
         setOpaque(false);
         setLayout(null);
-        setPreferredSize(new Dimension(backgroundImage.getWidth(null), backgroundImage.getHeight(null)));
         labelPlayer = new JLabel("Player");
         labelPlayer.setForeground(Color.WHITE);
         labelPlayer.setFont(new Font("Arial", Font.BOLD, 24));
-        labelPlayer.setBounds(150, 100, 300, 50);
+        labelPlayer.setBounds(120, 60, 300, 50);
 
         labelPoint = new JLabel("Point");
         labelPoint.setForeground(Color.WHITE);
         labelPoint.setFont(new Font("Arial", Font.BOLD, 20));
-        labelPoint.setBounds(155, 150, 300, 50);
+        labelPoint.setBounds(120, 90, 300, 50);
         add(labelPlayer);
         add(labelPoint);
 
@@ -38,7 +37,9 @@ public class StateGUI extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(backgroundImage, 0, 0, this);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+        labelPlayer.setBounds(120, (int) (getHeight() / 3), 300, 50);
+        labelPoint.setBounds(120, (int) (getHeight() / 2.2), 300, 50);
     }
 
     public void update(Player currentPlayer) {

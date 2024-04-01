@@ -305,4 +305,8 @@ public class Player implements Trade {
         }
         return false;
     }
+
+    public boolean canTradeWith(Player player){
+        return canTradeWith(player.myCards, wishList);
+    }
 }

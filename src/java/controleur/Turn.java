@@ -41,7 +41,9 @@ public class Turn {
         int sumDices = diceGUI.getResult();
         recupRessources(playersList, sumDices);
         update();
-        echange();
+        if (currentPlayer.isBot()) {
+            initierEchange();
+        }
         creationCity();
     }
 
@@ -85,30 +87,47 @@ public class Turn {
         }
     }
 
-    private void echange(){
-        if (!currentPlayer.exchangeSuggestion() || !currentPlayer.isBot()) {
+    public void initierEchange() {
+        if (currentPlayer.isBot() && !currentPlayer.exchangeSuggestion()) {
             return;
         }
         List<Player> accepter = new ArrayList<>();
         for (Player p : playersList) {
-            if (p != currentPlayer && p.isBot()) {
+            if (p == currentPlayer) {
+                continue;
+            }
+            if (p.isBot()) {
                 p.updateTradeLists();
                 if (currentPlayer.isTradeInteresting(p)) {
                     accepter.add(p);
+                }else{
+                    accepter.add(currentPlayer);
                 }
             } else if (!p.isBot()) {
-                if (proposeEchange(p)) {
-                    accepter.add(p);
-                }
-            }
+                proposeEchange(accepter, p);
+            }p.revertFromSaleList();
+            p.getWishList().clearBox();
         }
+        if (accepter.size() == playersList.size() - 1) {
+            echange(accepter);
+        }
+    }
+
+    public void echange(List<Player> accepter) {
+        if (accepter.size() < playersList.size() - 1) {
+            return;
+        }
+        for (int i = 0; i < playersList.size() - 1; i++)
+            accepter.remove(currentPlayer);
         if (accepter.size() > 0) {
             Random rd = new Random();
             Player choisi = accepter.get(rd.nextInt(accepter.size()));
             currentPlayer.trade(choisi);
-        }else if (currentPlayer.isBot()) {
-            currentPlayer.trade(currentPlayer.getSaleList(),currentPlayer.getBank(),currentPlayer.getWishList(),currentPlayer.getMyCards());
-        }
+        } else if (currentPlayer.isBot()) {
+            currentPlayer.trade(currentPlayer.getSaleList(), currentPlayer.getBank(), currentPlayer.getWishList(),
+                    currentPlayer.getMyCards());
+        }currentPlayer.revertFromSaleList();
+        currentPlayer.getWishList().clearBox();
     }
 
     /* 
@@ -117,22 +136,18 @@ public class Turn {
     }
     */
 
-    public void initerEchange(){
-        for (Player player : playersList) {
-            if (player != currentPlayer) {
-                if (player.isBot()) {
-                    
-                }else{
-                    proposeEchange(player);
-                }
-            }
-        }
-    }
     private void creationCity(){}
 
-    private boolean proposeEchange(Player p) {
-        // affiche a l'ecran un echange que le joueur peut accepeter ou non
-        return false;
+    private void proposeEchange(List<Player> accepter, Player p) {
+        if (currentPlayer.canTradeWith(p)) {
+            gameView.proposeEchange(currentPlayer, accepter, p);
+        } else {
+            accepter.add(currentPlayer);
+            if (accepter.size() == playersList.size()) {
+                currentPlayer.revertFromSaleList();
+                currentPlayer.getWishList().clearBox();
+            }
+        }
     }
 
     private void waitRollDice() {
@@ -144,7 +159,7 @@ public class Turn {
             }
         }
     }
-
+    
     public DiceGUI getDiceGUI() {
         return diceGUI;
     }
@@ -157,7 +172,7 @@ public class Turn {
         this.gameView = gameView;
     }
 
-    protected void update() {
+    public void update() {
         currentPlayer.calculePoints();
         if (gameView != null) {
             gameView.update();

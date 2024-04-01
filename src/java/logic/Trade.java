@@ -48,7 +48,6 @@ public interface Trade {
         for (Card c : Card.values()) {
             if(saleList.getNumber(c) != 0) {
                 tradeObj.addCard(c,saleList.getNumber(c));
-                myCards.removeCard(c,saleList.getNumber(c));
             }
         }
         for (Card c : Card.values()) {
@@ -78,5 +77,16 @@ public interface Trade {
             return false;
         }
         return false;
+    }
+
+    default boolean canTradeWith(CardBox myCards, CardBox saleList) {
+        for (Card c : Card.values()) {
+            if (saleList.getNumber(c) != 0) {
+                if (saleList.getNumber(c) > myCards.getNumber(c)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
