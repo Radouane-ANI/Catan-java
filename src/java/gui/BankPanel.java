@@ -87,7 +87,7 @@ public class BankPanel extends JPanel {
             label.setBounds(offsetX, offsetY, label.getIcon().getIconWidth(), label.getIcon().getIconHeight());
             this.add(label);
             offsetX += label.getIcon().getIconWidth() + gap;
-            ImageIcon iconO = new ImageIcon("rc/ressources/0_tree.png");
+            ImageIcon iconO = new ImageIcon("src/ressources/0_tree.png");
             Dimension dimension = new Dimension((int)(iconO.getIconWidth() * 0.3), (int)(iconO.getIconHeight()* 0.1*0.3));
             JPanel transparentPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             transparentPanel.setPreferredSize(dimension);
