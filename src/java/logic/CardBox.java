@@ -37,6 +37,19 @@ public class CardBox {
     public void setZero(Card c) {
         cardsNumbers[c.ordinal()] = 0;
     }
+    @Override
+public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("CardBox Contents:\n");
+    for (Card card : Card.values()) {
+        int num = cardsNumbers[card.ordinal()];
+        if (num > 0) {
+            sb.append(card.toString()).append(": ").append(num).append("\n");
+        }
+    }
+    return sb.toString();
+}
+
 
     public boolean removeCard(Card c, int number) {
         int numberOrigin = cardsNumbers[c.ordinal()];

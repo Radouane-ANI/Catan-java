@@ -9,21 +9,19 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 public class BankPanel extends JPanel {
-    private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
+    private static final String BASE_PATH = "src/ressources/";
     Bank bank;
     private static final int IMAGE_COUNT = 7;
 
-    private int[] numbers;
-
     private JLabel[] labels;
+    private JLabel[] numberLabel;
 
     private ImageIcon scaledIcon[] = new ImageIcon[IMAGE_COUNT];
 
     public BankPanel(Bank bank) {
         this.bank = bank;
         labels = new JLabel[IMAGE_COUNT];
-        numbers = new int[IMAGE_COUNT];
-        updateNumbers();
+        numberLabel = new JLabel[IMAGE_COUNT];
         setLayout(null);
         loadScaledIcon();
         initializeLabels();
@@ -71,12 +69,12 @@ public class BankPanel extends JPanel {
 
     private void initializeLabels() {
         this.removeAll();
-        updateNumbers();
         for(int i = 0; i < IMAGE_COUNT ;i++) {
             JLabel label = new JLabel(scaledIcon[i]);
             labels[i] = label;
         }
         positionLabels();
+        updateNumbers();
     }
 
     private void positionLabels() {
@@ -89,7 +87,7 @@ public class BankPanel extends JPanel {
             label.setBounds(offsetX, offsetY, label.getIcon().getIconWidth(), label.getIcon().getIconHeight());
             this.add(label);
             offsetX += label.getIcon().getIconWidth() + gap;
-            ImageIcon iconO = new ImageIcon("/Users/juliazhula/k-catan/src/ressources/0_tree.png");
+            ImageIcon iconO = new ImageIcon("src/ressources/0_tree.png");
             Dimension dimension = new Dimension((int)(iconO.getIconWidth() * 0.3), (int)(iconO.getIconHeight()* 0.1*0.3));
             JPanel transparentPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             transparentPanel.setPreferredSize(dimension);
@@ -97,11 +95,11 @@ public class BankPanel extends JPanel {
             transparentPanel.setBackground(Color.blue);
 
             if ( i > 0) {
-                JLabel numberLabel = new JLabel(String.valueOf(numbers[i]));
-                numberLabel.setFont(new Font("Arial", Font.BOLD, 7));
-                numberLabel.setForeground(Color.WHITE);
+                numberLabel[i] = new JLabel(String.valueOf(Card.values()[i-1])+"");
+                numberLabel[i].setFont(new Font("Arial", Font.BOLD, 7));
+                numberLabel[i].setForeground(Color.WHITE);
 
-                transparentPanel.add(numberLabel);
+                transparentPanel.add(numberLabel[i]);
             }
             label.setLayout(new GridLayout(4,1));
             label.add(transparentPanel);
@@ -111,10 +109,10 @@ public class BankPanel extends JPanel {
     }
 
     public void updateNumbers() {
-        for (int i = 0; i < 5; i++) {
-            numbers[i+1] = bank.getNumber(Card.values()[i]);
+        for (int i = 1; i < 6; i++) {
+           numberLabel[i].setText(bank.getNumber(Card.values()[i-1])+"");
         }
-        numbers[6] = bank.allDevCardsNumber();
+        numberLabel[6].setText(bank.allDevCardsNumber()+"");
     }
 
 

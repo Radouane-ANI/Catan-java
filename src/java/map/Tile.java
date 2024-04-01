@@ -118,9 +118,15 @@ public class Tile extends Vector {
             Tile t = getTile(n.getX(), (int) n.getY());
             Tile t1 = getTile(n.getX() + 0.5, (int) n.getY());
             Tile t2 = getTile(n.getX() - 0.5, (int) n.getY());
-            if (t == null) l.add(t);
-            if (t1 == null) l.add(t1);
-            if (t2 == null) l.add(t2);
+            Tile t3 = getTile(n.getX(), (int) n.getY() - 1);
+            Tile t4 = getTile(n.getX() + 0.5, (int) n.getY() - 1);
+            Tile t5 = getTile(n.getX() - 0.5, (int) n.getY() - 1);
+            if (t != null) l.add(t);
+            if (t1 != null) l.add(t1);
+            if (t2 != null) l.add(t2);
+            if (t3 != null) l.add(t3);
+            if (t4 != null) l.add(t4);
+            if (t5 != null) l.add(t5);
         }
         return l;
     }

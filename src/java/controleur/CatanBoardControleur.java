@@ -51,6 +51,7 @@ public class CatanBoardControleur {
         for (Edge edge : Edge.listBuildRoad(p)) {
             avaibleRoad(p, edge);
         }
+        view.repaint();
     }
 
     public void firstBuild(Player p) {
@@ -80,6 +81,9 @@ public class CatanBoardControleur {
         road.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (p.getRoads().size() < 2) {
+                    ViewControleur.NextTurn(false);
+                }
                 Road r = new Road(p);
                 p.buildRoad(r);
                 edge.setRoad(r);
@@ -107,6 +111,7 @@ public class CatanBoardControleur {
                 } else {
                     ViewControleur.setFinishedTurn(true);
                 }
+                view.repaint();
             }
         });
     }

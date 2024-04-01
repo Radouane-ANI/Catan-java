@@ -1,6 +1,5 @@
 package gui;
 
-import logic.Bank;
 import logic.Card;
 import logic.CardBox;
 import logic.Player;
@@ -17,10 +16,10 @@ import java.util.Map;
 public class CardSuit extends JLayeredPane {
     private static final int MY_CARD_LIST = 1;
     private static final int SALE_LIST = 2;
+    private static final int WISH_LIST2 = 4;
     private static final int WISH_LIST = 3;
-    private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
+    private static final String BASE_PATH = "src/ressources/";
 
-    private Player player;
     private int cardSuitType;
     private CardBox cardBox;
     private ImageIcon scaledIcon[] = new ImageIcon[10];
@@ -28,13 +27,13 @@ public class CardSuit extends JLayeredPane {
     private JButton button;
 
     public CardSuit(Player player, int cardSuitType) {
-        this.player = player;
         this.cardSuitType = cardSuitType;
         button = new JButton();
         switch (cardSuitType) {
             case MY_CARD_LIST : cardBox = player.getMyCards();
                                 button = null;break;
             case SALE_LIST : cardBox = player.getSaleList();break;
+            case WISH_LIST2 : cardBox = player.getWishList();break;
             case WISH_LIST : cardBox = player.getWishList();break;
         }
         this.cardBoxLabel = new HashMap<>();
@@ -46,8 +45,12 @@ public class CardSuit extends JLayeredPane {
         initializeLabels();
     }
 
-    public CardBox getCardBox() {
-        return cardBox;
+    public void setCardBox(Player player) {
+        switch (cardSuitType) { 
+            case MY_CARD_LIST : cardBox = player.getMyCards();break;
+            case SALE_LIST : cardBox = player.getSaleList();break;
+            case WISH_LIST : cardBox = player.getWishList();break;
+        }
     }
 
     public JButton getButton() {
@@ -97,6 +100,7 @@ public class CardSuit extends JLayeredPane {
         String imageFile = BASE_PATH;
         switch (cardSuitType) {
             case SALE_LIST -> imageFile +="no.png";
+            case WISH_LIST2 -> imageFile +="yes.png";
             case WISH_LIST -> imageFile +="ppl.png";
         }
         ImageIcon icon = new ImageIcon(imageFile);
@@ -176,7 +180,7 @@ public class CardSuit extends JLayeredPane {
         return new Dimension(500, 80);
     }
 
-    public static void main(String[] args) {
+/*     public static void main(String[] args) {
         Player player = new Player(false,"Sam",new Bank(),Color.red);
         CardBox cardBox = new CardBox();
         int[] x = {1,2,3,4,5};
@@ -195,6 +199,6 @@ public class CardSuit extends JLayeredPane {
         frame.setSize(1000, 700);
         frame.setVisible(true);
     }
-
+*/
 
 }

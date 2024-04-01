@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -55,7 +56,8 @@ public class Options extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 difficulte = difficulteComboBox.getSelectedIndex() + 1;
                 completeJoueur();
-                 ViewControleur.menu();;
+                ViewControleur.menu();
+                ;
             }
         });
 
@@ -63,6 +65,10 @@ public class Options extends JPanel {
         this.add(difficultyPanel, BorderLayout.WEST);
         this.add(playerPanel, BorderLayout.EAST);
         this.add(valider, BorderLayout.SOUTH);
+    }
+
+    public Bank getBank() {
+        return bank;
     }
 
     @Override
@@ -130,6 +136,7 @@ public class Options extends JPanel {
                 players.add(new Player(true, "bot" + i, bank, couleursDisponibles.get(i)));
             }
         }
+        Collections.shuffle(players);
     }
 
     private void setLabelFont(JLabel label, int size, Color color) {

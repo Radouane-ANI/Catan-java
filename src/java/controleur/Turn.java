@@ -12,31 +12,45 @@ import map.Board;
 import map.Tile;
 import util.TerrainType;
 import gui.DiceGUI;
+import gui.GameView;
 
 public class Turn {
-
+    private GameView gameView;
     protected List<Player> playersList;
     protected int currentPlayerIndex;
     private DiceGUI diceGUI;
+    protected Player currentPlayer;
 
     public Turn(List<Player> players) {
         playersList = players;
         currentPlayerIndex = 0; // Commence avec le premier joueur
         this.diceGUI = new DiceGUI(); 
-        diceGUI.roll();
+        currentPlayer = playersList.get(currentPlayerIndex);
     }
 
     void tour() {
+        currentPlayer = playersList.get(currentPlayerIndex);
+        currentPlayer.setDiced(false);
+        update();
+        if (currentPlayer.isBot()) {
+            diceGUI.roll();
+        } else {
+            waitRollDice();
+        }
+        currentPlayer.setDiced(true);
         int sumDices = diceGUI.getResult();
         recupRessources(playersList, sumDices);
-        echange();
+        update();
+        if (currentPlayer.isBot()) {
+            initierEchange();
+        }
         creationCity();
     }
 
-    protected void firstBuild(Player currentPlayer) {
-        if (!currentPlayer.isBot() && currentPlayer.getRoads().size() < 2) {
-            ViewControleur.getCatanControleur().firstBuild(currentPlayer);
-        }else if (currentPlayer.isBot()) {
+    protected void firstBuild(Player player) {
+        if (!player.isBot() && player.getRoads().size() < 2) {
+            ViewControleur.getCatanControleur().firstBuild(player);
+        }else if (player.isBot()) {
             // placement des batiments pour le bot
         }
     }
@@ -54,7 +68,7 @@ public class Turn {
                     if (hG instanceof City) {
                         nb =2;
                     }
-                    hG.getOwner().addCard(t.getTerrain().toCard(),1);
+                    hG.getOwner().addCard(t.getTerrain().toCard(), nb);
                 }
             }
         }
@@ -66,36 +80,54 @@ public class Turn {
             Node n = Node.getNode(s);
             List<Tile> t = Tile.getTileAdjacents(n);
             for (Tile tile : t) {
-                player.addCard(tile.getTerrain().toCard(), 1);
+                if (tile.getTerrain() != TerrainType.DESERT) {
+                    player.addCard(tile.getTerrain().toCard(), 1);
+                }
             }
         }
     }
 
-    private void echange(){
-        Player currentPlayer = playersList.get(currentPlayerIndex);
-        if (!currentPlayer.exchangeSuggestion()) {
+    public void initierEchange() {
+        if (currentPlayer.isBot() && !currentPlayer.exchangeSuggestion()) {
             return;
         }
         List<Player> accepter = new ArrayList<>();
         for (Player p : playersList) {
-            if (p != currentPlayer && p.isBot()) {
+            if (p == currentPlayer) {
+                continue;
+            }
+            if (p.isBot()) {
                 p.updateTradeLists();
                 if (currentPlayer.isTradeInteresting(p)) {
                     accepter.add(p);
+                }else{
+                    accepter.add(currentPlayer);
                 }
             } else if (!p.isBot()) {
-                if (proposeEchange(currentPlayer)) {
-                    accepter.add(p);
-                }
-            }
+                proposeEchange(accepter, p);
+            }p.revertFromSaleList();
+            p.getWishList().clearBox();
         }
+        if (accepter.size() == playersList.size() - 1) {
+            echange(accepter);
+        }
+    }
+
+    public void echange(List<Player> accepter) {
+        if (accepter.size() < playersList.size() - 1) {
+            return;
+        }
+        for (int i = 0; i < playersList.size() - 1; i++)
+            accepter.remove(currentPlayer);
         if (accepter.size() > 0) {
             Random rd = new Random();
             Player choisi = accepter.get(rd.nextInt(accepter.size()));
             currentPlayer.trade(choisi);
-        }else if (currentPlayer.isBot()) {
-            currentPlayer.trade(currentPlayer.getSaleList(),currentPlayer.getBank(),currentPlayer.getWishList(),currentPlayer.getMyCards());
-        }
+        } else if (currentPlayer.isBot()) {
+            currentPlayer.trade(currentPlayer.getSaleList(), currentPlayer.getBank(), currentPlayer.getWishList(),
+                    currentPlayer.getMyCards());
+        }currentPlayer.revertFromSaleList();
+        currentPlayer.getWishList().clearBox();
     }
 
     /* 
@@ -106,8 +138,44 @@ public class Turn {
 
     private void creationCity(){}
 
-    private boolean proposeEchange(Player p) {
-        // affiche a l'ecran un echange que le joueur peut accepeter ou non
-        return false;
+    private void proposeEchange(List<Player> accepter, Player p) {
+        if (currentPlayer.canTradeWith(p)) {
+            gameView.proposeEchange(currentPlayer, accepter, p);
+        } else {
+            accepter.add(currentPlayer);
+            if (accepter.size() == playersList.size()) {
+                currentPlayer.revertFromSaleList();
+                currentPlayer.getWishList().clearBox();
+            }
+        }
+    }
+
+    private void waitRollDice() {
+        diceGUI.setRollDice(false);
+        while (!diceGUI.isRollDice()) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+            }
+        }
+    }
+    
+    public DiceGUI getDiceGUI() {
+        return diceGUI;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setGameView(GameView gameView) {
+        this.gameView = gameView;
+    }
+
+    public void update() {
+        currentPlayer.calculePoints();
+        if (gameView != null) {
+            gameView.update();
+        }
     }
 }
