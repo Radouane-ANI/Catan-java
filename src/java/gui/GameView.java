@@ -27,8 +27,13 @@ public class GameView extends JPanel {
         setLayout(new BorderLayout());
         DiceGUI dicePanel = game.getDiceGUI();
         stateGUI = new StateGUI();
-        JPanel panelLateral = new JPanel(new GridLayout(2, 1));
+        WeatherDisplay weatherDisplay = new WeatherDisplay(); // Icréation weather panel
+
+        JPanel panelLateral = new JPanel(new GridLayout(3, 1)); // Change de grid layout
+        //JPanel panelLateral = new JPanel(new GridLayout(2, 1));
+
         panelLateral.add(dicePanel);
+        panelLateral.add(weatherDisplay); // ajout du weather panel
         panelLateral.add(stateGUI);
         panelLateral.setOpaque(false);
 

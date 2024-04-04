@@ -56,7 +56,6 @@ public class Turn {
     }
 
     private void recupRessources(List<Player> players, int sumDices){
-        System.out.println("result(Turn): " + sumDices);
         ArrayList<Tile> tiles = Board.getTileByDiceNumberArray(sumDices);
         for (Tile t : tiles){
             if (t.getTerrain() == TerrainType.DESERT) continue;
