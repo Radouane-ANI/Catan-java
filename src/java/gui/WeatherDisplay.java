@@ -3,8 +3,6 @@ package gui;
 import util.Constante;
 import util.WeatherMarkovChain;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class WeatherDisplay extends JPanel {
@@ -35,27 +33,16 @@ public class WeatherDisplay extends JPanel {
         // Affichage de l'image de la météo
         loadWeatherIcon("Soleil");
 
-        // Création du bouton pour passer au tour suivant
-        JButton nextTurnButton = new JButton("Tour suivant");
-        nextTurnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // No need for the button action here
-                updateWeather(turnCounter);
-            }
-        });
-
         // Ajout du label et du bouton à la fenêtre
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(weatherLabel, BorderLayout.CENTER);
-        panel.add(nextTurnButton, BorderLayout.SOUTH);
         add(panel);
 
         setVisible(true);
     }
 
-    public void updateWeather(int turnCounter) {
+    public void updateWeather() {
         this.turnCounter++;
     
         int currentSeasonIndex = (this.turnCounter / 4) % 4;
@@ -89,7 +76,6 @@ public class WeatherDisplay extends JPanel {
         weatherLabel.setIcon(weatherIcon);
     }
     
-
     // Chargement de l'icône en fonction de la météo
     private void loadWeatherIcon(String weather) {
         switch (weather) {

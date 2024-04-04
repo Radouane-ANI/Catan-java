@@ -27,13 +27,12 @@ public class GameView extends JPanel {
         setLayout(new BorderLayout());
         DiceGUI dicePanel = game.getDiceGUI();
         stateGUI = new StateGUI();
-        WeatherDisplay weatherDisplay = new WeatherDisplay(); // Icréation weather panel
+        WeatherDisplay weatherDisplay = new WeatherDisplay();
 
-        JPanel panelLateral = new JPanel(new GridLayout(3, 1)); // Change de grid layout
-        //JPanel panelLateral = new JPanel(new GridLayout(2, 1));
+        JPanel panelLateral = new JPanel(new GridLayout(3, 1));
 
         panelLateral.add(dicePanel);
-        panelLateral.add(weatherDisplay); // ajout du weather panel
+        panelLateral.add(weatherDisplay);
         panelLateral.add(stateGUI);
         panelLateral.setOpaque(false);
 
@@ -42,7 +41,7 @@ public class GameView extends JPanel {
         bankPanel = new BankPanel(ViewControleur.getBank());
 
         exchangePanel = new ExchangePanel(game.getCurrentPlayer());
-        buttonsPanel = new ButtonsPanel(game);
+        buttonsPanel = new ButtonsPanel(game, weatherDisplay);
         boardView.setOpaque(false);
         JPanel panelSuperieur = new JPanel(new GridLayout(1, 2));
         panelSuperieur.add(bankPanel);
