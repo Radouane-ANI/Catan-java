@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 
 import controleur.Game;
 import controleur.ViewControleur;
-import logic.Card;
 import logic.Player;
 
 import java.awt.BorderLayout;
@@ -59,7 +58,7 @@ public class GameView extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Image backgroundImage = new ImageIcon(getClass().getResource("/src/ressources/background.jpg")).getImage();
+        Image backgroundImage = new ImageIcon("src/ressources/background.jpg").getImage();
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
     }
 

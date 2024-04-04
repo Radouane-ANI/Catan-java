@@ -17,7 +17,7 @@ public class StateGUI extends JPanel {
     private JLabel labelPoint;
 
     public StateGUI() {
-        backgroundImage = new ImageIcon(getClass().getResource("/src/ressources/planche.png")).getImage();
+        backgroundImage = new ImageIcon("src/ressources/planche.png").getImage();
         setOpaque(false);
         setLayout(null);
         labelPlayer = new JLabel("Player");

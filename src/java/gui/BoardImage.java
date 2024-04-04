@@ -33,18 +33,18 @@ public class BoardImage {
         int width = CatanBoardView.TILE_SIZE;
         int height = (int) (CatanBoardView.TILE_SIZE * 1.15);
         HashMap<TerrainType, ImageIcon> map = new HashMap<>();
-        map.put(TerrainType.FOREST, createResizedImageIcon("/src/ressources/tuile_foret.png", width, height));
-        map.put(TerrainType.FIELD, createResizedImageIcon("/src/ressources/tuile_champ.png", width, height));
-        map.put(TerrainType.PASTURE, createResizedImageIcon("/src/ressources/tuile_plaine.png", width, height));
-        map.put(TerrainType.BRICK, createResizedImageIcon("/src/ressources/tuile_carriere.png", width, height));
-        map.put(TerrainType.MOUNTAIN, createResizedImageIcon("/src/ressources/tuile_montagne.png", width, height));
-        map.put(TerrainType.DESERT, createResizedImageIcon("/src/ressources/tuile_desert.png", width,
+        map.put(TerrainType.FOREST, createResizedImageIcon("src/ressources/tuile_foret.png", width, height));
+        map.put(TerrainType.FIELD, createResizedImageIcon("src/ressources/tuile_champ.png", width, height));
+        map.put(TerrainType.PASTURE, createResizedImageIcon("src/ressources/tuile_plaine.png", width, height));
+        map.put(TerrainType.BRICK, createResizedImageIcon("src/ressources/tuile_carriere.png", width, height));
+        map.put(TerrainType.MOUNTAIN, createResizedImageIcon("src/ressources/tuile_montagne.png", width, height));
+        map.put(TerrainType.DESERT, createResizedImageIcon("src/ressources/tuile_desert.png", width,
                 height));
         return map;
     }
 
     private ImageIcon createResizedImageIcon(String imagePath, int width, int height) {
-        return new ImageIcon(new ImageIcon(getClass().getResource(imagePath)).getImage().getScaledInstance(width,
+        return new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(width,
                 height, Image.SCALE_SMOOTH));
     }
 
