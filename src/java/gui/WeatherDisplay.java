@@ -2,11 +2,13 @@ package gui;
 
 import util.Constante;
 import util.WeatherMarkovChain;
-import java.awt.*;
+
 import javax.swing.*;
+import java.awt.*;
 
 public class WeatherDisplay extends JPanel {
     private JLabel weatherLabel;
+    private JLabel weatherIconLabel;
     private ImageIcon weatherIcon;
     private WeatherMarkovChain winterWeatherChain;
     private WeatherMarkovChain springWeatherChain;
@@ -15,10 +17,11 @@ public class WeatherDisplay extends JPanel {
     private String[] seasons = {"Spring", "Summer", "Autumn", "Winter"};
     private String currentWeather;
     private int turnCounter;
+    private Image backgroundImage;
 
     public WeatherDisplay() {
-        super(new BorderLayout());
-        setSize(200, 250);
+        setOpaque(false);
+        setLayout(null);
 
         String[] weatherStates = {"Pluie", "Soleil", "Nuageux", "Neige", "Vent"};
         winterWeatherChain = new WeatherMarkovChain(Constante.HIVER_MATRIX, weatherStates);
@@ -26,31 +29,34 @@ public class WeatherDisplay extends JPanel {
         summerWeatherChain = new WeatherMarkovChain(Constante.ETE_MATRIX, weatherStates);
         autumnWeatherChain = new WeatherMarkovChain(Constante.AUTONME_MATRIX, weatherStates);
 
-        // Création et configuration du JLabel pour afficher la météo
-        weatherLabel = new JLabel("Soleil", SwingConstants.CENTER);
+        weatherLabel = new JLabel("Soleil");
+        weatherLabel.setForeground(Color.BLACK);
         weatherLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        weatherLabel.setBounds(125, 20, 300, 50);
+        add(weatherLabel);
 
-        // Affichage de l'image de la météo
-        loadWeatherIcon("Soleil");
+        weatherIconLabel = new JLabel();
+        weatherIconLabel.setBounds(100, 50, 100, 100); 
+        
+        add(weatherIconLabel);
+    }
 
-        // Ajout du label et du bouton à la fenêtre
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.add(weatherLabel, BorderLayout.CENTER);
-        add(panel);
-
-        setVisible(true);
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        backgroundImage = new ImageIcon("src/ressources/meteo_fond.png").getImage();
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
     }
 
     public void updateWeather() {
         this.turnCounter++;
-    
+
         int currentSeasonIndex = (this.turnCounter / 4) % 4;
         String currentSeason = seasons[currentSeasonIndex];
         currentWeather = weatherLabel.getText();
 
         System.out.println("Current season: " + currentSeason);
-    
+
         String nextWeather;
         switch (currentSeason) {
             case "Spring":
@@ -66,17 +72,15 @@ public class WeatherDisplay extends JPanel {
                 nextWeather = winterWeatherChain.getNextWeather(currentWeather);
                 break;
             default:
-                nextWeather = "Soleil"; 
+                nextWeather = "Soleil";
                 break;
         }
-    
-        // mise à jour de l'affichage
+
         loadWeatherIcon(nextWeather);
         weatherLabel.setText(nextWeather);
-        weatherLabel.setIcon(weatherIcon);
+        weatherIconLabel.setIcon(weatherIcon);
     }
-    
-    // Chargement de l'icône en fonction de la météo
+
     private void loadWeatherIcon(String weather) {
         switch (weather) {
             case "Soleil":
