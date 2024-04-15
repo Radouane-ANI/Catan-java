@@ -8,6 +8,7 @@ import logic.Player;
 import logic.City;
 import logic.HumanGroup;
 import logic.Settlement;
+import logic.Thief;
 import map.Board;
 import map.Tile;
 import util.TerrainType;
@@ -16,6 +17,7 @@ import gui.GameView;
 
 public class Turn {
     private GameView gameView;
+    private Thief thief;
     protected List<Player> playersList;
     protected int currentPlayerIndex;
     private DiceGUI diceGUI;
@@ -26,6 +28,7 @@ public class Turn {
         currentPlayerIndex = 0; // Commence avec le premier joueur
         this.diceGUI = new DiceGUI(); 
         currentPlayer = playersList.get(currentPlayerIndex);
+        thief = new Thief(null);
     }
 
     void tour() {
@@ -55,22 +58,33 @@ public class Turn {
         }
     }
 
-    private void recupRessources(List<Player> players, int sumDices){
+    private void recupRessources(List<Player> players, int sumDices) {
         System.out.println("result(Turn): " + sumDices);
-        ArrayList<Tile> tiles = Board.getTileByDiceNumberArray(sumDices);
-        for (Tile t : tiles){
-            if (t.getTerrain() == TerrainType.DESERT) continue;
-            Node[] nodes = t.getNeighbors();
-            for (Node n : nodes){
-                HumanGroup hG = n.getHumanGroup();
-                if (hG != null){
-                    int nb =1;
-                    if (hG instanceof City) {
-                        nb =2;
+        if (sumDices == 7) {
+            voleur();
+        } else {
+            ArrayList<Tile> tiles = Board.getTileByDiceNumberArray(sumDices);
+            for (Tile t : tiles) {
+                if (t.getTerrain() == TerrainType.DESERT || t.getThief() != null)
+                    continue;
+                Node[] nodes = t.getNeighbors();
+                for (Node n : nodes) {
+                    HumanGroup hG = n.getHumanGroup();
+                    if (hG != null) {
+                        int nb = 1;
+                        if (hG instanceof City) {
+                            nb = 2;
+                        }
+                        hG.getOwner().addCard(t.getTerrain().toCard(), nb);
                     }
-                    hG.getOwner().addCard(t.getTerrain().toCard(), nb);
                 }
             }
+        }
+    }
+
+    private void voleur() {
+        if (!currentPlayer.isBot()) {
+            ViewControleur.getCatanControleur().moveThief(thief);
         }
     }
 

@@ -5,17 +5,18 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import gui.CatanBoardView;
-import gui.CityComponent;
+import gui.CityTileComponent;
 import gui.RoadComponent;
 import logic.City;
 import logic.Player;
 import logic.Road;
 import logic.Settlement;
+import logic.Thief;
 import map.*;
 
 public class CatanBoardControleur {
     private CatanBoardView view;
-    private List<CityComponent> cityComponents = new ArrayList<>();
+    private List<CityTileComponent> cityTileComp = new ArrayList<>();
     private List<RoadComponent> roadComponents = new ArrayList<>();
 
     public CatanBoardControleur(CatanBoardView view) {
@@ -50,6 +51,28 @@ public class CatanBoardControleur {
     public void buildRoad(Player p) {
         for (Edge edge : Edge.listBuildRoad(p)) {
             avaibleRoad(p, edge);
+        }
+        view.repaint();
+    }
+
+    public void moveThief(Thief thief) {
+        for (Tile tile : Tile.getTilesIntern()) {
+            if (tile.getThief() != null) {
+                continue;
+            }
+            CityTileComponent tileComp = new CityTileComponent();
+            view.addThief(tileComp, tile, null);
+            cityTileComp.add(tileComp);
+
+            tileComp.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    thief.setPosition(tile);
+                    removeCityComponents();
+                    view.repaint();
+                }
+            });
+
         }
         view.repaint();
     }
@@ -94,9 +117,9 @@ public class CatanBoardControleur {
     }
 
     private void avaibleSettelement(Node n, Player p) {
-        CityComponent city = new CityComponent();
+        CityTileComponent city = new CityTileComponent();
         view.addCity(city, n, null);
-        cityComponents.add(city);
+        cityTileComp.add(city);
         ViewControleur.setFinishedTurn(false);
 
         city.addMouseListener(new MouseAdapter() {
@@ -117,9 +140,9 @@ public class CatanBoardControleur {
     }
 
     private void avaibleCity(Node n, Player p, Settlement s) {
-        CityComponent city = new CityComponent();
+        CityTileComponent city = new CityTileComponent();
         view.addCity(city, n, null);
-        cityComponents.add(city);
+        cityTileComp.add(city);
         ViewControleur.setFinishedTurn(false);
 
         city.addMouseListener(new MouseAdapter() {
@@ -136,10 +159,10 @@ public class CatanBoardControleur {
     }
 
     private void removeCityComponents() {
-        for (CityComponent cityComponent : cityComponents) {
+        for (CityTileComponent cityComponent : cityTileComp) {
             cityComponent.setVisible(false);
         }
-        cityComponents.clear();
+        cityTileComp.clear();
     }
 
     private void removeRoadComponents() {

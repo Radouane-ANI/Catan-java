@@ -71,6 +71,10 @@ public class CatanBoardView extends JPanel {
             g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 20));
             g2d.drawString(diceNumber + "", textX, textY);
         }
+        if (t.getThief() != null) {
+            addThief(null, t, g2d);System.out.println("pos;");
+            System.out.println(t.getX() +" "+ t.getY());
+        }
     }
 
     private double calculateScreenX(double x) {
@@ -152,6 +156,29 @@ public class CatanBoardView extends JPanel {
             y2 = Math.max((int) screenY1, (int) screenY2);
             component.setBounds((int) x1 - TILE_SIZE / 20, (int) y1, (int) (x2 + TILE_SIZE / 10 - x1), (int) (y2 - y1));
             add(component);
+        }
+    }
+
+    public void addThief(CityTileComponent tileComp, Tile pos, Graphics2D g) {
+        if (g != null && pos.getThief() == null) {
+            return;
+        }
+        double x = pos.getX();
+        double y = pos.getY();
+
+        double screenX = calculateScreenX(x);
+        double screenY = calculateScreenY(x, y);
+
+        int centerX = (int) (screenX - (TILE_SIZE / 6));
+        int centerY = (int) (screenY + (TILE_SIZE / 3));
+        if (tileComp != null) {
+            tileComp.setBounds(centerX, centerY, TILE_SIZE / 4 + 1, TILE_SIZE / 4 + 1);
+            add(tileComp);
+        } else if (g != null) {
+            ImageIcon image = tuileImage.getThiefImage();
+            int decalage = image.getIconWidth() / 2;
+
+            g.drawImage(image.getImage(), (int) screenX - decalage, (int) screenY + decalage, null);
         }
     }
 

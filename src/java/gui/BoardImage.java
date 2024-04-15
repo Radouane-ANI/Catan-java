@@ -16,7 +16,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class BoardImage {
-
+    private ImageIcon thiefImage;
     private HashMap<TerrainType, ImageIcon> terrainImageMap;
     private HashMap<Player, ImageIcon> cityImageMap;
     private HashMap<Player, ImageIcon> settlementImageMap;
@@ -27,6 +27,12 @@ public class BoardImage {
                 CatanBoardView.TILE_SIZE / 2);
         settlementImageMap = createColoredImageMap("src/ressources/settlement.png", ViewControleur.getPlayers(),
                 CatanBoardView.TILE_SIZE / 3);
+        thiefImage = new ImageIcon(new ImageIcon("src/ressources/voleur.png").getImage()
+                .getScaledInstance(CatanBoardView.TILE_SIZE / 2, CatanBoardView.TILE_SIZE / 2, Image.SCALE_SMOOTH));
+    }
+
+    public ImageIcon getThiefImage() {
+        return thiefImage;
     }
 
     private HashMap<TerrainType, ImageIcon> createTerrainImageMap() {
