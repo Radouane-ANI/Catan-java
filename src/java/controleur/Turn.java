@@ -33,14 +33,14 @@ public class Turn {
 
     void tour() {
         currentPlayer = playersList.get(currentPlayerIndex);
-        currentPlayer.setDiced(false);
+        currentPlayer.setFinishedTurn(false);
         update();
         if (currentPlayer.isBot()) {
             diceGUI.roll();
         } else {
             waitRollDice();
         }
-        currentPlayer.setDiced(true);
+        currentPlayer.setFinishedTurn(true);
         int sumDices = diceGUI.getResult();
         recupRessources(playersList, sumDices);
         update();
@@ -84,7 +84,7 @@ public class Turn {
 
     private void voleur() {
         if (!currentPlayer.isBot()) {
-            ViewControleur.getCatanControleur().moveThief(thief);
+            ViewControleur.getCatanControleur().moveThief(thief, currentPlayer);
         }
     }
 

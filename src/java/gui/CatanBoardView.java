@@ -72,8 +72,7 @@ public class CatanBoardView extends JPanel {
             g2d.drawString(diceNumber + "", textX, textY);
         }
         if (t.getThief() != null) {
-            addThief(null, t, g2d);System.out.println("pos;");
-            System.out.println(t.getX() +" "+ t.getY());
+            addThief(null, t, g2d);
         }
     }
 

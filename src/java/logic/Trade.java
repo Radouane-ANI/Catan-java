@@ -64,6 +64,9 @@ public interface Trade {
         if (canExchangeDev(myCards, bank)) {
             Card dev = bank.devCardGenerator();
             bank.removeCard(dev, 1);
+            bank.addCard(SHEEP, 1);
+            bank.addCard(GRAIN, 1);
+            bank.addCard(STONE, 1);
             myCards.addCard(dev, 1);
         }
     }

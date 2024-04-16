@@ -95,6 +95,7 @@ public class ButtonsPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 player.getDevCard(player.getMyCards(),player.getBank());
+                ViewControleur.getGame().update();
             }
         });
     }
@@ -139,7 +140,7 @@ public class ButtonsPanel extends JPanel {
 
     public void update() {
         this.player = game.getCurrentPlayer();
-        if (!player.isBot() && player.isDiced()) {
+        if (!player.isBot() && player.isFinishedTurn()) {
             buttons[4].setEnabled(true);
             buttons[0].setEnabled(player.canExchangeDev(player.getMyCards(), player.getBank()));
             buttons[1].setEnabled(player.canBuildRoad());
