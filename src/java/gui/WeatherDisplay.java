@@ -41,6 +41,10 @@ public class WeatherDisplay extends JPanel {
         add(weatherIconLabel);
     }
 
+    public String getCurrentWeather() {
+        return weatherLabel.getText();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
