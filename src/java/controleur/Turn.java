@@ -83,6 +83,23 @@ public class Turn {
     }
 
     private void voleur() {
+        for (Player player : playersList) {
+            if (player.isBot()) {
+                continue;
+            }
+            if (player.getMyCards().getNumberOfRes() > 7) {
+                gameView.updateStolen(player);
+                player.setFinishedTurn(false);
+                while (!player.isFinishedTurn()) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                    }
+                }
+                player.setFinishedTurn(false);    
+            }
+        }
+        update();
         if (!currentPlayer.isBot()) {
             ViewControleur.getCatanControleur().moveThief(thief, currentPlayer);
         }

@@ -32,7 +32,8 @@ public class ProposeEchange extends JPanel {
 
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         this.saleList = new CardSuit(currentPlayer, 2);
-        this.wishList = new CardSuit(currentPlayer, 4);
+        this.wishList = new CardSuit(currentPlayer, 3);
+        this.wishList.setImageButton("yes.png");
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JLabel a = new JLabel(currentPlayer.getName() + " demande a " + p.getName());
@@ -65,7 +66,6 @@ public class ProposeEchange extends JPanel {
     private void supprimer() {
         Container parent = this.getParent();
         parent.remove(this);
-        parent.revalidate();
         parent.revalidate();
         game.update();
     }

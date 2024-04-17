@@ -19,7 +19,7 @@ import map.*;
 
 public class CatanBoardView extends JPanel {
 
-    public static final int TILE_SIZE = 110;
+    public static final int TILE_SIZE = 100;
 
     private Dimension dim;
     private Point center;
