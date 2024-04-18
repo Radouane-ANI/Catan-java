@@ -14,8 +14,6 @@ import util.TerrainType;
 import gui.DiceGUI;
 import gui.GameView;
 
-import javax.swing.JOptionPane;
-
 public class Turn {
     private GameView gameView;
     protected List<Player> playersList;
@@ -34,11 +32,10 @@ public class Turn {
         currentPlayer = playersList.get(currentPlayerIndex);
         currentPlayer.setDiced(false);
         update();
-        boolean isSunnyWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay().getCurrentWeather().equals("Soleil");
         if (currentPlayer.isBot()) {
             diceGUI.roll();
         } else {
-            waitRollDice(isSunnyWeather);
+            waitRollDice();
         }
         currentPlayer.setDiced(true);
         int sumDices = diceGUI.getResult();
@@ -152,28 +149,12 @@ public class Turn {
         }
     }
 
-    private void waitRollDice(boolean isSunnyWeather) {
+    private void waitRollDice() {
         diceGUI.setRollDice(false);
-        boolean promptForReroll = false;
-    
         while (!diceGUI.isRollDice()) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                // à gérer
-            }
-        }
-    
-        if (isSunnyWeather) {
-            if (!promptForReroll) {
-                if (!currentPlayer.isBot()) {
-                    int choice = JOptionPane.showConfirmDialog(null, "Il fait beau aujourd'hui! Voulez-vous relancer les dés?", "Reroll",
-                            JOptionPane.YES_NO_OPTION);
-                    if (choice == JOptionPane.YES_OPTION) {
-                        diceGUI.roll();
-                    }
-                }
-                promptForReroll = true;
             }
         }
     }
