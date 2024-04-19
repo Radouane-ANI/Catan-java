@@ -44,28 +44,4 @@ public class WeatherMarkovChain {
         }
         throw new IllegalArgumentException("État météorologique invalide");
     }
-
-    // Méthode pour appliquer les effets de la météo sur le gameplay
-    public void applyWeatherEffects(String weather) {
-        switch (weather) {
-            case "Pluie":
-                // Implémenter les effets de la pluie
-                break;
-            case "Soleil":
-                // Implémenter les effets du soleil
-                break;
-            case "Nuageux":
-                // Implémenter les effets du temps nuageux
-                break;
-            case "Neige":
-                // Implémenter les effets de la neige
-                break;
-            case "Vent":
-                // Implémenter les effets du vent
-                break;
-            default:
-                // Météo inconnue, ne rien faire
-                break;
-        }
-    }
 }

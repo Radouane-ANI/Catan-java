@@ -21,25 +21,26 @@ public class GameView extends JPanel {
     private ExchangePanel exchangePanel;
     private Game game;
     private ButtonsPanel buttonsPanel;
+    private WeatherDisplay weatherDisplay;
 
     public GameView(Game game) {
         this.game = game;
         setLayout(new BorderLayout());
         DiceGUI dicePanel = game.getDiceGUI();
         stateGUI = new StateGUI();
-        WeatherDisplay weatherDisplay = new WeatherDisplay();
-
+        this.weatherDisplay = new WeatherDisplay();
+    
         JPanel panelLateral = new JPanel(new GridLayout(3, 1));
-
+    
         panelLateral.add(dicePanel);
         panelLateral.add(weatherDisplay);
         panelLateral.add(stateGUI);
         panelLateral.setOpaque(false);
-
+    
         Dimension size = getSize();
         boardView = new CatanBoardView(size);
         bankPanel = new BankPanel(ViewControleur.getBank());
-
+    
         exchangePanel = new ExchangePanel(game.getCurrentPlayer());
         buttonsPanel = new ButtonsPanel(game, weatherDisplay);
         boardView.setOpaque(false);
@@ -47,16 +48,24 @@ public class GameView extends JPanel {
         panelSuperieur.add(bankPanel);
         panelSuperieur.add(buttonsPanel);
         panelSuperieur.setOpaque(false);
-
+    
         add(panelLateral, BorderLayout.EAST);
         add(boardView, BorderLayout.CENTER);
         add(panelSuperieur, BorderLayout.NORTH);
         add(exchangePanel, BorderLayout.SOUTH);
         game.setGameView(this);
     }
-
+    
     public CatanBoardView getBoardView() {
         return boardView;
+    }
+
+    public WeatherDisplay getWeatherDisplay() {
+        return weatherDisplay;
+    }
+
+    public void setWeatherDisplay(WeatherDisplay weatherDisplay) {
+        this.weatherDisplay = weatherDisplay;
     }
 
     @Override

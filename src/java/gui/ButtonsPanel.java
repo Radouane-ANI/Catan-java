@@ -105,7 +105,11 @@ public class ButtonsPanel extends JPanel {
         buttons[1].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ViewControleur.getCatanControleur().buildRoad(player);
+                if (weatherDisplay != null && weatherDisplay.getCurrentWeather().equals("Neige")) {
+                    JOptionPane.showMessageDialog(null, "Il neige! Vous ne pouvez pas construire de routes maintenant.");
+                } else {
+                    ViewControleur.getCatanControleur().buildRoad(player);
+                }
             }
         });
     }

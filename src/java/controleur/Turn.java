@@ -14,12 +14,15 @@ import util.TerrainType;
 import gui.DiceGUI;
 import gui.GameView;
 
+import javax.swing.JOptionPane;
+
 public class Turn {
     private GameView gameView;
     protected List<Player> playersList;
     protected int currentPlayerIndex;
     private DiceGUI diceGUI;
     protected Player currentPlayer;
+    private boolean promptForReroll;
 
     public Turn(List<Player> players) {
         playersList = players;
@@ -32,10 +35,11 @@ public class Turn {
         currentPlayer = playersList.get(currentPlayerIndex);
         currentPlayer.setDiced(false);
         update();
+        boolean isSunnyWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay().getCurrentWeather().equals("Soleil");
         if (currentPlayer.isBot()) {
             diceGUI.roll();
         } else {
-            waitRollDice();
+            waitRollDice(isSunnyWeather);
         }
         currentPlayer.setDiced(true);
         int sumDices = diceGUI.getResult();
@@ -45,12 +49,13 @@ public class Turn {
             initierEchange();
         }
         creationCity();
+        promptForReroll = false;
     }
-
+    
     protected void firstBuild(Player player) {
         if (!player.isBot() && player.getRoads().size() < 2) {
             ViewControleur.getCatanControleur().firstBuild(player);
-        }else if (player.isBot()) {
+        } else if (player.isBot()) {
             // placement des batiments pour le bot
         }
     }
@@ -99,12 +104,13 @@ public class Turn {
                 p.updateTradeLists();
                 if (currentPlayer.isTradeInteresting(p)) {
                     accepter.add(p);
-                }else{
+                } else {
                     accepter.add(currentPlayer);
                 }
             } else if (!p.isBot()) {
                 proposeEchange(accepter, p);
-            }p.revertFromSaleList();
+            }
+            p.revertFromSaleList();
             p.getWishList().clearBox();
         }
         if (accepter.size() == playersList.size() - 1) {
@@ -125,7 +131,8 @@ public class Turn {
         } else if (currentPlayer.isBot()) {
             currentPlayer.trade(currentPlayer.getSaleList(), currentPlayer.getBank(), currentPlayer.getWishList(),
                     currentPlayer.getMyCards());
-        }currentPlayer.revertFromSaleList();
+        }
+        currentPlayer.revertFromSaleList();
         currentPlayer.getWishList().clearBox();
     }
 
@@ -149,13 +156,26 @@ public class Turn {
         }
     }
 
-    private void waitRollDice() {
+    private void waitRollDice(boolean isSunnyWeather) {
         diceGUI.setRollDice(false);
+    
         while (!diceGUI.isRollDice()) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
+                // à gérer
             }
+        }
+    
+        if (isSunnyWeather && !promptForReroll) {
+            if (!currentPlayer.isBot()) {
+                int choice = JOptionPane.showConfirmDialog(null, "Il fait beau aujourd'hui! Voulez-vous relancer les dés?", "Reroll",
+                        JOptionPane.YES_NO_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    diceGUI.roll();
+                }
+            }
+            promptForReroll = true;
         }
     }
     
