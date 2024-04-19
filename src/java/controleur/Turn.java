@@ -60,23 +60,38 @@ public class Turn {
         }
     }
 
-    private void recupRessources(List<Player> players, int sumDices){
+    private void recupRessources(List<Player> players, int sumDices) {
         ArrayList<Tile> tiles = Board.getTileByDiceNumberArray(sumDices);
-        for (Tile t : tiles){
+        for (Tile t : tiles) {
             if (t.getTerrain() == TerrainType.DESERT) continue;
             Node[] nodes = t.getNeighbors();
-            for (Node n : nodes){
+            for (Node n : nodes) {
                 HumanGroup hG = n.getHumanGroup();
-                if (hG != null){
-                    int nb =1;
+                if (hG != null) {
+                    int nb = 1;
                     if (hG instanceof City) {
-                        nb =2;
+                        nb = 2;
+                    }
+                    // recup selon la météo
+                    if (gameView != null && gameView.getWeatherDisplay() != null) {
+                        String currentWeather = gameView.getWeatherDisplay().getCurrentWeather();
+                        if (currentWeather.equals("Pluie")) {
+                            if (t.getTerrain() == TerrainType.FIELD || t.getTerrain() == TerrainType.FOREST) {
+                                nb++;
+                            }
+                        }
+                        if (currentWeather.equals("Vent")) {
+                            if (t.getTerrain() == TerrainType.MOUNTAIN || t.getTerrain() == TerrainType.BRICK) {
+                                nb++;
+                            }
+                        }
                     }
                     hG.getOwner().addCard(t.getTerrain().toCard(), nb);
                 }
             }
         }
     }
+
 
     protected void recupFirstRessources(){
         for (Player player : playersList) {
