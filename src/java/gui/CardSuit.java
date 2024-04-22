@@ -108,9 +108,15 @@ public class CardSuit extends JLayeredPane {
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         button.setIcon(scaledIcon);
         button.setBorder(BorderFactory.createEmptyBorder());
-
     }
 
+    public void setImageButton(String nameImage) {
+        ImageIcon icon = new ImageIcon(BASE_PATH + nameImage);
+        Image scaledImage = icon.getImage().getScaledInstance((int) (icon.getIconWidth() * 0.3),
+                (int) (icon.getIconHeight() * 0.3), Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        button.setIcon(scaledIcon);
+    }
 
     public void initializeLabels() {
         this.removeAll();

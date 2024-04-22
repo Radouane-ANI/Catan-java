@@ -104,6 +104,10 @@ public class Tile extends Vector {
         return thief;
     }
 
+    public void setThief(Thief thief) {
+        this.thief = thief;
+    }
+
     public Node[] getNeighbors() {
         return neighbors;
     }

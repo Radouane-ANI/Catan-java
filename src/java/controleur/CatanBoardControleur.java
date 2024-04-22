@@ -5,17 +5,19 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import gui.CatanBoardView;
-import gui.CityComponent;
+import gui.CityTileComponent;
 import gui.RoadComponent;
 import logic.City;
+import logic.HumanGroup;
 import logic.Player;
 import logic.Road;
 import logic.Settlement;
+import logic.Thief;
 import map.*;
 
 public class CatanBoardControleur {
     private CatanBoardView view;
-    private List<CityComponent> cityComponents = new ArrayList<>();
+    private List<CityTileComponent> cityTileComp = new ArrayList<>();
     private List<RoadComponent> roadComponents = new ArrayList<>();
 
     public CatanBoardControleur(CatanBoardView view) {
@@ -54,6 +56,57 @@ public class CatanBoardControleur {
         view.repaint();
     }
 
+    public void moveThief(Thief thief, Player p) {
+        p.setFinishedTurn(false);
+        for (Tile tile : Tile.getTilesIntern()) {
+            if (tile.getThief() != null) {
+                continue;
+            }
+            CityTileComponent tileComp = new CityTileComponent();
+            view.addThief(tileComp, tile, null);
+            cityTileComp.add(tileComp);
+
+            tileComp.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    thief.setPosition(tile);
+                    removeCityComponents();
+                    view.repaint();
+                    Node[] adjacentNodes = tile.getNeighbors();
+                    p.setFinishedTurn(true);
+                    stealCard(adjacentNodes, p);
+                    ViewControleur.getGame().update();
+                }
+            });
+
+        }
+        view.repaint();
+    }
+
+    private void stealCard(Node[] adjacentNodes, Player p) {
+        for (Node node : adjacentNodes) {
+            HumanGroup group = node.getGroup();
+            if (group != null && group.getOwner() != p) {
+                CityTileComponent city = new CityTileComponent();
+                view.addCity(city, node, null);
+                cityTileComp.add(city);
+                p.setFinishedTurn(false);
+
+                city.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        p.stealCard(group.getOwner());
+                        removeCityComponents();
+                        p.setFinishedTurn(true);
+                        ViewControleur.getGame().update();
+                        view.repaint();
+                    }
+                });
+            }
+        }
+        view.repaint();
+    }
+
     public void firstBuild(Player p) {
         if (p == null || p.getRoads().size() > 2) {
             return;
@@ -76,7 +129,7 @@ public class CatanBoardControleur {
         RoadComponent road = new RoadComponent();
         view.addRoad(road, edge, null);
         roadComponents.add(road);
-        ViewControleur.setFinishedTurn(false);
+        p.setFinishedTurn(false);
 
         road.addMouseListener(new MouseAdapter() {
             @Override
@@ -88,16 +141,17 @@ public class CatanBoardControleur {
                 p.buildRoad(r);
                 edge.setRoad(r);
                 removeRoadComponents();
-                ViewControleur.setFinishedTurn(true);
+                p.setFinishedTurn(true);
+                ViewControleur.getGame().update();
             }
         });
     }
 
     private void avaibleSettelement(Node n, Player p) {
-        CityComponent city = new CityComponent();
+        CityTileComponent city = new CityTileComponent();
         view.addCity(city, n, null);
-        cityComponents.add(city);
-        ViewControleur.setFinishedTurn(false);
+        cityTileComp.add(city);
+        p.setFinishedTurn(false);
 
         city.addMouseListener(new MouseAdapter() {
             @Override
@@ -109,7 +163,8 @@ public class CatanBoardControleur {
                 if (p.getRoads().size() < 2) {
                     firstBuildRoad(p, n);
                 } else {
-                    ViewControleur.setFinishedTurn(true);
+                    p.setFinishedTurn(true);
+                    ViewControleur.getGame().update();
                 }
                 view.repaint();
             }
@@ -117,10 +172,10 @@ public class CatanBoardControleur {
     }
 
     private void avaibleCity(Node n, Player p, Settlement s) {
-        CityComponent city = new CityComponent();
+        CityTileComponent city = new CityTileComponent();
         view.addCity(city, n, null);
-        cityComponents.add(city);
-        ViewControleur.setFinishedTurn(false);
+        cityTileComp.add(city);
+        p.setFinishedTurn(false);
 
         city.addMouseListener(new MouseAdapter() {
             @Override
@@ -129,17 +184,18 @@ public class CatanBoardControleur {
                 p.buildCity(c, s);
                 n.setNode(c);
                 removeCityComponents();
-                ViewControleur.setFinishedTurn(true);
+                p.setFinishedTurn(true);
+                ViewControleur.getGame().update();
                 view.repaint();
             }
         });
     }
 
     private void removeCityComponents() {
-        for (CityComponent cityComponent : cityComponents) {
+        for (CityTileComponent cityComponent : cityTileComp) {
             cityComponent.setVisible(false);
         }
-        cityComponents.clear();
+        cityTileComp.clear();
     }
 
     private void removeRoadComponents() {

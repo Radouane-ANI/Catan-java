@@ -1,6 +1,10 @@
 package logic;
 
 import java.util.List;
+
+import map.Edge;
+import map.Node;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,15 +22,13 @@ public class Player implements Trade {
     private int monney = 3;
     private TradePort tradePorts;
 
-    private boolean bot;
+    private boolean bot, finishedTurn;
     private List<Road> roads;
     private List<Settlement> settlements;
     private List<City> cities;
 
     private int points;
     private Color color;
-    private boolean isMyTurn;
-    private boolean isDiced;
 
     public Player(boolean bot, String nom, Bank bank, Color color) {
         this.name = nom;
@@ -44,24 +46,16 @@ public class Player implements Trade {
         this.tradePorts = new TradePort();
     }
 
-    public void setRoads(List<Road> roads) {
-        this.roads = roads;
-    }
-
     public String getName() {
         return name;
     }
 
-    public boolean isMyTurn() {
-        return isMyTurn;
+    public boolean isFinishedTurn() {
+        return finishedTurn;
     }
 
-    public boolean isDiced() {
-        return isDiced;
-    }
-
-    public void setDiced(boolean isDiced) {
-        this.isDiced = isDiced;
+    public void setFinishedTurn(boolean finishedTurn) {
+        this.finishedTurn = finishedTurn;
     }
 
     public void setMonney(int monney) {
@@ -192,8 +186,23 @@ public class Player implements Trade {
     }
 
     public boolean canBuildSettlement() {
+        boolean flag = false;
+        for (Road road : getRoads()) {
+            Edge edge = Edge.getEdge(road);
+            Node posX = Node.canBuildSettlement(edge.getX());
+            if (posX != null) {
+                flag = true;
+                break;
+            }
+            Node posY = Node.canBuildSettlement(edge.getY());
+            if (posY != null) {
+                flag = true;
+                break;
+            }
+        }
+
         return myCards.getNumber(TREE) >= 1 && myCards.getNumber(BRICK) >= 1 && myCards.getNumber(GRAIN) >= 1
-                && myCards.getNumber(SHEEP) >= 1 && settlements.size() < 5;
+                && myCards.getNumber(SHEEP) >= 1 && settlements.size() < 5 && flag;
     }
 
     public boolean canBuildCity() {
@@ -308,5 +317,10 @@ public class Player implements Trade {
 
     public boolean canTradeWith(Player player){
         return canTradeWith(player.myCards, wishList);
+    }
+
+    public void stealCard(Player victim) {
+        wishList.addCard(victim.myCards.getRandomCard(), 1);
+        trade(victim);
     }
 }

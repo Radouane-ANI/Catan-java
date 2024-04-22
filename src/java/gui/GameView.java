@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.BoxLayout;
 
 import controleur.Game;
 import controleur.ViewControleur;
@@ -22,6 +23,7 @@ public class GameView extends JPanel {
     private Game game;
     private ButtonsPanel buttonsPanel;
     private WeatherDisplay weatherDisplay;
+    private JPanel panelTempo;
 
     public GameView(Game game) {
         this.game = game;
@@ -49,10 +51,18 @@ public class GameView extends JPanel {
         panelSuperieur.add(buttonsPanel);
         panelSuperieur.setOpaque(false);
     
+        JPanel panelInferieur = new JPanel(new BorderLayout());
+        panelInferieur.add(exchangePanel, BorderLayout.WEST);
+        panelTempo = new JPanel();
+        panelInferieur.add(panelTempo, BorderLayout.EAST);
+        panelTempo.setLayout(new BoxLayout(panelTempo, BoxLayout.Y_AXIS));
+        panelTempo.setOpaque(false);
+        panelInferieur.setOpaque(false);
+
         add(panelLateral, BorderLayout.EAST);
         add(boardView, BorderLayout.CENTER);
         add(panelSuperieur, BorderLayout.NORTH);
-        add(exchangePanel, BorderLayout.SOUTH);
+        add(panelInferieur, BorderLayout.SOUTH);
         game.setGameView(this);
     }
     
@@ -77,7 +87,7 @@ public class GameView extends JPanel {
 
     public void proposeEchange(Player currentPlayer, List<Player> accepter, Player p) {
         ProposeEchange prop = new ProposeEchange(currentPlayer, accepter, p, game);
-        exchangePanel.add(prop);
+        panelTempo.add(prop);
     }
 
     public void update() {
@@ -86,5 +96,14 @@ public class GameView extends JPanel {
         stateGUI.update(player);
         bankPanel.updateNumbers();
         exchangePanel.update(player);
+    }
+
+    public void updateStolen(Player player) {
+        stateGUI.update(player);
+        bankPanel.updateNumbers();
+        panelTempo.add(new DiscardPanel(player));
+        exchangePanel.setVisible(false);
+        panelTempo.revalidate();
+        panelTempo.repaint();
     }
 }

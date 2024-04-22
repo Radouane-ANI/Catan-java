@@ -20,23 +20,24 @@ public class Bank extends CardBox {
             cardsNumbers[i] = NB_RES_CARD;
         }
         cardsNumbers[5] = NB_KNIGHT_CARD;
-        cardsNumbers[5] = NB_ROAD_BUILD_CARD;
-        cardsNumbers[5] = NB_YEAR_PLENTY_CARD;
-        cardsNumbers[5] = NB_MONOPOLY_CARD;
-        cardsNumbers[5] = NB_ONE_POINT_CARD;
+        cardsNumbers[6] = NB_ROAD_BUILD_CARD;
+        cardsNumbers[7] = NB_YEAR_PLENTY_CARD;
+        cardsNumbers[8] = NB_MONOPOLY_CARD;
+        cardsNumbers[9] = NB_ONE_POINT_CARD;
     }
 
     public Card devCardGenerator() {
         if(hasDevCards()) {
             Random r = new Random();
-            int probability = r.nextInt(allDevCardsNumber()+1) + 1;
+            int probability = r.nextInt(allDevCardsNumber()) + 1;
             int accu = 0;
-            int index = 4;
-            while (accu < probability) {
-                index++;
-                accu = cardsNumbers[index];
+            for (int i = 5; i < cardsNumbers.length; i++) {
+                accu += cardsNumbers[i];
+                if (accu >= probability) {
+                    return Card.values()[i];
+                }
             }
-            return Card.values()[index];
+    
         }
         return null;
     }
