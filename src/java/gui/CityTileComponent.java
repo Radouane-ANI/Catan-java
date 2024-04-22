@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 import javax.swing.JLabel;
 
-public class CityComponent extends JLabel {
+public class CityTileComponent extends JLabel {
 
     @Override
     protected void paintComponent(Graphics g) {

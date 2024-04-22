@@ -58,9 +58,19 @@ public class Node extends Vector {
     }
 
     boolean isAdjacentToTile(Tile tile) {
-        double distance = Math.sqrt(
-                Math.pow(getX() - tile.getPosition().getX(), 2) + Math.pow(getY() - tile.getPosition().getY(), 2));
-        return distance < 1.5; // Ajuster
+        if (x == tile.x && y == tile.y) {
+            return true;
+        }
+        if (y == tile.y) {
+            if (Math.abs(x - tile.x) == 0.5) {
+                return true;
+            }
+        } else if (y - tile.y == 1) {
+            if (Math.abs(x - tile.x) == 0.5 || x == tile.x) {
+                return true;
+            }
+        }
+        return false;
     }
     
 

@@ -70,10 +70,6 @@ public class ViewControleur {
         game.NextTurn(bot);
     }
 
-    public static void setFinishedTurn(boolean f) {
-        game.setFinishedTurn(f);
-    }
-
     public static Bank getBank() {
         return gameOption.getBank();
     }
