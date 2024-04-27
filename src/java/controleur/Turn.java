@@ -25,6 +25,7 @@ public class Turn {
     private DiceGUI diceGUI;
     protected Player currentPlayer;
     private boolean promptForReroll;
+    private String currentWeather;
 
     public Turn(List<Player> players) {
         playersList = players;
@@ -65,6 +66,9 @@ public class Turn {
 
     private void recupRessources(List<Player> players, int sumDices) {
         System.out.println("result(Turn): " + sumDices);
+        if (gameView != null && gameView.getWeatherDisplay() != null) {
+            currentWeather = gameView.getWeatherDisplay().getCurrentWeather();
+        }
         if (sumDices == 7) {
             voleur();
         } else {
@@ -79,18 +83,14 @@ public class Turn {
                         if (hG instanceof City) {
                             nb = 2;
                         }
-                        // recup selon la météo
-                        if (gameView != null && gameView.getWeatherDisplay() != null) {
-                            String currentWeather = gameView.getWeatherDisplay().getCurrentWeather();
-                            if (currentWeather.equals("Pluie")) {
-                                if (t.getTerrain() == TerrainType.FIELD || t.getTerrain() == TerrainType.FOREST) {
-                                    nb++;
-                                }
+                        if (currentWeather.equals("Pluie")) {
+                            if (t.getTerrain() == TerrainType.FIELD || t.getTerrain() == TerrainType.FOREST) {
+                                nb++;
                             }
-                            if (currentWeather.equals("Vent")) {
-                                if (t.getTerrain() == TerrainType.MOUNTAIN || t.getTerrain() == TerrainType.BRICK) {
-                                    nb++;
-                                }
+                        }
+                        if (currentWeather.equals("Vent")) {
+                            if (t.getTerrain() == TerrainType.MOUNTAIN || t.getTerrain() == TerrainType.BRICK) {
+                                nb++;
                             }
                         }
                         hG.getOwner().addCard(t.getTerrain().toCard(), nb);
@@ -101,26 +101,41 @@ public class Turn {
     }
 
     private void voleur() {
+        if (!currentWeather.equals("Nuageux")) {
+            for (Player player : playersList) {
+                if (player.isBot()) {
+                    continue;
+                }
+                if (player.getMyCards().getNumberOfRes() > 7) {
+                    gameView.updateStolen(player);
+                    player.setFinishedTurn(false);
+                    while (!player.isFinishedTurn()) {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                        }
+                    }
+                    player.setFinishedTurn(false);    
+                }
+            }
+            update();
+            if (!currentPlayer.isBot()) {
+                ViewControleur.getCatanControleur().moveThief(thief, currentPlayer);
+            }
+        }
         for (Player player : playersList) {
             if (player.isBot()) {
                 continue;
             }
-            if (player.getMyCards().getNumberOfRes() > 7) {
-                gameView.updateStolen(player);
-                player.setFinishedTurn(false);
-                while (!player.isFinishedTurn()) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                    }
+            while (!player.isFinishedTurn()) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
                 }
-                player.setFinishedTurn(false);    
             }
+            player.setFinishedTurn(true);    
         }
         update();
-        if (!currentPlayer.isBot()) {
-            ViewControleur.getCatanControleur().moveThief(thief, currentPlayer);
-        }
     }
 
     protected void recupFirstRessources(){

@@ -29,7 +29,7 @@ public class WeatherDisplay extends JPanel {
         summerWeatherChain = new WeatherMarkovChain(Constante.ETE_MATRIX, weatherStates);
         autumnWeatherChain = new WeatherMarkovChain(Constante.AUTONME_MATRIX, weatherStates);
 
-        weatherLabel = new JLabel("Soleil");
+        weatherLabel = new JLabel("Nuageux");
         weatherLabel.setForeground(Color.BLACK);
         weatherLabel.setFont(new Font("Arial", Font.BOLD, 16));
         weatherLabel.setBounds(125, 20, 300, 50);
