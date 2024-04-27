@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class CardPropose extends JPanel {
+   // private static final String BASE_PATH = "src/ressources/";
+
     private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
     private JButton button;
     private ImageIcon scaledIcon[] = new ImageIcon[5];

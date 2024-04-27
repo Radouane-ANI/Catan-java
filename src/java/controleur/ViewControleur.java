@@ -31,10 +31,11 @@ public class ViewControleur {
         if (gameOption.getPlayers().size() != 4) {
             gameOption.completeJoueur();
         }
-        GameView gameView = new GameView(player,bank);
-        frame.setPanel(gameView);
 
         game = new Game(gameOption.getPlayers());
+
+        GameView gameView = new GameView(game);
+        frame.setPanel(gameView);
 
         catanControleur = new controleur.CatanBoardControleur(gameView.getBoardView());
 
@@ -69,8 +70,8 @@ public class ViewControleur {
         game.NextTurn(bot);
     }
 
-    public static void setFinishedTurn(boolean f) {
-        game.setFinishedTurn(f);
+    public static Bank getBank() {
+        return gameOption.getBank();
     }
 
 }

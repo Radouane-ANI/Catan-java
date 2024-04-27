@@ -1,10 +1,11 @@
 package gui;
 
-
 import logic.*;
 
 import javax.swing.*;
 import java.awt.*;
+import controleur.ViewControleur;
+
 import java.awt.event.*;
 import java.util.List;
 
@@ -211,7 +212,7 @@ public class ExchangePanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+               // ViewControleur.getGame().initierEchange();
                 initializeWishList();
                 initializeMyCards();
                 initializeSaleList();
@@ -295,6 +296,11 @@ public class ExchangePanel extends JPanel {
         Thread thread = new Thread(runnable);
 
         thread.start();
+    }
+
+    public void update() {
+        bankPanel.update();
+        buttonsPanel.updateButtons();
     }
 
     public static void main(String[] args)  {

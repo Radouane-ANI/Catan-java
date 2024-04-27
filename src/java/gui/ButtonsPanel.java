@@ -3,13 +3,16 @@ package gui;
 import logic.Card;
 import logic.Player;
 import javax.swing.*;
+import controleur.Game;
+import controleur.ViewControleur;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class ButtonsPanel extends JPanel {
-    private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
+   // private static final String BASE_PATH = "src/ressources/";
+   private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
     private Player player;
     private ExchangePanel exchangePanel;
     private static final int NUMBER_OF_BUTTONS = 3;
@@ -21,11 +24,21 @@ public class ButtonsPanel extends JPanel {
     private ImageIcon[] buttonIcons = new ImageIcon[NUMBER_OF_BUTTONS];
 
     private NumberedButton[] buttons = new NumberedButton[NUMBER_OF_BUTTONS];
-
+    private Game game;
+    private WeatherDisplay weatherDisplay;
 
     public ButtonsPanel(Player player, ExchangePanel exchangePanel) {
         this.exchangePanel = exchangePanel;
         this.player = player;
+        setLayout(new GridLayout(1, NUMBER_OF_BUTTONS, 5, 0));
+        loadScaledIcon();
+        initializeButtons();
+    }
+
+    public ButtonsPanel(Game game, WeatherDisplay weatherDisplay) {
+        this.game = game;
+        this.weatherDisplay = weatherDisplay;
+        this.player = game.getCurrentPlayer();
         setLayout(new GridLayout(1, NUMBER_OF_BUTTONS, 5, 0));
         loadScaledIcon();
         initializeButtons();
@@ -97,17 +110,53 @@ public class ButtonsPanel extends JPanel {
         });
     }
 
+   /* public void setBuildRoadButton() {
+        buttons[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (weatherDisplay != null && weatherDisplay.getCurrentWeather().equals("Neige")) {
+                    JOptionPane.showMessageDialog(null, "Il neige! Vous ne pouvez pas construire de routes maintenant.");
+                } else {
+                    ViewControleur.getCatanControleur().buildRoad(player);
+                }
+            }
+        });
+    }
+
+    public void setBuildSettlementButton() {
+        buttons[2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ViewControleur.getCatanControleur().buildSettlement(player);
+            }
+        });
+    }
+
+   public void setBuildCityButton() {
+        buttons[3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ViewControleur.getCatanControleur().buildCity(player);
+
+            }
+        });
+    }*/
+
     public void setGoButton() {
         buttons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+               /*weatherDisplay.stopCurrentMusic();
+                //weatherDisplay.updateWeather();
+                //ViewControleur.NextTurn(false); ici what does it mean?
 
+                */
             }
         });
     }
 
     private void updateGo() {
-        buttons[2].setEnabled(player.isMyTurn());
+        //buttons[2].setEnabled(player.isMyTurn());
     }
 
     private void updateGetDev() {
@@ -115,7 +164,7 @@ public class ButtonsPanel extends JPanel {
     }
 
     private void updateExchange() {
-        buttons[0].setEnabled(player.isMyTurn());
+       // buttons[0].setEnabled(player.isMyTurn());
     }
 
     protected void updateButtons() {

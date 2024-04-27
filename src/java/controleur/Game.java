@@ -6,7 +6,7 @@ import logic.Player;
 import map.Board;
 
 public class Game extends Turn implements Runnable {
-    private boolean nextTurn, finishedTurn;
+    private boolean nextTurn;
 
     Game(List<Player> playersList) {
         super(playersList);
@@ -14,7 +14,6 @@ public class Game extends Turn implements Runnable {
     }
 
     public void startGame() {
-        finishedTurn = true;
         firstTurn();
         recupFirstRessources();
         while (!isOver(playersList)) {
@@ -26,7 +25,7 @@ public class Game extends Turn implements Runnable {
     }
 
     private void waitNextTurn() {
-        while (!nextTurn || !finishedTurn) {
+        while (!nextTurn) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -37,12 +36,16 @@ public class Game extends Turn implements Runnable {
 
     private void firstTurn() {
         for (Player player : playersList) {
+            currentPlayer = player;
+            update();
             super.firstBuild(player);
             waitNextTurn();
+            currentPlayer.setFinishedTurn(false);
         }
         for (int i = playersList.size() - 1; i >= 0; i--) {
             currentPlayerIndex = i;
-            Player currentPlayer = playersList.get(i);
+            currentPlayer = playersList.get(i);
+            update();
             super.firstBuild(currentPlayer);
             waitNextTurn();
         }
@@ -69,12 +72,7 @@ public class Game extends Turn implements Runnable {
     }
 
     public void NextTurn(boolean bot) {
-        Player currentPlayer = playersList.get(currentPlayerIndex);
-        this.nextTurn = currentPlayer.isBot() == bot && finishedTurn;
-    }
-
-    public void setFinishedTurn(boolean f) {
-        finishedTurn = f;
+        this.nextTurn = currentPlayer.isBot() == bot;
     }
 
 }

@@ -1,6 +1,5 @@
 package gui;
 
-import controleur.ViewControleur;
 import logic.City;
 import logic.Settlement;
 
@@ -11,11 +10,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -23,7 +19,7 @@ import map.*;
 
 public class CatanBoardView extends JPanel {
 
-    public static final int TILE_SIZE = 110;
+    public static final int TILE_SIZE = 100;
 
     private Dimension dim;
     private Point center;
@@ -36,17 +32,6 @@ public class CatanBoardView extends JPanel {
         tuileImage = new BoardImage();
         setPreferredSize(d);
         setLayout(null);
-        JButton turnButton = new JButton("Next Turn"); // mis ici pour l'instant
-        turnButton.setBounds(500, 500, 125, 25);
-        turnButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                ViewControleur.NextTurn(false);
-            }
-
-        });
-        add(turnButton);
     }
 
     @Override
@@ -85,6 +70,9 @@ public class CatanBoardView extends JPanel {
             g2d.setColor(Color.WHITE);
             g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, 20));
             g2d.drawString(diceNumber + "", textX, textY);
+        }
+        if (t.getThief() != null) {
+            addThief(null, t, g2d);
         }
     }
 
@@ -167,6 +155,29 @@ public class CatanBoardView extends JPanel {
             y2 = Math.max((int) screenY1, (int) screenY2);
             component.setBounds((int) x1 - TILE_SIZE / 20, (int) y1, (int) (x2 + TILE_SIZE / 10 - x1), (int) (y2 - y1));
             add(component);
+        }
+    }
+
+    public void addThief(CityTileComponent tileComp, Tile pos, Graphics2D g) {
+        if (g != null && pos.getThief() == null) {
+            return;
+        }
+        double x = pos.getX();
+        double y = pos.getY();
+
+        double screenX = calculateScreenX(x);
+        double screenY = calculateScreenY(x, y);
+
+        int centerX = (int) (screenX - (TILE_SIZE / 6));
+        int centerY = (int) (screenY + (TILE_SIZE / 3));
+        if (tileComp != null) {
+            tileComp.setBounds(centerX, centerY, TILE_SIZE / 4 + 1, TILE_SIZE / 4 + 1);
+            add(tileComp);
+        } else if (g != null) {
+            ImageIcon image = tuileImage.getThiefImage();
+            int decalage = image.getIconWidth() / 2;
+
+            g.drawImage(image.getImage(), (int) screenX - decalage, (int) screenY + decalage, null);
         }
     }
 
