@@ -25,6 +25,7 @@ public class ButtonsPanel extends JPanel {
 
     private NumberedButton[] buttons = new NumberedButton[NUMBER_OF_BUTTONS];
     private Game game;
+    private WeatherDisplay weatherDisplay;
 
     public ButtonsPanel(Player player) {
         this.player = player;
@@ -33,8 +34,9 @@ public class ButtonsPanel extends JPanel {
         initializeButtons();
     }
 
-    public ButtonsPanel(Game game) {
+    public ButtonsPanel(Game game, WeatherDisplay weatherDisplay) {
         this.game = game;
+        this.weatherDisplay = weatherDisplay;
         this.player = game.getCurrentPlayer();
         setLayout(new GridLayout(1, NUMBER_OF_BUTTONS, 5, 0));
         loadScaledIcon();
@@ -104,7 +106,11 @@ public class ButtonsPanel extends JPanel {
         buttons[1].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ViewControleur.getCatanControleur().buildRoad(player);
+                if (weatherDisplay != null && weatherDisplay.getCurrentWeather().equals("Neige")) {
+                    JOptionPane.showMessageDialog(null, "Il neige! Vous ne pouvez pas construire de routes maintenant.");
+                } else {
+                    ViewControleur.getCatanControleur().buildRoad(player);
+                }
             }
         });
     }
@@ -131,6 +137,8 @@ public class ButtonsPanel extends JPanel {
         buttons[4].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                weatherDisplay.stopCurrentMusic();
+                weatherDisplay.updateWeather();
                 ViewControleur.NextTurn(false);
             }
         });

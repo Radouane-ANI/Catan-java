@@ -15,6 +15,8 @@ import util.TerrainType;
 import gui.DiceGUI;
 import gui.GameView;
 
+import javax.swing.JOptionPane;
+
 public class Turn {
     private GameView gameView;
     private Thief thief;
@@ -22,6 +24,8 @@ public class Turn {
     protected int currentPlayerIndex;
     private DiceGUI diceGUI;
     protected Player currentPlayer;
+    private boolean promptForReroll;
+    private String currentWeather;
 
     public Turn(List<Player> players) {
         playersList = players;
@@ -35,10 +39,11 @@ public class Turn {
         currentPlayer = playersList.get(currentPlayerIndex);
         currentPlayer.setFinishedTurn(false);
         update();
+        boolean isSunnyWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay().getCurrentWeather().equals("Soleil");
         if (currentPlayer.isBot()) {
             diceGUI.roll();
         } else {
-            waitRollDice();
+            waitRollDice(isSunnyWeather);
         }
         currentPlayer.setFinishedTurn(true);
         int sumDices = diceGUI.getResult();
@@ -48,25 +53,28 @@ public class Turn {
             initierEchange();
         }
         creationCity();
+        promptForReroll = false;
     }
-
+    
     protected void firstBuild(Player player) {
         if (!player.isBot() && player.getRoads().size() < 2) {
             ViewControleur.getCatanControleur().firstBuild(player);
-        }else if (player.isBot()) {
+        } else if (player.isBot()) {
             // placement des batiments pour le bot
         }
     }
 
     private void recupRessources(List<Player> players, int sumDices) {
         System.out.println("result(Turn): " + sumDices);
+        if (gameView != null && gameView.getWeatherDisplay() != null) {
+            currentWeather = gameView.getWeatherDisplay().getCurrentWeather();
+        }
         if (sumDices == 7) {
             voleur();
         } else {
             ArrayList<Tile> tiles = Board.getTileByDiceNumberArray(sumDices);
             for (Tile t : tiles) {
-                if (t.getTerrain() == TerrainType.DESERT || t.getThief() != null)
-                    continue;
+                if (t.getTerrain() == TerrainType.DESERT || t.getThief() != null) continue;
                 Node[] nodes = t.getNeighbors();
                 for (Node n : nodes) {
                     HumanGroup hG = n.getHumanGroup();
@@ -74,6 +82,16 @@ public class Turn {
                         int nb = 1;
                         if (hG instanceof City) {
                             nb = 2;
+                        }
+                        if (currentWeather.equals("Pluie")) {
+                            if (t.getTerrain() == TerrainType.FIELD || t.getTerrain() == TerrainType.FOREST) {
+                                nb++;
+                            }
+                        }
+                        if (currentWeather.equals("Vent")) {
+                            if (t.getTerrain() == TerrainType.MOUNTAIN || t.getTerrain() == TerrainType.BRICK) {
+                                nb++;
+                            }
                         }
                         hG.getOwner().addCard(t.getTerrain().toCard(), nb);
                     }
@@ -83,26 +101,41 @@ public class Turn {
     }
 
     private void voleur() {
+        if (!currentWeather.equals("Nuageux")) {
+            for (Player player : playersList) {
+                if (player.isBot()) {
+                    continue;
+                }
+                if (player.getMyCards().getNumberOfRes() > 7) {
+                    gameView.updateStolen(player);
+                    player.setFinishedTurn(false);
+                    while (!player.isFinishedTurn()) {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                        }
+                    }
+                    player.setFinishedTurn(false);    
+                }
+            }
+            update();
+            if (!currentPlayer.isBot()) {
+                ViewControleur.getCatanControleur().moveThief(thief, currentPlayer);
+            }
+        }
         for (Player player : playersList) {
             if (player.isBot()) {
                 continue;
             }
-            if (player.getMyCards().getNumberOfRes() > 7) {
-                gameView.updateStolen(player);
-                player.setFinishedTurn(false);
-                while (!player.isFinishedTurn()) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                    }
+            while (!player.isFinishedTurn()) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
                 }
-                player.setFinishedTurn(false);    
             }
+            player.setFinishedTurn(true);    
         }
         update();
-        if (!currentPlayer.isBot()) {
-            ViewControleur.getCatanControleur().moveThief(thief, currentPlayer);
-        }
     }
 
     protected void recupFirstRessources(){
@@ -131,12 +164,13 @@ public class Turn {
                 p.updateTradeLists();
                 if (currentPlayer.isTradeInteresting(p)) {
                     accepter.add(p);
-                }else{
+                } else {
                     accepter.add(currentPlayer);
                 }
             } else if (!p.isBot()) {
                 proposeEchange(accepter, p);
-            }p.revertFromSaleList();
+            }
+            p.revertFromSaleList();
             p.getWishList().clearBox();
         }
         if (accepter.size() == playersList.size() - 1) {
@@ -157,7 +191,8 @@ public class Turn {
         } else if (currentPlayer.isBot()) {
             currentPlayer.trade(currentPlayer.getSaleList(), currentPlayer.getBank(), currentPlayer.getWishList(),
                     currentPlayer.getMyCards());
-        }currentPlayer.revertFromSaleList();
+        }
+        currentPlayer.revertFromSaleList();
         currentPlayer.getWishList().clearBox();
     }
 
@@ -181,13 +216,26 @@ public class Turn {
         }
     }
 
-    private void waitRollDice() {
+    private void waitRollDice(boolean isSunnyWeather) {
         diceGUI.setRollDice(false);
+    
         while (!diceGUI.isRollDice()) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
+                // à gérer
             }
+        }
+    
+        if (isSunnyWeather && !promptForReroll) {
+            if (!currentPlayer.isBot()) {
+                int choice = JOptionPane.showConfirmDialog(null, "Il fait beau aujourd'hui! Voulez-vous relancer les dés?", "Reroll",
+                        JOptionPane.YES_NO_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    diceGUI.roll();
+                }
+            }
+            promptForReroll = true;
         }
     }
     
