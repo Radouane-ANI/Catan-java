@@ -5,6 +5,9 @@ import util.WeatherMarkovChain;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
 
 public class WeatherDisplay extends JPanel {
     private JLabel weatherLabel;
@@ -18,6 +21,9 @@ public class WeatherDisplay extends JPanel {
     private String currentWeather;
     private int turnCounter;
     private Image backgroundImage;
+    private String musicFilePath;
+    private Clip clip;
+    private boolean stopMusic;
 
     public WeatherDisplay() {
         setOpaque(false);
@@ -36,8 +42,8 @@ public class WeatherDisplay extends JPanel {
         add(weatherLabel);
 
         weatherIconLabel = new JLabel();
-        weatherIconLabel.setBounds(100, 50, 100, 100); 
-        
+        weatherIconLabel.setBounds(100, 50, 100, 100);
+
         add(weatherIconLabel);
     }
 
@@ -53,6 +59,7 @@ public class WeatherDisplay extends JPanel {
     }
 
     public void updateWeather() {
+        stopCurrentMusic();
         this.turnCounter++;
 
         int currentSeasonIndex = (this.turnCounter / 4) % 4;
@@ -83,6 +90,8 @@ public class WeatherDisplay extends JPanel {
         loadWeatherIcon(nextWeather);
         weatherLabel.setText(nextWeather);
         weatherIconLabel.setIcon(weatherIcon);
+
+        playMusic(nextWeather);
     }
 
     private void loadWeatherIcon(String weather) {
@@ -105,6 +114,50 @@ public class WeatherDisplay extends JPanel {
             default:
                 weatherIcon = new ImageIcon("src/ressources/meteo_default.png");
                 break;
+        }
+    }
+
+    private void playMusic(String weather) {
+        if (!stopMusic) {
+            try {
+                if (clip != null && clip.isRunning()) {
+                    clip.stop(); // Stop the currently playing music
+                }
+    
+                switch (weather) {
+                    case "Pluie":
+                        musicFilePath = "src/ressources/son_pluie.wav";
+                        break;
+                    case "Soleil":
+                        musicFilePath = "src/ressources/son_soleil.wav";
+                        break;
+                    case "Nuageux":
+                        musicFilePath = "src/ressources/son_nuage.wav";
+                        break;
+                    case "Neige":
+                        musicFilePath = "src/ressources/son_neige.wav";
+                        break;
+                    case "Vent":
+                        musicFilePath = "src/ressources/son_vent.wav";
+                        break;
+                    default:
+                        musicFilePath = "src/ressources/son_vent.wav";
+                        break;
+                }
+    
+                AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(musicFilePath));
+                clip = AudioSystem.getClip();
+                clip.open(audioIn);
+                clip.start();
+            } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }    
+
+    public void stopCurrentMusic() {
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
         }
     }
 }
