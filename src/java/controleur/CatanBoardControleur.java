@@ -37,13 +37,11 @@ public class CatanBoardControleur {
     public void buildSettlement(Player p) {
         for (Road road : p.getRoads()) {
             Edge edge = Edge.getEdge(road);
-            Node posX = Node.canBuildSettlement(edge.getX());
-            if (posX != null) {
-                avaibleSettelement(posX, p);
+            if (edge.getX().canBuildSettlement()) {
+                avaibleSettelement(edge.getX(), p);
             }
-            Node posY = Node.canBuildSettlement(edge.getY());
-            if (posY != null) {
-                avaibleSettelement(posY, p);
+            if (edge.getY().canBuildSettlement()) {
+                avaibleSettelement(edge.getY(), p);
             }
         }
         view.repaint();
@@ -112,7 +110,7 @@ public class CatanBoardControleur {
             return;
         }
         for (Node node : Node.getNodesIntern()) {
-            if (node.getGroup() == null) {
+            if (node.canBuildSettlement()) {
                 avaibleSettelement(node, p);
             }
         }
