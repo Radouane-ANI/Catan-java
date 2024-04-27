@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.Random;
+
 public class CardBox {
     protected int[] cardsNumbers = new int[Card.values().length];
 
@@ -13,7 +15,9 @@ public class CardBox {
     }
 
     public void addCard(Card c, int number) {
-        cardsNumbers[c.ordinal()] += number;
+        if (c != null) {
+            cardsNumbers[c.ordinal()] += number;            
+        }
     }
 
     public int getNumber(Card c) {
@@ -37,6 +41,37 @@ public class CardBox {
     public void setZero(Card c) {
         cardsNumbers[c.ordinal()] = 0;
     }
+
+    public Card getRandomCard() {
+        int taille = getNumberOfRes();
+        if (taille == 0) {
+            return null;
+        }
+        Random random = new Random();
+
+        int randomIndex = random.nextInt(taille);
+        for (int i = 0; i < cardsNumbers.length; i++) {
+            randomIndex -= cardsNumbers[i];
+            if (randomIndex < 0) {
+                return Card.values()[i];
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("CardBox Contents:\n");
+    for (Card card : Card.values()) {
+        int num = cardsNumbers[card.ordinal()];
+        if (num > 0) {
+            sb.append(card.toString()).append(": ").append(num).append("\n");
+        }
+    }
+    return sb.toString();
+}
+
 
     public boolean removeCard(Card c, int number) {
         int numberOrigin = cardsNumbers[c.ordinal()];

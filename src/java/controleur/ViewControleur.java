@@ -1,24 +1,26 @@
 package controleur;
 
-import java.awt.Color;
-
 import gui.GameMenu;
 import gui.GameView;
 import gui.MainFrame;
+import java.util.List;
+import gui.Options;
+import logic.Bank;
 import logic.Player;
-import map.Board;
-import gui.CatanBoardView;
-
 
 public class ViewControleur {
-
+    private static Game game;
     private static MainFrame frame;
     private static CatanBoardControleur catanControleur;
     private static Player player;
+    private static Bank bank;
+    private static Options gameOption;
+
 
     public ViewControleur(MainFrame mainFrame) {
         frame = mainFrame;
         frame.setPanel(new GameMenu());
+        gameOption = new Options();
     }
 
     public static void quitter() {
@@ -26,24 +28,50 @@ public class ViewControleur {
     }
 
     public static void jouer() {
-        GameView gameView = new GameView();
+        if (gameOption.getPlayers().size() != 4) {
+            gameOption.completeJoueur();
+        }
+
+        game = new Game(gameOption.getPlayers());
+
+        GameView gameView = new GameView(game);
         frame.setPanel(gameView);
-        Board.createBoard();
 
-        CatanBoardView mapComponent = new CatanBoardView(gameView.getSize());
-        catanControleur = new CatanBoardControleur(mapComponent);
-
-        player = new Player(false, "Sam", null, Color.BLUE);
-        catanControleur.firstBuild(player);;
-
-        gameView.add(mapComponent);
+        catanControleur = new controleur.CatanBoardControleur(gameView.getBoardView());
 
         gameView.revalidate();
         gameView.repaint();
+
+        Thread gameThread = new Thread(game);
+        gameThread.start();
+    }
+
+    public static void option() {
+        frame.setPanel(gameOption);
+    }
+
+    public static void menu() {
+        frame.setPanel(new GameMenu());
     }
 
     public static CatanBoardControleur getCatanControleur() {
         return catanControleur;
+    }
+
+    public static List<Player> getPlayers() {
+        return gameOption.getPlayers();
+    }
+
+    public static Game getGame() {
+        return game;
+    }
+
+    public static void NextTurn(boolean bot) {
+        game.NextTurn(bot);
+    }
+
+    public static Bank getBank() {
+        return gameOption.getBank();
     }
 
 }

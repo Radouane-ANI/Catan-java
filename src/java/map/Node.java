@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 public class Node extends Vector {
     private HumanGroup group;
-    private ArrayList<Node> neighbors;
+    private ArrayList<Edge> neighborsEdge;
+    private ArrayList<Node> neighborsNode;
+
 
     private static Node[] nodeArray;
 
@@ -17,7 +19,8 @@ public class Node extends Vector {
     Node(float x, int y) {
         super(x, y);
         group = null;
-        neighbors = new ArrayList<>();
+        neighborsEdge = new ArrayList<Edge>();
+        neighborsNode = new ArrayList<Node>();
     }
 
     static void createNodes() {
@@ -48,17 +51,28 @@ public class Node extends Vector {
                 Node vi = nodeArray[i];
                 Node vj = nodeArray[j];
                 if (vi.isNeighbor(vj)) {
-                    vi.neighbors.add(vj);
+                    vi.neighborsNode.add(vj);
                 }
             }
         }
     }
 
     boolean isAdjacentToTile(Tile tile) {
-        double distance = Math.sqrt(
-                Math.pow(getX() - tile.getPosition().getX(), 2) + Math.pow(getY() - tile.getPosition().getY(), 2));
-        return distance < 1.5; // Ajuster
+        if (x == tile.x && y == tile.y) {
+            return true;
+        }
+        if (y == tile.y) {
+            if (Math.abs(x - tile.x) == 0.5) {
+                return true;
+            }
+        } else if (y - tile.y == 1) {
+            if (Math.abs(x - tile.x) == 0.5 || x == tile.x) {
+                return true;
+            }
+        }
+        return false;
     }
+    
 
     private static void connectNodesToTiles() {
         for (Tile t : Tile.getTilesIntern()) {
@@ -71,7 +85,7 @@ public class Node extends Vector {
             t.setNeighbors(res.toArray(new Node[0]));
         }
     }
-
+    
     public static Node[] getNodesIntern() {
         return nodeArray;
     }
@@ -85,11 +99,11 @@ public class Node extends Vector {
     }
 
     public Node[] getNeighbors() {
-        return neighbors.toArray(new Node[0]);
+        return neighborsNode.toArray(new Node[0]);
     }
 
-    void addNeighbor(Node neighbor) {
-        neighbors.add(neighbor);
+    void addNeighbor(Edge neighbor) {
+        neighborsEdge.add(neighbor);
     }
 
     public HumanGroup getGroup() {
@@ -104,7 +118,7 @@ public class Node extends Vector {
                 if (nodeArray[i].group != null) {
                     return null;
                 }
-                for (Node node : nodeArray[i].neighbors) {
+                for (Node node : nodeArray[i].neighborsNode) {
                     if (node.group != null) {
                         return null;
                     }
@@ -112,6 +126,30 @@ public class Node extends Vector {
             }
         }
         return pos;
+    }
+
+    public static Node getNode(Vector v) {
+        for (Node n : nodeArray) {
+            if (((Vector)n).equals(v)) {
+                return n;
+            }
+        }
+
+        return null;
+    }
+
+    static void connectEdge() {
+        for (Edge t : Edge.getEdgesIntern()) {
+            Node a = getNode(t.getX());
+            Node b = getNode(t.getY());
+
+            if (!a.neighborsEdge.contains(t)) {
+                getNode(a).neighborsEdge.add(t);
+            }
+            else if (!b.neighborsEdge.contains(t)) {
+                getNode(b).neighborsEdge.add(t);
+            }
+        }
     }
 
     public static Node getNode(HumanGroup group) {

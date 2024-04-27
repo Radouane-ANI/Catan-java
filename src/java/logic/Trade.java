@@ -4,30 +4,27 @@ import static logic.Card.*;
 
 public interface Trade {
     default boolean isTradableInBank(CardBox saleList,CardBox wishList, TradePort tradePorts) {
-        boolean flag = false;
-        int otherCardsNumber = 0;
         if(saleList.isEmpty()||wishList.isEmpty()) {
-            return flag;
+            return false;
         }
-        while (otherCardsNumber == 0 && wishList.getNumberOfRes() == 1) {
-            for (Card c : Card.values()) {
-                switch (saleList.getNumber(c)) {
-                    case 2:
-                        if (tradePorts.hasPort(c)) {
-                            return true;
-                        }
-                    case 3:
-                        if (tradePorts.hasPort(null)) {
-                            return true;
-                        }
-                    case 4:
+        if(wishList.getNumberOfRes()!=1) {
+            return false;
+        }
+        for (Card c : Card.values()) {
+            switch (saleList.getNumber(c)) {
+                case 2:
+                    if (tradePorts.hasPort(c) && saleList.getNumberOfRes()==2) {
                         return true;
-                    default:
-                        otherCardsNumber += saleList.getNumber(c);
-                }
+                    }break;
+                case 3:
+                    if (tradePorts.hasPort(null) && saleList.getNumberOfRes()==3) {
+                        return true;
+                    }break;
+                case 4:
+                    return true;
             }
         }
-        return flag;
+        return false;
     }
 
     default boolean isTradeInteresting(CardBox saleList, CardBox wishList, CardBox wishList1, CardBox saleList1) {
@@ -50,11 +47,12 @@ public interface Trade {
     default void trade(CardBox saleList, CardBox tradeObj, CardBox wishList, CardBox myCards) {
         for (Card c : Card.values()) {
             if(saleList.getNumber(c) != 0) {
-                myCards.removeCard(c,saleList.getNumber(c));
+                tradeObj.addCard(c,saleList.getNumber(c));
             }
         }
         for (Card c : Card.values()) {
             if(wishList.getNumber(c) != 0) {
+                tradeObj.removeCard(c, wishList.getNumber(c));
                 myCards.addCard(c,wishList.getNumber(c));
             }
         }
@@ -65,7 +63,13 @@ public interface Trade {
     default void getDevCard(CardBox myCards, Bank bank) {
         if (canExchangeDev(myCards, bank)) {
             Card dev = bank.devCardGenerator();
+            if (dev == null) {
+                return;
+            }
             bank.removeCard(dev, 1);
+            myCards.removeCard(SHEEP, 1);
+            myCards.removeCard(GRAIN, 1);
+            myCards.removeCard(STONE, 1);
             myCards.addCard(dev, 1);
         }
     }
@@ -79,5 +83,16 @@ public interface Trade {
             return false;
         }
         return false;
+    }
+
+    default boolean canTradeWith(CardBox myCards, CardBox saleList) {
+        for (Card c : Card.values()) {
+            if (saleList.getNumber(c) != 0) {
+                if (saleList.getNumber(c) > myCards.getNumber(c)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
