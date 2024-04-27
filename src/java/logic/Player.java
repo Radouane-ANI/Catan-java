@@ -26,6 +26,10 @@ public class Player implements Trade {
     private int points;
 
     private int extraPoint;
+
+    public int roadLength;
+
+    public int numberOfKnightsUsed;
     private Color color;
     private boolean isMyTurn;
 

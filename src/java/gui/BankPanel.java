@@ -123,27 +123,6 @@ public class BankPanel extends JPanel {
        initializeLabels();
     }
 
-    /*public void start(int framerate) {
-
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try{
-                        Thread.sleep(1000/framerate);
-                    } catch(InterruptedException v) {
-                        v.printStackTrace();
-                    }
-                    update();
-                }
-            }
-        };
-
-        Thread thread = new Thread(runnable);
-
-        thread.start();
-    }*/
-
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(300, 60);
@@ -151,7 +130,7 @@ public class BankPanel extends JPanel {
 
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Bank bank1 = new Bank();
         JFrame frame = new JFrame("Image Panel");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -163,7 +142,7 @@ public class BankPanel extends JPanel {
 
         frame.pack();
         frame.setVisible(true);
-    }
+    }*/
 }
 
 
