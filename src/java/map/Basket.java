@@ -22,4 +22,8 @@ class Basket<T> {
         }
         return null;
     }
+
+    boolean isEmpty() {
+        return set.size() == 0;
+    }
 }
