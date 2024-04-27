@@ -106,26 +106,6 @@ public class ButtonsPanel extends JPanel {
         });
     }
 
-
-
-    public void update() {
-        if(player.isMyTurn()) {
-            if(player.isDiced()) {
-                buttons[5].setEnabled(true);
-                buttons[0].setEnabled(player.getMyCards().getNumberOfRes()>0);
-                buttons[1].setEnabled(player.canExchangeDev(player.getMyCards(),player.getBank()));
-                buttons[2].setEnabled(buttons[2].getNumber()>0 && player.canBuildRoad());
-                buttons[3].setEnabled(buttons[3].getNumber()>0 && player.canBuildSettlement());
-                buttons[4].setEnabled(buttons[4].getNumber()>0 && player.canBuildCity());
-            }
-        }
-        else{
-            for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
-                buttons[i].setEnabled(false);
-            }
-        }
-    }
-
     private void updateGo() {
         buttons[2].setEnabled(player.isMyTurn());
     }

@@ -15,11 +15,8 @@ public class ExchangePanel extends JPanel {
     protected CardSuit saleList;
     protected CardSuit wishList;
     protected CardPropose proposeList;
-
     protected BankPanel bankPanel;
-
     protected ButtonsPanel buttonsPanel;
-    private ImageIcon scaledIcon;
 
     public ExchangePanel(Player player, Bank bank) {
         this.player = player;
