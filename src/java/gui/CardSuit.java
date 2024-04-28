@@ -32,7 +32,7 @@ public class CardSuit extends JLayeredPane {
         button = new JButton();
         switch (cardSuitType) {
             case MY_CARD_LIST : cardBox = player.getMyCards();
-                                button = null;break;
+                button = null;break;
             case SALE_LIST : cardBox = player.getSaleList();break;
             case WISH_LIST2 : cardBox = player.getWishList();break;
             case WISH_LIST : cardBox = player.getWishList();break;
@@ -44,14 +44,6 @@ public class CardSuit extends JLayeredPane {
         }
         loadScaledIcon();
         initializeLabels();
-    }
-
-    public void setCardBox(Player player) {
-        switch (cardSuitType) { 
-            case MY_CARD_LIST : cardBox = player.getMyCards();break;
-            case SALE_LIST : cardBox = player.getSaleList();break;
-            case WISH_LIST : cardBox = player.getWishList();break;
-        }
     }
 
     public JButton getButton() {
@@ -148,38 +140,43 @@ public class CardSuit extends JLayeredPane {
                 int x = offsetX + (gap * i);
                 label.setBounds(x, offsetY, label.getIcon().getIconWidth(), label.getIcon().getIconHeight());
                 if (!this.isAncestorOf(label)) {
-                    if(i == labels.size() - 1) {
-                        JPanel transparentPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-                        ImageIcon iconO = new ImageIcon("/Users/juliazhula/k-catan/src/ressources/0_tree.png");
-                        Dimension dimension = new Dimension((int)(iconO.getIconWidth() * 0.6), (int)(iconO.getIconHeight() * 0.6*0.3));
-                        transparentPanel.setPreferredSize(dimension);
-
-                        transparentPanel.setOpaque(false);
-
-                        JLabel numberLabel = new JLabel(String.valueOf(labels.size()));
-                        numberLabel.setFont(new Font("Arial", Font.BOLD, 13));
-                        numberLabel.setForeground(Color.WHITE);
-
-                        transparentPanel.add(numberLabel);
-
-                        label.setLayout(new BorderLayout());
-                        label.add(transparentPanel, BorderLayout.NORTH);
-
+                    if (i == labels.size() - 1) {
+                        addNumberLabel(label, labels.size());
                     }
-                    this.add(label,Integer.valueOf(i));
+                    this.add(label, Integer.valueOf(i));
                 }
             }
             if (!labels.isEmpty()) {
                 offsetX += gap * labels.size() + labels.get(0).getIcon().getIconWidth();
             }
         }
-        if(cardSuitType != MY_CARD_LIST) {
+
+        if (cardSuitType != MY_CARD_LIST) {
             button.setBounds(400, 5, 30, 30);
             this.add(button);
         }
+
         this.revalidate();
         this.repaint();
     }
+
+    private void addNumberLabel(JLabel label, int size) {
+        JPanel transparentPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        ImageIcon iconO = new ImageIcon("/Users/juliazhula/k-catan/src/ressources/0_tree.png");
+        Dimension dimension = new Dimension((int) (iconO.getIconWidth() * 0.6), (int) (iconO.getIconHeight() * 0.6 * 0.3));
+        transparentPanel.setPreferredSize(dimension);
+        transparentPanel.setOpaque(false);
+
+        JLabel numberLabel = new JLabel(String.valueOf(size));
+        numberLabel.setFont(new Font("Arial", Font.BOLD, 13));
+        numberLabel.setForeground(Color.WHITE);
+
+        transparentPanel.add(numberLabel);
+
+        label.setLayout(new BorderLayout());
+        label.add(transparentPanel, BorderLayout.NORTH);
+    }
+
 
 
     @Override
