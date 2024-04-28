@@ -7,7 +7,6 @@ public class Board extends MapElementsApi {
         Node.createNodes();
         Edge.createEdge();
 
-        Node.connectEdge();
     }
 
     

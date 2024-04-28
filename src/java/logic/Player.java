@@ -189,13 +189,11 @@ public class Player implements Trade {
         boolean flag = false;
         for (Road road : getRoads()) {
             Edge edge = Edge.getEdge(road);
-            Node posX = Node.canBuildSettlement(edge.getX());
-            if (posX != null) {
+            if (edge.getX().canBuildSettlement()) {
                 flag = true;
                 break;
             }
-            Node posY = Node.canBuildSettlement(edge.getY());
-            if (posY != null) {
+            if (edge.getY().canBuildSettlement()) {
                 flag = true;
                 break;
             }

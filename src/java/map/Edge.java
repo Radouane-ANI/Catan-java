@@ -27,7 +27,10 @@ public class Edge extends Tuple<Node> {
                 Node vi = Node.getNodesIntern()[i];
                 Node vj = Node.getNodesIntern()[j];
                 if (vi.isNeighbor(vj)) {
-                    edgeList.add(new Edge(vi, vj));
+                    Edge e = new Edge(vi, vj);
+                    edgeList.add(e);
+                    vi.addNeighbor(e);
+                    vj.addNeighbor(e);
                 }
             }
         }

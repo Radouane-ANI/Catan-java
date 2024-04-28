@@ -123,19 +123,6 @@ public class Turn {
                 ViewControleur.getCatanControleur().moveThief(thief, currentPlayer);
             }
         }
-        for (Player player : playersList) {
-            if (player.isBot()) {
-                continue;
-            }
-            while (!player.isFinishedTurn()) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                }
-            }
-            player.setFinishedTurn(true);    
-        }
-        update();
     }
 
     protected void recupFirstRessources(){
