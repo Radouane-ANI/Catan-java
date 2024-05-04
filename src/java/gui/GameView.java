@@ -88,6 +88,7 @@ public class GameView extends JPanel {
     public void proposeEchange(Player currentPlayer, List<Player> accepter, Player p) {
         ProposeEchange prop = new ProposeEchange(currentPlayer, accepter, p, game);
         panelTempo.add(prop);
+        revalidate();
     }
 
     public void update() {
