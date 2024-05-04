@@ -137,14 +137,14 @@ public class ButtonsPanel extends JPanel {
         buttons[4].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                weatherDisplay.stopCurrentMusic();
+                if (!weatherDisplay.isMuted) {
+                    weatherDisplay.stopCurrentMusic();
+                }
                 weatherDisplay.updateWeather();
                 ViewControleur.NextTurn(false);
             }
         });
     }
-
-
 
     public void update() {
         this.player = game.getCurrentPlayer();
