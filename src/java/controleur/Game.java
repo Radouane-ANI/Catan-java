@@ -27,7 +27,7 @@ public class Game extends Turn implements Runnable {
 
     private void waitNextTurn() {
         if (currentPlayer.isBot()) {
-            //for (int i = 0; i < 4; i++) sleep();
+            for (int i = 0; i < 4; i++) sleep();
             return;
         }
         while (!nextTurn) {
