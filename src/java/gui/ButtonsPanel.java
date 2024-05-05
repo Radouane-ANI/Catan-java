@@ -137,8 +137,6 @@ public class ButtonsPanel extends JPanel {
         buttons[4].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                weatherDisplay.stopCurrentMusic();
-                weatherDisplay.updateWeather();
                 ViewControleur.NextTurn(false);
             }
         });
@@ -149,7 +147,7 @@ public class ButtonsPanel extends JPanel {
     public void update() {
         this.player = game.getCurrentPlayer();
         if (!player.isBot() && player.isFinishedTurn()) {
-            buttons[4].setEnabled(true);
+            buttons[4].setEnabled(game.isFinishedTrade());
             buttons[0].setEnabled(player.canExchangeDev(player.getMyCards(), player.getBank()));
             buttons[1].setEnabled(player.canBuildRoad());
             buttons[2].setEnabled(player.canBuildSettlement());

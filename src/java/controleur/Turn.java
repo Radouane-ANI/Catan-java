@@ -36,6 +36,7 @@ public class Turn {
         currentPlayer = playersList.get(currentPlayerIndex);
         thief = new Thief(null);
         actionBot = new Action();
+        finishedTrade = true;
     }
 
     void tour() {
@@ -43,6 +44,7 @@ public class Turn {
         currentPlayer.setFinishedTurn(false);
         update();
         boolean isSunnyWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay().getCurrentWeather().equals("Soleil");
+        boolean isSnowWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay() .getCurrentWeather().equals("Neige");
         if (currentPlayer.isBot()) {
             diceGUI.roll();
         } else {
@@ -55,7 +57,7 @@ public class Turn {
         if (currentPlayer.isBot()) {
             initierEchange();
             waitFinishedTrade();
-            actionBot.randomBuild(currentPlayer);
+            actionBot.randomBuild(currentPlayer, isSnowWeather);
         }
         promptForReroll = false;
         currentPlayer.setFinishedTurn(true);
@@ -110,16 +112,13 @@ public class Turn {
         if (!currentWeather.equals("Nuageux")) {
             for (Player player : playersList) {
                 if (player.isBot()) {
-                    continue;
+                    actionBot.stolenRandom(player);
                 }
-                if (player.getMyCards().getNumberOfRes() > 7) {
+                else if (player.getMyCards().getNumberOfRes() > 7) {
                     gameView.updateStolen(player);
                     player.setFinishedTurn(false);
                     while (!player.isFinishedTurn()) {
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                        }
+                        sleep();
                     }
                     player.setFinishedTurn(false);    
                 }
@@ -127,6 +126,8 @@ public class Turn {
             update();
             if (!currentPlayer.isBot()) {
                 ViewControleur.getCatanControleur().moveThief(thief, currentPlayer);
+            }else {
+                actionBot.moveThief(currentPlayer, thief);
             }
         }
     }
@@ -145,6 +146,8 @@ public class Turn {
     }
 
     public void initierEchange() {
+        finishedTrade = false;
+        update();
         if (currentPlayer.isBot() && !currentPlayer.exchangeSuggestion()) {
             finishedTrade = true;
             return;
@@ -172,6 +175,7 @@ public class Turn {
 
     public void echange(List<Player> accepter) {
         if (accepter.size() < playersList.size() - 1) {
+            currentPlayer.revertFromSaleList();
             return;
         }
         for (int i = 0; i < playersList.size() - 1; i++)
@@ -185,9 +189,10 @@ public class Turn {
             currentPlayer.trade(currentPlayer.getSaleList(), currentPlayer.getBank(), currentPlayer.getWishList(),
                     currentPlayer.getMyCards());
         }
-        currentPlayer.getSaleList().clearBox();
+        currentPlayer.revertFromSaleList();
         currentPlayer.getWishList().clearBox();
         finishedTrade = true;
+        update();
     }
 
     /* 
@@ -201,10 +206,8 @@ public class Turn {
             gameView.proposeEchange(currentPlayer, accepter, p);
         } else {
             accepter.add(currentPlayer);
-            if (accepter.size() == playersList.size()) {
-                currentPlayer.revertFromSaleList();
-                currentPlayer.getWishList().clearBox();
-                finishedTrade = true;
+            if (accepter.size() == playersList.size() -1) {
+                echange(accepter);
             }
         }
     }
@@ -220,7 +223,10 @@ public class Turn {
         while (!finishedTrade) {
             sleep();
         }
-        finishedTrade = false;
+    }
+
+    public boolean isFinishedTrade() {
+        return finishedTrade;
     }
 
     private void waitRollDice(boolean isSunnyWeather) {
@@ -258,6 +264,13 @@ public class Turn {
         currentPlayer.calculePoints();
         if (gameView != null) {
             gameView.update();
+        }
+    }
+
+    protected void updateWeather() {
+        if (gameView != null && gameView.getWeatherDisplay() != null) {
+            gameView.getWeatherDisplay().stopCurrentMusic();
+            gameView.getWeatherDisplay().updateWeather();
         }
     }
 }
