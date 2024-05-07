@@ -18,18 +18,20 @@ public class Game extends Turn implements Runnable {
         recupFirstRessources();
         while (!isOver(playersList)) {
             nextTurn = false;
+            updateWeather();
             tour();
             waitNextTurn();
             nextPlayer();
-        }
+        }update();
     }
 
     private void waitNextTurn() {
+        if (currentPlayer.isBot()) {
+            for (int i = 0; i < 4; i++) sleep();
+            return;
+        }
         while (!nextTurn) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-            }
+            sleep();
         }
         nextTurn = false;
     }

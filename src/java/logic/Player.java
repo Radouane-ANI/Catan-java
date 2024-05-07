@@ -291,6 +291,7 @@ public class Player implements Trade {
             int quantite = etats.get(min) * -1 <= etats.get(max) ? etats.get(min) * -1 : etats.get(max);
             wishList.addCard(max, quantite);
             saleList.addCard(min, quantite);
+            myCards.removeCard(min, quantite);
         }
         return wishList.getNumberOfRes() != 0;
     }
@@ -301,6 +302,8 @@ public class Player implements Trade {
     
     public void trade(Player player) {
         trade(saleList, player.myCards, wishList, myCards);
+        player.saleList.clearBox();
+        player.wishList.clearBox();
     }
 
     public boolean buyRessourceCard(Card c){

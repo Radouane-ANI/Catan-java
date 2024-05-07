@@ -195,9 +195,9 @@ public class CatanBoardControleur {
                 p.buildSettlement(c);
                 n.setNode(c);
                 removeCityComponents();
-                if (p.getRoads().size() < 2) {
+                if (p.getRoads().size() < 2 && !p.isBot()) {
                     firstBuildRoad(p, n);
-                } else {
+                } else if (p.getRoads().size() >= 2){
                     p.setFinishedTurn(true);
                     ViewControleur.getGame().update();
                 }

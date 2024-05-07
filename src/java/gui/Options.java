@@ -130,6 +130,10 @@ public class Options extends JPanel {
     }
 
     public void completeJoueur() {
+        if (players.size() == 0) {
+            players.add(new Player(false, "joueur", bank, couleursDisponibles.get(0)));
+            couleursDisponibles.remove(0);
+        }
         if (players.size() != 4) {
             int length = 4 - players.size();
             for (int i = 0; i < length; i++) {
