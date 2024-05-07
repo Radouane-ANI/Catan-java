@@ -142,8 +142,6 @@ public class ButtonsPanel extends JPanel {
         });
     }
 
-
-
     public void update() {
         this.player = game.getCurrentPlayer();
         if (!player.isBot() && player.isFinishedTurn()) {
