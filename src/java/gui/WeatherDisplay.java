@@ -83,15 +83,15 @@ public class WeatherDisplay extends JPanel {
         g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
     }
 
-    public void updateWeather() {
-        stopCurrentMusic();
+    public void updateWeather(boolean changeMusic) {
+        if (changeMusic) {
+            stopCurrentMusic();
+        }
         this.turnCounter++;
 
         int currentSeasonIndex = (this.turnCounter / 4) % 4;
         String currentSeason = seasons[currentSeasonIndex];
         currentWeather = weatherLabel.getText();
-
-        System.out.println("Current season: " + currentSeason);
 
         String nextWeather;
         switch (currentSeason) {
@@ -116,7 +116,7 @@ public class WeatherDisplay extends JPanel {
         weatherLabel.setText(nextWeather);
         weatherIconLabel.setIcon(weatherIcon);
 
-        if (!isMuted) {
+        if (!isMuted && changeMusic) {
             playMusic(nextWeather);
         }
     }

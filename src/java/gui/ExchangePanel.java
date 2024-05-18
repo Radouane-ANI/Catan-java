@@ -120,7 +120,6 @@ public class ExchangePanel extends JPanel {
                 lastLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        System.out.println("saleList");
                         JLabel clickedLabel = (JLabel) e.getSource();
                         Card c = Card.valueOf(clickedLabel.getName());
                         ExchangePanel.this.remove(clickedLabel);
@@ -330,5 +329,4 @@ public class ExchangePanel extends JPanel {
 
         exchangePanel.start(1);
     }
-
 }

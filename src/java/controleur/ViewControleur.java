@@ -13,10 +13,7 @@ public class ViewControleur {
     private static Game game;
     private static MainFrame frame;
     private static CatanBoardControleur catanControleur;
-    private static Player player;
-    private static Bank bank;
     private static Options gameOption;
-
 
     public ViewControleur(MainFrame mainFrame) {
         frame = mainFrame;
@@ -53,13 +50,11 @@ public class ViewControleur {
         frame.repaint();
     }
 
-    public static void endGame(List<Player> players) {
-        Player winner = players.stream().max((p1, p2) -> Integer.compare(p1.getPoints(), p2.getPoints())).orElse(null);
-        if (winner != null) {
-            frame.setContentPane(new GameOverView(winner, players));
-            frame.revalidate();
-            frame.repaint();
-        }
+    public static void endGame(List<Player> players, Player winner) {
+        gameOption = new Options();
+        frame.setContentPane(new GameOverView(winner, players));
+        frame.revalidate();
+        frame.repaint();
     }
 
     public static void option() {
@@ -77,13 +72,16 @@ public class ViewControleur {
     public static List<Player> getPlayers() {
         return gameOption.getPlayers();
     }
+    public static int getDifficulte() {
+        return gameOption.getDifficulte();
+    }
 
     public static Game getGame() {
         return game;
     }
 
-    public static void NextTurn(boolean bot) {
-        game.NextTurn(bot);
+    public static void NextTurn(boolean nextTurn) {
+        game.NextTurn(nextTurn);
     }
 
     public static Bank getBank() {

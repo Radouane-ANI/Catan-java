@@ -162,7 +162,7 @@ public class ButtonsPanel extends JPanel {
         buttons[4].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ViewControleur.NextTurn(false);
+                ViewControleur.NextTurn(true);
             }
         });
     }

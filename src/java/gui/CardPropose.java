@@ -110,12 +110,4 @@ public class CardPropose extends JPanel {
         return new Dimension(100, 80);
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Overlapping Cards");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        CardPropose cardPropose = new CardPropose();
-        frame.add(cardPropose,BorderLayout.SOUTH);
-        frame.setSize(1000, 700);
-        frame.setVisible(true);
-    }
 }

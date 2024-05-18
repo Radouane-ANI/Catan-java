@@ -187,25 +187,4 @@ public class CardSuit extends JLayeredPane {
         return new Dimension(500, 80);
     }
 
-/*     public static void main(String[] args) {
-        Player player = new Player(false,"Sam",new Bank(),Color.red);
-        CardBox cardBox = new CardBox();
-        int[] x = {1,2,3,4,5};
-        cardBox.setCardsNumbers(x);
-        player.setMyCards(cardBox);
-
-        JFrame frame = new JFrame("Overlapping Cards");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        CardSuit cardSuit = new CardSuit(player,2);
-
-
-        frame.add(cardSuit,BorderLayout.SOUTH);
-
-        frame.pack();
-        frame.setSize(1000, 700);
-        frame.setVisible(true);
-    }
-*/
-
 }
