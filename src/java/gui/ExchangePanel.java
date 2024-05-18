@@ -288,7 +288,7 @@ public class ExchangePanel extends JPanel {
                         v.printStackTrace();
                     }
                     bankPanel.update();
-                    buttonsPanel.updateButtons();
+                    //buttonsPanel.updateButtons();
                 }
             }
         };
@@ -300,7 +300,7 @@ public class ExchangePanel extends JPanel {
 
     public void update() {
         bankPanel.update();
-        buttonsPanel.updateButtons();
+        //buttonsPanel.updateButtons();
     }
 
     public static void main(String[] args)  {
