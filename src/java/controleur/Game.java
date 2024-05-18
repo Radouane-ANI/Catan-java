@@ -22,6 +22,7 @@ public class Game extends Turn implements Runnable {
             nextPlayer();
         }
         update();
+        checkForWinner();
     }
 
     private void waitNextTurn() {
@@ -72,26 +73,20 @@ public class Game extends Turn implements Runnable {
         startGame();
     }
 
-    public void NextTurn(boolean bot) {
-        this.nextTurn = currentPlayer.isBot() == bot;
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        checkForWinner();
+    public void NextTurn(boolean nextTurn) {
+        this.nextTurn = nextTurn;
     }
 
     private void checkForWinner() {
         Player winner = null;
         for (Player player : playersList) {
-            if (player.getPoints() >= 3) {
+            if (player.getPoints() >= 10) {
                 winner = player;
                 break;
             }
         }
         if (winner != null) {
-            ViewControleur.endGame(playersList);
+            ViewControleur.endGame(playersList, winner);
         }
     }
 }

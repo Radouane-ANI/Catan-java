@@ -170,7 +170,7 @@ public class CatanBoardControleur {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (p.getRoads().size() < 2) {
-                    ViewControleur.NextTurn(false);
+                    ViewControleur.NextTurn(true);
                 }
                 Road r = new Road(p);
                 p.buildRoad(r);

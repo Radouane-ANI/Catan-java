@@ -257,30 +257,11 @@ public class Turn {
         if (gameView != null) {
             gameView.update();
         }
-        checkForWinner();
     }
 
     private void updateWeather() {
         if (gameView != null && gameView.getWeatherDisplay() != null) {
             gameView.getWeatherDisplay().updateWeather(!currentPlayer.isBot());
         }
-    }
-
-    private void checkForWinner() {
-        Player winner = null;
-        for (Player player : playersList) {
-            if (player.getPoints() >= 2) {
-                winner = player;
-                break;
-            }
-        }
-        if (winner != null) {
-            endGame(winner);
-        }
-    }
-
-    private void endGame(Player winner) {
-        // peut-être rajouter quelquechose pour effacer toutes les données
-        ViewControleur.endGame(playersList);
     }
 }
