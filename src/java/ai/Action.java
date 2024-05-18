@@ -28,10 +28,12 @@ import map.Tile;
  * Action
  */
 public class Action {
-    Random rd;
+    private Random rd;
+    private int difficulte;
 
     public Action() {
-        rd = new Random();
+        this.rd = new Random();
+        this.difficulte = ViewControleur.getDifficulte();
     }
 
     public void firstBuild(Player player) {
@@ -49,13 +51,13 @@ public class Action {
     }
 
     public void randomBuild(Player player, boolean neige) {
-        if (rd.nextInt(2) == 0 && player.canBuildSettlement()) {
+        if (rd.nextInt(3 - difficulte) == 0 && player.canBuildSettlement()) {
             randomSettlement(player);
         }
-        if (rd.nextInt(2) == 0 && player.canBuildRoad() && !neige) {
+        if (rd.nextInt(3 - difficulte) == 0 && player.canBuildRoad() && !neige) {
             randomRoad(player);
         }
-        if (rd.nextInt(2) == 0 && player.canBuildCity()) {
+        if (rd.nextInt(3 - difficulte) == 0 && player.canBuildCity()) {
             randomCity(player);
         }
     }

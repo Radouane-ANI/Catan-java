@@ -147,21 +147,6 @@ public class BankPanel extends JPanel {
         return new Dimension(300, 60);
     }
 
-
-
-    public static void main(String[] args) {
-        Bank bank1 = new Bank();
-        JFrame frame = new JFrame("Image Panel");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new GridLayout(1,2));
-        JPanel jPanel1 = new JPanel(new BorderLayout());
-        jPanel1.add(new BankPanel(bank1),BorderLayout.NORTH);
-        frame.add(jPanel1);
-        frame.setSize(1000, 700);
-
-        frame.pack();
-        frame.setVisible(true);
-    }
 }
 
 

@@ -3,7 +3,6 @@ package logic;
 import java.util.List;
 
 import map.Edge;
-import map.Node;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -255,6 +254,13 @@ public class Player implements Trade {
 
         }
         return missingCards;
+    }
+
+    public boolean isTradableInBank() {
+        Card c = wishList.getFirst();
+        wishList.clearBox();
+        wishList.addCard(c, 1);
+        return isTradableInBank(saleList, wishList, tradePorts);
     }
 
     public void updateTradeLists() {

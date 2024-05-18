@@ -12,10 +12,7 @@ public class ViewControleur {
     private static Game game;
     private static MainFrame frame;
     private static CatanBoardControleur catanControleur;
-    private static Player player;
-    private static Bank bank;
     private static Options gameOption;
-
 
     public ViewControleur(MainFrame mainFrame) {
         frame = mainFrame;
@@ -60,6 +57,9 @@ public class ViewControleur {
 
     public static List<Player> getPlayers() {
         return gameOption.getPlayers();
+    }
+    public static int getDifficulte() {
+        return gameOption.getDifficulte();
     }
 
     public static Game getGame() {

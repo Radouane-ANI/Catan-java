@@ -43,6 +43,7 @@ public class Turn {
         currentPlayer = playersList.get(currentPlayerIndex);
         currentPlayer.setFinishedTurn(false);
         update();
+        updateWeather();
         boolean isSunnyWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay().getCurrentWeather().equals("Soleil");
         boolean isSnowWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay() .getCurrentWeather().equals("Neige");
         if (currentPlayer.isBot()) {
@@ -73,7 +74,6 @@ public class Turn {
     }
 
     private void recupRessources(List<Player> players, int sumDices) {
-        System.out.println("result(Turn): " + sumDices);
         if (gameView != null && gameView.getWeatherDisplay() != null) {
             currentWeather = gameView.getWeatherDisplay().getCurrentWeather();
         }
@@ -184,8 +184,7 @@ public class Turn {
             Random rd = new Random();
             Player choisi = accepter.get(rd.nextInt(accepter.size()));
             currentPlayer.trade(choisi);
-        } else if (currentPlayer.isBot() && currentPlayer.isTradableInBank(currentPlayer.getSaleList(),
-                currentPlayer.getWishList(), currentPlayer.getTradePorts())) {
+        } else if (currentPlayer.isBot() && currentPlayer.isTradableInBank()) {
             currentPlayer.trade(currentPlayer.getSaleList(), currentPlayer.getBank(), currentPlayer.getWishList(),
                     currentPlayer.getMyCards());
         }
@@ -267,10 +266,9 @@ public class Turn {
         }
     }
 
-    protected void updateWeather() {
+    private void updateWeather() {
         if (gameView != null && gameView.getWeatherDisplay() != null) {
-            gameView.getWeatherDisplay().stopCurrentMusic();
-            gameView.getWeatherDisplay().updateWeather();
+            gameView.getWeatherDisplay().updateWeather(!currentPlayer.isBot());
         }
     }
 }

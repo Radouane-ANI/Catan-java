@@ -18,7 +18,6 @@ public class Game extends Turn implements Runnable {
         recupFirstRessources();
         while (!isOver(playersList)) {
             nextTurn = false;
-            updateWeather();
             tour();
             waitNextTurn();
             nextPlayer();
