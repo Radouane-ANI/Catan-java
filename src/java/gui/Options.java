@@ -42,7 +42,7 @@ public class Options extends JPanel {
         difficultyPanel.setOpaque(false);
         JLabel labelDifficulte = new JLabel("Difficulté :");
         setLabelFont(labelDifficulte, 20, null);
-        difficulteComboBox = new JComboBox<>(new String[] { "Facile", "Normal", "Difficile" });
+        difficulteComboBox = new JComboBox<>(new String[] { "Facile", "Normal"});
         difficulteComboBox.setSelectedIndex(difficulte - 1);
         difficultyPanel.add(labelDifficulte);
         difficultyPanel.add(difficulteComboBox);

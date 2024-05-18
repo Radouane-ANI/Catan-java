@@ -110,7 +110,6 @@ public class ExchangePanel extends JPanel {
                 lastLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        System.out.println("saleList");
                         JLabel clickedLabel = (JLabel) e.getSource();
                         Card c = Card.valueOf(clickedLabel.getName());
                         ExchangePanel.this.remove(clickedLabel);
@@ -252,45 +251,5 @@ public class ExchangePanel extends JPanel {
         this.revalidate();
         this.repaint();
     }
-
-    /*public static void main(String[] args)  {
-        Bank bank = new Bank();
-
-        Player player = new Player(false, "Sam", bank, Color.red);
-        CardBox cardBox = new CardBox();
-        TradePort tradePort = new TradePort();
-
-        player.setTradePorts(tradePort);
-        player.getTradePorts().addPort(Card.SHEEP);
-        int[] x = {1, 2, 3, 4, 5};
-        cardBox.setCardsNumbers(x);
-        player.setMyCards(cardBox);
-
-        JFrame frame = new JFrame("Overlapping Cards");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        ExchangePanel exchangePanel = new ExchangePanel(player);
-        ButtonsPanel buttonsPanel = new ButtonsPanel(player);
-
-        frame.setLayout(new GridLayout(1, 2));
-
-
-        JPanel jPanel1 = new JPanel(new BorderLayout());
-        jPanel1.add(exchangePanel, BorderLayout.SOUTH);
-        BankPanel bankPanel = new BankPanel(bank);
-        jPanel1.add(bankPanel, BorderLayout.NORTH);
-        frame.add(jPanel1);
-
-        JPanel jPanel2 = new JPanel(new BorderLayout());
-        jPanel2.add(buttonsPanel, BorderLayout.SOUTH);
-        frame.add(jPanel2);
-
-        frame.getContentPane().setBackground(Color.pink);
-
-        frame.setSize(1000, 700);
-        frame.setVisible(true);
-
-        bankPanel.start(1);
-    }*/
 
 }

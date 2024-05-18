@@ -256,6 +256,13 @@ public class Player implements Trade {
         return missingCards;
     }
 
+    public boolean isTradableInBank() {
+        Card c = wishList.getFirst();
+        wishList.clearBox();
+        wishList.addCard(c, 1);
+        return isTradableInBank(saleList, wishList, tradePorts);
+    }
+
     public void updateTradeLists() {
         saleList.clearBox();
         wishList.clearBox();
