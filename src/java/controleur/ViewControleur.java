@@ -1,5 +1,6 @@
 package controleur;
 
+import gui.GameOverView;
 import gui.GameMenu;
 import gui.GameView;
 import gui.MainFrame;
@@ -44,6 +45,21 @@ public class ViewControleur {
 
         Thread gameThread = new Thread(game);
         gameThread.start();
+    }
+
+    public static void showMainMenu() {
+        frame.setContentPane(new GameMenu());
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    public static void endGame(List<Player> players) {
+        Player winner = players.stream().max((p1, p2) -> Integer.compare(p1.getPoints(), p2.getPoints())).orElse(null);
+        if (winner != null) {
+            frame.setContentPane(new GameOverView(winner, players));
+            frame.revalidate();
+            frame.repaint();
+        }
     }
 
     public static void option() {
