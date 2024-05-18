@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 
 public class ButtonsPanel extends JPanel {
    // private static final String BASE_PATH = "src/ressources/";
-   private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
+   private static final String BASE_PATH = "src/ressources/";
     private Player player;
     private ExchangePanel exchangePanel;
     private static final int NUMBER_OF_BUTTONS = 3;

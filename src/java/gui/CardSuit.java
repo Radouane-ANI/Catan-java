@@ -18,7 +18,7 @@ public class CardSuit extends JLayeredPane {
     private static final int SALE_LIST = 2;
     private static final int WISH_LIST2 = 4;
     private static final int WISH_LIST = 3;
-    private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
+    private static final String BASE_PATH = "src/ressources/";
     //private static final String BASE_PATH = "src/ressources/";
 
     private int cardSuitType;
@@ -150,7 +150,7 @@ public class CardSuit extends JLayeredPane {
                 if (!this.isAncestorOf(label)) {
                     if(i == labels.size() - 1) {
                         JPanel transparentPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-                        ImageIcon iconO = new ImageIcon("/Users/juliazhula/k-catan/src/ressources/0_tree.png");
+                        ImageIcon iconO = new ImageIcon("src/ressources/0_tree.png");
                         Dimension dimension = new Dimension((int)(iconO.getIconWidth() * 0.6), (int)(iconO.getIconHeight() * 0.6*0.3));
                         transparentPanel.setPreferredSize(dimension);
 
