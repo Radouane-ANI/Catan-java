@@ -24,6 +24,9 @@ public class WeatherDisplay extends JPanel {
     private String musicFilePath;
     private Clip clip;
     private boolean stopMusic;
+    private JButton muteButton;
+    private JButton unmuteButton;
+    public boolean isMuted;
 
     public WeatherDisplay() {
         setOpaque(false);
@@ -43,8 +46,30 @@ public class WeatherDisplay extends JPanel {
 
         weatherIconLabel = new JLabel();
         weatherIconLabel.setBounds(100, 50, 100, 100);
-
         add(weatherIconLabel);
+
+        muteButton = new JButton(new ImageIcon("src/ressources/son_mute.png"));
+        muteButton.setBounds(10, 10, 30, 30);     
+        muteButton.addActionListener(e -> {
+            stopMusic = true;
+            isMuted = true;
+            muteButton.setEnabled(false);
+            unmuteButton.setEnabled(true);
+            stopCurrentMusic();
+        });   
+        add(muteButton);
+
+        unmuteButton = new JButton(new ImageIcon("src/ressources/son_unmute.png"));
+        unmuteButton.setBounds(45, 10, 30, 30);
+        unmuteButton.addActionListener(e -> {
+            stopMusic = false;
+            isMuted = false;
+            unmuteButton.setEnabled(false);
+            muteButton.setEnabled(true);
+            playMusic(getCurrentWeather());
+        });
+        unmuteButton.setEnabled(false);
+        add(unmuteButton);
     }
 
     public String getCurrentWeather() {
@@ -91,7 +116,9 @@ public class WeatherDisplay extends JPanel {
         weatherLabel.setText(nextWeather);
         weatherIconLabel.setIcon(weatherIcon);
 
-        playMusic(nextWeather);
+        if (!isMuted) {
+            playMusic(nextWeather);
+        }
     }
 
     private void loadWeatherIcon(String weather) {
@@ -118,10 +145,10 @@ public class WeatherDisplay extends JPanel {
     }
 
     private void playMusic(String weather) {
-        if (!stopMusic) {
-            try {
+        try {
+            if (!stopMusic) {
                 if (clip != null && clip.isRunning()) {
-                    clip.stop(); // Stop the currently playing music
+                    clip.stop();
                 }
     
                 switch (weather) {
@@ -149,9 +176,9 @@ public class WeatherDisplay extends JPanel {
                 clip = AudioSystem.getClip();
                 clip.open(audioIn);
                 clip.start();
-            } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
-                e.printStackTrace();
             }
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+            e.printStackTrace();
         }
     }    
 

@@ -110,22 +110,16 @@ public class Node extends Vector {
         return group;
     }
 
-    public static Node canBuildSettlement(Vector v) {
-        Node pos = null;
-        for (int i = 0; i < nodeArray.length; i++) {
-            if (nodeArray[i].equals(v)) {
-                pos = nodeArray[i];
-                if (nodeArray[i].group != null) {
-                    return null;
-                }
-                for (Node node : nodeArray[i].neighborsNode) {
-                    if (node.group != null) {
-                        return null;
-                    }
+    public boolean canBuildSettlement() {
+        if (group == null) {
+            for (Node node : neighborsNode) {
+                if (node.group != null) {
+                    return false;
                 }
             }
+            return true;
         }
-        return pos;
+        return false;
     }
 
     public static Node getNode(Vector v) {
@@ -136,20 +130,6 @@ public class Node extends Vector {
         }
 
         return null;
-    }
-
-    static void connectEdge() {
-        for (Edge t : Edge.getEdgesIntern()) {
-            Node a = getNode(t.getX());
-            Node b = getNode(t.getY());
-
-            if (!a.neighborsEdge.contains(t)) {
-                getNode(a).neighborsEdge.add(t);
-            }
-            else if (!b.neighborsEdge.contains(t)) {
-                getNode(b).neighborsEdge.add(t);
-            }
-        }
     }
 
     public static Node getNode(HumanGroup group) {

@@ -50,7 +50,7 @@ public class CardBox {
         Random random = new Random();
 
         int randomIndex = random.nextInt(taille);
-        for (int i = 0; i < cardsNumbers.length; i++) {
+        for (int i = 0; i < 5; i++) {
             randomIndex -= cardsNumbers[i];
             if (randomIndex < 0) {
                 return Card.values()[i];

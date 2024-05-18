@@ -29,18 +29,13 @@ public interface Trade {
 
     default boolean isTradeInteresting(CardBox saleList, CardBox wishList, CardBox wishList1, CardBox saleList1) {
         for (Card c : Card.values()) {
-            if (wishList.getNumber(c) != 0) {
-                if (saleList1.getNumber(c) == 0) {
-                    return false;
-                }
+            if (wishList.getNumber(c) > saleList1.getNumber(c)) {
+                return false;
             }
-            if (saleList.getNumber(c) != 0) {
-                if (wishList1.getNumber(c) == 0) {
-                    return false;
-                }
+            if (saleList.getNumber(c) < wishList1.getNumber(c)) {
+                return false;
             }
         }
-
         return true;
     }
 

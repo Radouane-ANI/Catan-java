@@ -1,14 +1,13 @@
 package controleur;
 
 import java.util.List;
-
 import logic.Player;
 import map.Board;
 
 public class Game extends Turn implements Runnable {
     private boolean nextTurn;
 
-    Game(List<Player> playersList) {
+    public Game(List<Player> playersList) {
         super(playersList);
         Board.createBoard();
     }
@@ -18,18 +17,21 @@ public class Game extends Turn implements Runnable {
         recupFirstRessources();
         while (!isOver(playersList)) {
             nextTurn = false;
+            updateWeather();
             tour();
             waitNextTurn();
             nextPlayer();
         }
+        update();
     }
 
     private void waitNextTurn() {
+        if (currentPlayer.isBot()) {
+            for (int i = 0; i < 4; i++) sleep();
+            return;
+        }
         while (!nextTurn) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-            }
+            sleep();
         }
         nextTurn = false;
     }
@@ -75,4 +77,22 @@ public class Game extends Turn implements Runnable {
         this.nextTurn = currentPlayer.isBot() == bot;
     }
 
+    @Override
+    public void update() {
+        super.update();
+        checkForWinner();
+    }
+
+    private void checkForWinner() {
+        Player winner = null;
+        for (Player player : playersList) {
+            if (player.getPoints() >= 3) {
+                winner = player;
+                break;
+            }
+        }
+        if (winner != null) {
+            ViewControleur.endGame(playersList);
+        }
+    }
 }

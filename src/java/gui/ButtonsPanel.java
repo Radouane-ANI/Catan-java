@@ -146,11 +146,7 @@ public class ButtonsPanel extends JPanel {
         buttons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               /*weatherDisplay.stopCurrentMusic();
-                //weatherDisplay.updateWeather();
-                //ViewControleur.NextTurn(false); ici what does it mean?
-
-                */
+            ViewControleur.NextTurn(false);
             }
         });
     }
@@ -171,6 +167,21 @@ public class ButtonsPanel extends JPanel {
         updateGo();
         updateGetDev();
         updateExchange();
+    }
+
+    public void update() {
+        this.player = game.getCurrentPlayer();
+        if (!player.isBot() && player.isFinishedTurn()) {
+            buttons[4].setEnabled(game.isFinishedTrade());
+            buttons[0].setEnabled(player.canExchangeDev(player.getMyCards(), player.getBank()));
+            buttons[1].setEnabled(player.canBuildRoad());
+            buttons[2].setEnabled(player.canBuildSettlement());
+            buttons[3].setEnabled(player.canBuildCity());
+        } else {
+            for (int i = 0; i < NUMBER_OF_BUTTONS; i++) {
+                buttons[i].setEnabled(false);
+            }
+        }
     }
 
     @Override
