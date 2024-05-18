@@ -3,7 +3,6 @@ package logic;
 import java.util.List;
 
 import map.Edge;
-import map.Node;
 
 import java.awt.Color;
 import java.util.ArrayList;

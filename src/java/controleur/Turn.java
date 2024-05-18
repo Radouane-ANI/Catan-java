@@ -271,7 +271,7 @@ public class Turn {
     private void checkForWinner() {
         Player winner = null;
         for (Player player : playersList) {
-            if (player.getPoints() >= 10) {
+            if (player.getPoints() >= 2) {
                 winner = player;
                 break;
             }
