@@ -45,7 +45,7 @@ public class Turn {
         update();
         updateWeather();
         boolean isSunnyWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay().getCurrentWeather().equals("Soleil");
-        boolean isSnowWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay() .getCurrentWeather().equals("Neige");
+        boolean isSnowWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay().getCurrentWeather().equals("Neige");
         if (currentPlayer.isBot()) {
             diceGUI.roll();
         } else {
@@ -62,7 +62,6 @@ public class Turn {
         }
         promptForReroll = false;
         currentPlayer.setFinishedTurn(true);
-        
     }
     
     protected void firstBuild(Player player) {
@@ -194,12 +193,6 @@ public class Turn {
         update();
     }
 
-    /* 
-    private boolean buyRessourceCard(Player p,Card c){
-        return p.buyRessourceCard(c);
-    }
-    */
-
     private void proposeEchange(List<Player> accepter, Player p) {
         if (currentPlayer.canTradeWith(p)) {
             gameView.proposeEchange(currentPlayer, accepter, p);
@@ -264,11 +257,30 @@ public class Turn {
         if (gameView != null) {
             gameView.update();
         }
+        checkForWinner();
     }
 
     private void updateWeather() {
         if (gameView != null && gameView.getWeatherDisplay() != null) {
             gameView.getWeatherDisplay().updateWeather(!currentPlayer.isBot());
         }
+    }
+
+    private void checkForWinner() {
+        Player winner = null;
+        for (Player player : playersList) {
+            if (player.getPoints() >= 2) {
+                winner = player;
+                break;
+            }
+        }
+        if (winner != null) {
+            endGame(winner);
+        }
+    }
+
+    private void endGame(Player winner) {
+        // peut-être rajouter quelquechose pour effacer toutes les données
+        ViewControleur.endGame(playersList);
     }
 }

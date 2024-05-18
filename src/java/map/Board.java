@@ -6,6 +6,5 @@ public class Board extends MapElementsApi {
         Tile.createTiles();
         Node.createNodes();
         Edge.createEdge();
-
     }
 }
