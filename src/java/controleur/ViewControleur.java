@@ -47,12 +47,20 @@ public class ViewControleur {
         gameThread.start();
     }
 
+    public static void showMainMenu() {
+        frame.setContentPane(new GameMenu());
+        frame.revalidate();
+        frame.repaint();
+    }
+
     public static void endGame(List<Player> players) {
         Player winner = players.stream().max((p1, p2) -> Integer.compare(p1.getPoints(), p2.getPoints())).orElse(null);
         if (winner != null) {
-            frame.setPanel(new GameOverView(winner, players));
+            frame.setContentPane(new GameOverView(winner, players));
+            frame.revalidate();
+            frame.repaint();
         }
-    }    
+    }
 
     public static void option() {
         frame.setPanel(gameOption);

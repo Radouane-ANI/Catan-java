@@ -61,7 +61,6 @@ public class Turn {
         }
         promptForReroll = false;
         currentPlayer.setFinishedTurn(true);
-        checkForWinner();        
     }
     
     protected void firstBuild(Player player) {
@@ -259,6 +258,7 @@ public class Turn {
         if (gameView != null) {
             gameView.update();
         }
+        checkForWinner();
     }
 
     protected void updateWeather() {
@@ -271,7 +271,7 @@ public class Turn {
     private void checkForWinner() {
         Player winner = null;
         for (Player player : playersList) {
-            if (player.getPoints() >= 4) {
+            if (player.getPoints() >= 10) {
                 winner = player;
                 break;
             }
@@ -282,6 +282,7 @@ public class Turn {
     }
 
     private void endGame(Player winner) {
+        // peut-être rajouter quelquechose pour effacer toutes les données
         ViewControleur.endGame(playersList);
     }
 }
