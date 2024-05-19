@@ -134,7 +134,7 @@ public class ExchangePanel extends JPanel {
 
     private void addListenerToDevCard(Card card) {
         switch (card) {
-            case KNIGHT: ViewControleur.getCatanControleur().moveThief(player);break;
+            case KNIGHT: addListenerToKnight();break;
             case MONOPOLY: addListenerToMono();break;
             case YEAR_PLENTY: addListenerToPlenty();break;
             case ONE_POINT: addListenerToOnePointPlus();break;
@@ -163,12 +163,28 @@ public class ExchangePanel extends JPanel {
         }
     }
 
+    public void addListenerToRoadBuild() {
+        ViewControleur.getCatanControleur().buildRoad(player, true, 2);
+        player.getMyCards().removeCard(ROAD_BUILD,1);
+        initializeMyCards();
+        reNew();
+    }
+
     public void addListenerToOnePointPlus() {
         player.onePointPLus();
         player.getMyCards().removeCard(Card.ONE_POINT,1);
         initializeMyCards();
         reNew();
     }
+
+    public void addListenerToKnight() {
+        ViewControleur.getCatanControleur().moveThief(player);
+        player.getMyCards().removeCard(Card.KNIGHT,1);
+        initializeMyCards();
+        reNew();
+    }
+
+
 
 
     private void initializeExchangePanel() {
