@@ -104,4 +104,14 @@ public class CardBox {
         return true;
     }
 
+    public int getNbOfKind() {
+        int counter = 0;
+        for(Card card : Card.values()) {
+            if (cardsNumbers[card.ordinal()] > 0) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
 }

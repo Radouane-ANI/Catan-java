@@ -5,7 +5,6 @@ import logic.*;
 import javax.swing.*;
 import java.awt.*;
 import controleur.ViewControleur;
-
 import java.awt.event.*;
 import java.util.List;
 
@@ -16,6 +15,8 @@ public class ExchangePanel extends JPanel {
     protected CardSuit saleList;
     protected CardSuit wishList;
     protected CardPropose proposeList;
+    protected CardPropose proposeForMono;
+    protected CardPropose proposeForPlenty;
     protected BankPanel bankPanel;
     protected ButtonsPanel buttonsPanel;
 
@@ -25,7 +26,9 @@ public class ExchangePanel extends JPanel {
         this.myCards = new CardSuit(player,1);
         this.saleList = new CardSuit(player,2);
         this.wishList = new CardSuit(player,3);
-        this.proposeList = new CardPropose();
+        this.proposeList = new CardPropose(1,false);
+        this.proposeForMono = new CardPropose(2,true);
+        this.proposeForPlenty = new CardPropose(2,false);
         this.buttonsPanel = new ButtonsPanel(player,this);
         this.bankPanel = new BankPanel(bank);
 
@@ -37,8 +40,16 @@ public class ExchangePanel extends JPanel {
         this.setLayout(new GridLayout(1, 2));
         JPanel cardsExchangePanel = new JPanel();
         cardsExchangePanel.setLayout(new BoxLayout(cardsExchangePanel,BoxLayout.Y_AXIS));
-        cardsExchangePanel.add(proposeList);
-        cardsExchangePanel.add(wishList);
+        JPanel overLapPanel1 = new JPanel();
+        overLapPanel1.setLayout(new OverlayLayout(overLapPanel1));
+        overLapPanel1.add(proposeList);
+        overLapPanel1.add(proposeForMono);
+        overLapPanel1.add(proposeForPlenty);
+        cardsExchangePanel.add(overLapPanel1);
+        JPanel overLapPanel2 = new JPanel();
+        overLapPanel2.setLayout(new OverlayLayout(overLapPanel2));
+        overLapPanel2.add(wishList);
+        cardsExchangePanel.add(overLapPanel2);
         cardsExchangePanel.add(saleList);
         cardsExchangePanel.add(myCards);
 
@@ -51,6 +62,9 @@ public class ExchangePanel extends JPanel {
 
         this.add(bankAndExchange);
         this.add(buttonsBigPanel);
+        proposeForMono.setVisible(false);
+        proposeForPlenty.setVisible(false);
+
         exchangeListVisible(false);
     }
 
@@ -78,7 +92,8 @@ public class ExchangePanel extends JPanel {
                         JLabel clickedLabel = (JLabel) e.getSource();
                         Card c = Card.valueOf(clickedLabel.getName());
                         if(c.ordinal() > 4) {
-
+                            addListenerToDevCard(c);
+                            System.out.println(c.name()+"haha");
                         }else{
                             proposeList.setVisible(true);
                             wishList.setVisible(true);
@@ -99,6 +114,62 @@ public class ExchangePanel extends JPanel {
             }
         }
     }
+
+
+    private void addListenerToDevCard(Card card) {
+        switch (card) {
+            case KNIGHT: System.out.println(card.name());break;
+            case MONOPOLY: addListenerToMono();
+            case YEAR_PLENTY: addListenerToPlenty();
+            case ONE_POINT: addListenerToOnePointPlus();
+            case ROAD_BUILD: System.out.println(card.name());break;
+        }
+    }
+
+    public void addListenerToMono() {
+        if (proposeForMono.isVisible()) {
+            proposeForMono.initializeForDev();
+            proposeForMono.setVisible(false);
+        } else {
+            proposeForMono.setVisible(true);
+            addListerToProposeListForDev(true);
+        }
+    }
+
+    public void addListenerToPlenty() {
+        if (proposeForPlenty.isVisible()) {
+            proposeForPlenty.initializeForDev();
+            proposeForPlenty.setVisible(false);
+        } else {
+            proposeForPlenty.setVisible(true);
+            addListerToProposeListForDev(false);
+        }
+    }
+
+    public void addListenerToOnePointPlus() {
+        player.onePointPLus();
+        player.getMyCards().removeCard(Card.ONE_POINT,1);
+        initializeMyCards();
+        reNew();
+    }
+
+
+    private void initializeExchangePanel() {
+        initializeMyCards();
+        initializeSaleList();
+        initializeWishList();
+    }
+
+    private void renewButtons() {
+        reNewExchangePPlButton();
+        reNewCloseButton();
+        reNewBankButton();
+    }
+
+    private void renewPanel() {
+        reNew();
+    }
+
 
     protected void initializeMyCards() {
         myCards.initializeLabels();
@@ -127,12 +198,8 @@ public class ExchangePanel extends JPanel {
                         player.rmFromSaleList(c);
                         List<JLabel> labelList = saleList.getCardBoxLabel().get(c);
                         labelList.remove(clickedLabel);
-                        initializeSaleList();
-                        initializeMyCards();
-                        initializeWishList();
-                        reNewExchangePPlButton();
-                        reNewCloseButton();
-                        reNewBankButton();
+                        initializeExchangePanel();
+                        renewButtons();
                         reNew();
                     }
                 });
@@ -189,9 +256,7 @@ public class ExchangePanel extends JPanel {
                         List<JLabel> labelList = wishList.getCardBoxLabel().get(c);
                         labelList.remove(clickedLabel);
                         initializeWishList();
-                        reNewExchangePPlButton();
-                        reNewBankButton();
-                        reNewExchangePPlButton();
+                        renewButtons();
                         reNew();
                     }
                 });
@@ -212,7 +277,7 @@ public class ExchangePanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               // ViewControleur.getGame().initierEchange();
+                //ViewControleur.getGame().initierEchange();
                 initializeWishList();
                 initializeMyCards();
                 initializeSaleList();
@@ -229,6 +294,51 @@ public class ExchangePanel extends JPanel {
         addMouseListenerToWishListLabel();
     }
 
+    private void addListerToProposeListForDev(boolean isMono) {
+        JButton button;
+        CardBox selected;
+        if (isMono) {
+            button = proposeForMono.getButton();
+            selected = proposeForMono.getSelectedCards();
+        } else {
+            button = proposeForPlenty.getButton();
+            selected = proposeForPlenty.getSelectedCards();
+        }
+        for (ActionListener listener : button.getActionListeners()) {
+            button.removeActionListener(listener);
+        }
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isMono) {
+                    System.out.println("get on card from everyone");
+                } else{
+                    for(Card card : Card.values()) {
+                        if (selected.getNumber(card) > 0) {
+                            player.getMyCards().addCard(card,1);
+                            bank.removeCard(card,1);
+                        }
+                    }
+                }
+                if (isMono) {
+                    player.getMyCards().removeCard(Card.MONOPOLY,1);
+                    proposeForMono.initializeForDev();
+                    proposeForMono.setVisible(false);
+                }else {
+                    player.getMyCards().removeCard(Card.YEAR_PLENTY,1);
+                    proposeForPlenty.initializeForDev();
+                    proposeForPlenty.setVisible(false);
+                }
+                initializeMyCards();
+
+                button.setEnabled(false);
+
+                renewButtons();
+                reNew();
+            }
+        });
+    }
+
     private void addMouseListenerToProposeListLabel() {
         for(JLabel jLabel : proposeList.getCardsLabel().values()) {
             for (MouseListener listener : jLabel.getMouseListeners()) {
@@ -241,8 +351,7 @@ public class ExchangePanel extends JPanel {
                     Card c = Card.valueOf(clickedLabel.getName());
                     player.addInWishList(c);
                     initializeWishList();
-                    reNewBankButton();
-                    reNewExchangePPlButton();
+                    renewButtons();
                     reNew();
                 }
             });
@@ -267,6 +376,7 @@ public class ExchangePanel extends JPanel {
                 initializeMyCards();
                 initializeSaleList();
                 button.setEnabled(false);
+                renewButtons();
             }
         });
     }

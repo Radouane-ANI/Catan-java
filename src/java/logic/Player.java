@@ -189,6 +189,8 @@ public class Player implements Trade {
         this.points = points;
     }
 
+    public void onePointPLus() { this.points += 1; }
+
     public boolean win() {
         calculePoints();
         return points >= 10;

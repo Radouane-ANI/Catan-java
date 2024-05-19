@@ -16,8 +16,8 @@ import java.util.Map;
 public class CardSuit extends JLayeredPane {
     private static final int MY_CARD_LIST = 1;
     private static final int SALE_LIST = 2;
-    private static final int WISH_LIST2 = 4;
     private static final int WISH_LIST = 3;
+    private static final int WISH_LIST2 = 4;
     private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
     //private static final String BASE_PATH = "src/ressources/";
 

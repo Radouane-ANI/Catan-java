@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 
 public class Turn {
     private GameView gameView;
-    private Thief thief;
+    public Thief thief;
     protected List<Player> playersList;
     protected int currentPlayerIndex;
     private DiceGUI diceGUI;
@@ -63,6 +63,7 @@ public class Turn {
             // placement des batiments pour le bot
         }
     }
+
 
     private void recupRessources(List<Player> players, int sumDices) {
         System.out.println("result(Turn): " + sumDices);
