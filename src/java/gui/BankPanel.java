@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 public class BankPanel extends JPanel {
+    //private static final String BASE_PATH = "src/ressources/";
     private static final String BASE_PATH = "src/ressources/";
     Bank bank;
     private static final int IMAGE_COUNT = 7;
@@ -116,30 +117,9 @@ public class BankPanel extends JPanel {
     }
 
 
-    private void update() {
+    public void update() {
        updateNumbers();
        initializeLabels();
-    }
-
-    public void start(int framerate) {
-
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try{
-                        Thread.sleep(1000/framerate);
-                    } catch(InterruptedException v) {
-                        v.printStackTrace();
-                    }
-                    update();
-                }
-            }
-        };
-
-        Thread thread = new Thread(runnable);
-
-        thread.start();
     }
 
     @Override
@@ -149,7 +129,7 @@ public class BankPanel extends JPanel {
 
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Bank bank1 = new Bank();
         JFrame frame = new JFrame("Image Panel");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -161,7 +141,7 @@ public class BankPanel extends JPanel {
 
         frame.pack();
         frame.setVisible(true);
-    }
+    }*/
 }
 
 

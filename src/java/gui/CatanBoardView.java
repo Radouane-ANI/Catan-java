@@ -9,7 +9,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -21,14 +20,9 @@ public class CatanBoardView extends JPanel {
 
     public static final int TILE_SIZE = 100;
 
-    private Dimension dim;
-    private Point center;
-
     private BoardImage tuileImage;
 
     public CatanBoardView(Dimension d) {
-        dim = d;
-        center = new Point((int) d.getWidth() / 2, (int) d.getHeight() / 2);
         tuileImage = new BoardImage();
         setPreferredSize(d);
         setLayout(null);

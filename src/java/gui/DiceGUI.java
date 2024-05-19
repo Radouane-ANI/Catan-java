@@ -67,7 +67,6 @@ class TupleDice extends JPanel {
         dice1.roll();
         dice2.roll();
         int result = dice1.getValue() + dice2.getValue();
-        System.out.println("Result(GUI): " + result);
     }
 
     public int getResult() {

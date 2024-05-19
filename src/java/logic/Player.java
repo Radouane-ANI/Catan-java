@@ -3,7 +3,6 @@ package logic;
 import java.util.List;
 
 import map.Edge;
-import map.Node;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -28,6 +27,12 @@ public class Player implements Trade {
     private List<City> cities;
 
     private int points;
+
+    private int extraPoint;
+
+    public int roadLength;
+
+    public int numberOfKnightsUsed;
     private Color color;
 
     public Player(boolean bot, String nom, Bank bank, Color color) {
@@ -66,6 +71,13 @@ public class Player implements Trade {
         return bot;
     }
 
+    public void setExtraPoint(int x) {
+        extraPoint += x;
+    }
+
+    public int getExtraPoint() {
+        return extraPoint;
+    }
 
     public TradePort getTradePorts() {
         return tradePorts;
@@ -151,6 +163,7 @@ public class Player implements Trade {
     public List<Settlement> getSettlements() {
         return settlements;
     }
+    public int getNbOfSettlemernts() { return settlements.size(); }
 
     public void setSettlements(List<Settlement> settlements) {
         this.settlements = settlements;
@@ -159,6 +172,8 @@ public class Player implements Trade {
     public List<City> getCities() {
         return cities;
     }
+
+    public int getNbOfCity() { return cities.size(); }
 
     public void setCities(List<City> cities) {
         this.cities = cities;
@@ -172,9 +187,13 @@ public class Player implements Trade {
         return points;
     }
 
+    public int getPointsToTal() { return points+extraPoint; }
+
     public void setPoints(int points) {
         this.points = points;
     }
+
+    public void onePointPLus() { this.extraPoint += 1; }
 
     public boolean win() {
         calculePoints();
@@ -189,13 +208,11 @@ public class Player implements Trade {
         boolean flag = false;
         for (Road road : getRoads()) {
             Edge edge = Edge.getEdge(road);
-            Node posX = Node.canBuildSettlement(edge.getX());
-            if (posX != null) {
+            if (edge.getX().canBuildSettlement()) {
                 flag = true;
                 break;
             }
-            Node posY = Node.canBuildSettlement(edge.getY());
-            if (posY != null) {
+            if (edge.getY().canBuildSettlement()) {
                 flag = true;
                 break;
             }
@@ -259,6 +276,13 @@ public class Player implements Trade {
         return missingCards;
     }
 
+    public boolean isTradableInBank() {
+        Card c = wishList.getFirst();
+        wishList.clearBox();
+        wishList.addCard(c, 1);
+        return isTradableInBank(saleList, wishList, tradePorts);
+    }
+
     public void updateTradeLists() {
         saleList.clearBox();
         wishList.clearBox();
@@ -293,6 +317,7 @@ public class Player implements Trade {
             int quantite = etats.get(min) * -1 <= etats.get(max) ? etats.get(min) * -1 : etats.get(max);
             wishList.addCard(max, quantite);
             saleList.addCard(min, quantite);
+            myCards.removeCard(min, quantite);
         }
         return wishList.getNumberOfRes() != 0;
     }
@@ -303,6 +328,8 @@ public class Player implements Trade {
     
     public void trade(Player player) {
         trade(saleList, player.myCards, wishList, myCards);
+        player.saleList.clearBox();
+        player.wishList.clearBox();
     }
 
     public boolean buyRessourceCard(Card c){
@@ -322,5 +349,9 @@ public class Player implements Trade {
     public void stealCard(Player victim) {
         wishList.addCard(victim.myCards.getRandomCard(), 1);
         trade(victim);
+    }
+
+    public void buildRoadDev(Road r) {
+        roads.add(r);
     }
 }

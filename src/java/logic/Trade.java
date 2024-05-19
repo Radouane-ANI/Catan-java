@@ -29,18 +29,13 @@ public interface Trade {
 
     default boolean isTradeInteresting(CardBox saleList, CardBox wishList, CardBox wishList1, CardBox saleList1) {
         for (Card c : Card.values()) {
-            if (wishList.getNumber(c) != 0) {
-                if (saleList1.getNumber(c) == 0) {
-                    return false;
-                }
+            if (wishList.getNumber(c) > saleList1.getNumber(c)) {
+                return false;
             }
-            if (saleList.getNumber(c) != 0) {
-                if (wishList1.getNumber(c) == 0) {
-                    return false;
-                }
+            if (saleList.getNumber(c) < wishList1.getNumber(c)) {
+                return false;
             }
         }
-
         return true;
     }
 
@@ -60,18 +55,23 @@ public interface Trade {
         saleList.clearBox();
     }
 
-    default void getDevCard(CardBox myCards, Bank bank) {
+    default Card getDevCard(CardBox myCards, Bank bank) {
         if (canExchangeDev(myCards, bank)) {
             Card dev = bank.devCardGenerator();
-            if (dev == null) {
-                return;
-            }
             bank.removeCard(dev, 1);
-            myCards.removeCard(SHEEP, 1);
-            myCards.removeCard(GRAIN, 1);
-            myCards.removeCard(STONE, 1);
             myCards.addCard(dev, 1);
+
+            myCards.removeCard(SHEEP,1);
+            bank.addCard(SHEEP,1);
+            myCards.removeCard(GRAIN,1);
+            bank.addCard(GRAIN,1);
+            myCards.removeCard(STONE,1);
+            bank.addCard(STONE,1);
+
+            return dev;
         }
+        return null;
+
     }
 
     default boolean canExchangeDev(CardBox myCards, Bank bank) {

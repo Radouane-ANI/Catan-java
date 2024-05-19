@@ -50,7 +50,7 @@ public class CardBox {
         Random random = new Random();
 
         int randomIndex = random.nextInt(taille);
-        for (int i = 0; i < cardsNumbers.length; i++) {
+        for (int i = 0; i < 5; i++) {
             randomIndex -= cardsNumbers[i];
             if (randomIndex < 0) {
                 return Card.values()[i];
@@ -102,6 +102,16 @@ public class CardBox {
             }
         }
         return true;
+    }
+
+    public int getNbOfKind() {
+        int counter = 0;
+        for(Card card : Card.values()) {
+            if (cardsNumbers[card.ordinal()] > 0) {
+                counter++;
+            }
+        }
+        return counter;
     }
 
 }

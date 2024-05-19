@@ -21,13 +21,17 @@ public class Edge extends Tuple<Node> {
     }
 
     static void createEdge() {
+        edgeList.clear();
         int length = Node.getNodesIntern().length;
         for (int i = 0; i < length; i++) {
             for (int j = i + 1; j < length; j++) {
                 Node vi = Node.getNodesIntern()[i];
                 Node vj = Node.getNodesIntern()[j];
                 if (vi.isNeighbor(vj)) {
-                    edgeList.add(new Edge(vi, vj));
+                    Edge e = new Edge(vi, vj);
+                    edgeList.add(e);
+                    vi.addNeighbor(e);
+                    vj.addNeighbor(e);
                 }
             }
         }

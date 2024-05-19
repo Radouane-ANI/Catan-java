@@ -1,13 +1,12 @@
+
 package gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
-
 import controleur.Game;
 import controleur.ViewControleur;
 import logic.Player;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -22,6 +21,7 @@ public class GameView extends JPanel {
     private ExchangePanel exchangePanel;
     private Game game;
     private ButtonsPanel buttonsPanel;
+    private WeatherDisplay weatherDisplay;
     private JPanel panelTempo;
 
     public GameView(Game game) {
@@ -29,17 +29,17 @@ public class GameView extends JPanel {
         setLayout(new BorderLayout());
         DiceGUI dicePanel = game.getDiceGUI();
         stateGUI = new StateGUI();
-        JPanel panelLateral = new JPanel(new GridLayout(2, 1));
+        this.weatherDisplay = new WeatherDisplay();
+        JPanel panelLateral = new JPanel(new GridLayout(3, 1));
         panelLateral.add(dicePanel);
+        panelLateral.add(weatherDisplay);
         panelLateral.add(stateGUI);
         panelLateral.setOpaque(false);
-
         Dimension size = getSize();
         boardView = new CatanBoardView(size);
         bankPanel = new BankPanel(ViewControleur.getBank());
-
         exchangePanel = new ExchangePanel(game.getCurrentPlayer());
-        buttonsPanel = new ButtonsPanel(game);
+        buttonsPanel = new ButtonsPanel(game, weatherDisplay);
         boardView.setOpaque(false);
         JPanel panelSuperieur = new JPanel(new GridLayout(1, 2));
         panelSuperieur.add(bankPanel);
@@ -52,7 +52,6 @@ public class GameView extends JPanel {
         panelTempo.setLayout(new BoxLayout(panelTempo, BoxLayout.Y_AXIS));
         panelTempo.setOpaque(false);
         panelInferieur.setOpaque(false);
-
         add(panelLateral, BorderLayout.EAST);
         add(boardView, BorderLayout.CENTER);
         add(panelSuperieur, BorderLayout.NORTH);
@@ -62,6 +61,14 @@ public class GameView extends JPanel {
 
     public CatanBoardView getBoardView() {
         return boardView;
+    }
+
+    public WeatherDisplay getWeatherDisplay() {
+        return weatherDisplay;
+    }
+
+    public void setWeatherDisplay(WeatherDisplay weatherDisplay) {
+        this.weatherDisplay = weatherDisplay;
     }
 
     @Override
@@ -74,6 +81,7 @@ public class GameView extends JPanel {
     public void proposeEchange(Player currentPlayer, List<Player> accepter, Player p) {
         ProposeEchange prop = new ProposeEchange(currentPlayer, accepter, p, game);
         panelTempo.add(prop);
+        revalidate();
     }
 
     public void update() {
