@@ -1,5 +1,6 @@
 package controleur;
 
+import java.io.*;
 import java.util.List;
 
 import logic.Player;
@@ -73,6 +74,28 @@ public class Game extends Turn implements Runnable {
 
     public void NextTurn(boolean bot) {
         this.nextTurn = currentPlayer.isBot() == bot;
+    }
+
+    public void saveGameData(String fileName) {
+        try (FileOutputStream fileOut = new FileOutputStream(fileName);
+             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
+            objectOut.writeObject(this);
+            System.out.println("Game saved");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Turn loadGameData(String fileName) {
+        Game game = null;
+        try (FileInputStream fileIn = new FileInputStream(fileName);
+             ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
+            game = (Game) objectIn.readObject();
+            System.out.println("Turn data loaded successfully");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return game;
     }
 
 }

@@ -281,25 +281,5 @@ public class Turn implements Serializable {
         }
     }
 
-    public void saveTurnData(String fileName) {
-        try (FileOutputStream fileOut = new FileOutputStream(fileName);
-             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
-            objectOut.writeObject(this);
-            System.out.println("Turn saved");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public static Turn loadTurnData(String fileName) {
-        Turn turn = null;
-        try (FileInputStream fileIn = new FileInputStream(fileName);
-             ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
-            turn = (Turn) objectIn.readObject();
-            System.out.println("Turn data loaded successfully");
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return turn;
-    }
 }

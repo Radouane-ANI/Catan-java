@@ -74,4 +74,18 @@ public class ViewControleur {
         return gameOption.getBank();
     }
 
+    public static void continueGame(Game loadedGame) {
+        game = new Game(loadedGame.getPlayersList());
+        game.setGameView(new GameView(game));
+        frame.setPanel(game.getGameView());
+
+        catanControleur = new CatanBoardControleur(game.getGameView().getBoardView());
+
+        game.getGameView().revalidate();
+        game.getGameView().repaint();
+
+        Thread gameThread = new Thread(game);
+        gameThread.start();
+    }
+
 }
