@@ -1,13 +1,18 @@
 package SaveGame;
 
+import controleur.Turn;
+import logic.Player;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameSaveManager {
 
     public static final String SAVE_FOLDER_PATH = "game_save";
     public static final String SAVE_FILE_PATH = SAVE_FOLDER_PATH + "/game_save.txt";
 
-    public static void saveGame(GameData gameData) {
+    public static void saveGame(Turn gameData) {
         try {
             File saveFolder = new File(SAVE_FOLDER_PATH);
             if (!saveFolder.exists()) {
@@ -24,10 +29,10 @@ public class GameSaveManager {
         }
     }
 
-    public static GameData loadGame() {
+    public static Turn loadGame() {
         try {
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(SAVE_FILE_PATH));
-            GameData gameData = (GameData) inputStream.readObject();
+            Turn gameData = (Turn) inputStream.readObject();
             inputStream.close();
 
             System.out.println("Game loaded successfully.");
@@ -39,11 +44,23 @@ public class GameSaveManager {
     }
 
     public static void main(String[] args) {
-        GameData gameData = new GameData( );
+        List<Player> players ;
+        Turn gameData = new Turn(new Turn(players));
         saveGame(gameData);
-        GameData loadedGameData = loadGame();
 
+        Turn loadedGameData = loadGame();
+
+        if (loadedGameData != null) {
+
+            loadedGameData.setGameView(gameData.getGameView());
+            List<Player> playersList = loadedTurn.getPlayersList();
+            if (loadedTurn != null) {
+                // 处理加载的 Turn 数据
+            }
+        }
     }
+}
+
 }
 
 

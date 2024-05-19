@@ -1,5 +1,6 @@
 package controleur;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,7 +18,8 @@ import gui.GameView;
 
 import javax.swing.JOptionPane;
 
-public class Turn {
+public class Turn implements Serializable {
+    private static final long serialVersionUID = 1L;
     private GameView gameView;
     public Thief thief;
     protected List<Player> playersList;
@@ -33,6 +35,10 @@ public class Turn {
         this.diceGUI = new DiceGUI(); 
         currentPlayer = playersList.get(currentPlayerIndex);
         thief = new Thief(null);
+    }
+
+    public GameView getGameView() {
+        return gameView;
     }
 
     void tour() {
@@ -265,5 +271,27 @@ public class Turn {
         if (gameView != null) {
             gameView.update();
         }
+    }
+
+    public void saveTurnData(String fileName) {
+        try (FileOutputStream fileOut = new FileOutputStream(fileName);
+             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
+            objectOut.writeObject(this);
+            System.out.println("Turn saved");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Turn loadTurnData(String fileName) {
+        Turn turn = null;
+        try (FileInputStream fileIn = new FileInputStream(fileName);
+             ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
+            turn = (Turn) objectIn.readObject();
+            System.out.println("Turn data loaded successfully");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return turn;
     }
 }
