@@ -138,8 +138,7 @@ public class ExchangePanel extends JPanel {
             case MONOPOLY: addListenerToMono();break;
             case YEAR_PLENTY: addListenerToPlenty();break;
             case ONE_POINT: addListenerToOnePointPlus();break;
-            case ROAD_BUILD: ViewControleur.getCatanControleur().buildRoad(player, true, 2);
-            player.getMyCards().removeCard(ROAD_BUILD, 1); break;
+            case ROAD_BUILD:addListenerToRoadBuild(); break;
         }
     }
 
@@ -332,13 +331,11 @@ public class ExchangePanel extends JPanel {
 
     private void addListerToProposeListForDev(boolean isMono) {
         JButton button;
-        CardBox selected;
+
         if (isMono) {
             button = proposeForMono.getButton();
-            selected = proposeForMono.getSelectedCards();
         } else {
             button = proposeForPlenty.getButton();
-            selected = proposeForPlenty.getSelectedCards();
         }
         for (ActionListener listener : button.getActionListeners()) {
             button.removeActionListener(listener);
@@ -346,9 +343,18 @@ public class ExchangePanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                CardBox selected;
                 if (isMono) {
+                    selected = proposeForMono.getSelectedCards();
                     System.out.println("get on card from everyone");
+                    for(Card card : Card.values()) {
+                        if (selected.getNumber(card) > 0) {
+                            int amount = ViewControleur.getGame().mono_getCardFromEveryone(card);
+                            player.getMyCards().addCard(card,amount);
+                        }
+                    }
                 } else{
+                    selected = proposeForPlenty.getSelectedCards();
                     for(Card card : Card.values()) {
                         if (selected.getNumber(card) > 0) {
                             player.getMyCards().addCard(card,1);
@@ -366,10 +372,10 @@ public class ExchangePanel extends JPanel {
                     proposeForPlenty.setVisible(false);
                 }
                 initializeMyCards();
-
-                button.setEnabled(false);
-
-                renewButtons();
+                initializeSaleList();
+                initializeWishList();
+                reNewCloseButton();
+                reNewBankButton();
                 reNew();
             }
         });
