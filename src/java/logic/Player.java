@@ -189,11 +189,13 @@ public class Player implements Trade {
         boolean flag = false;
         for (Road road : getRoads()) {
             Edge edge = Edge.getEdge(road);
-            if (edge.getX().canBuildSettlement()) {
+            Node posX = Node.canBuildSettlement(edge.getX());
+            if (posX != null) {
                 flag = true;
                 break;
             }
-            if (edge.getY().canBuildSettlement()) {
+            Node posY = Node.canBuildSettlement(edge.getY());
+            if (posY != null) {
                 flag = true;
                 break;
             }
@@ -202,8 +204,6 @@ public class Player implements Trade {
         return myCards.getNumber(TREE) >= 1 && myCards.getNumber(BRICK) >= 1 && myCards.getNumber(GRAIN) >= 1
                 && myCards.getNumber(SHEEP) >= 1 && settlements.size() < 5 && flag;
     }
-
-
 
     public boolean canBuildCity() {
         return myCards.getNumber(GRAIN) >= 2 && myCards.getNumber(STONE) >= 3 && cities.size() < 4;

@@ -1,9 +1,19 @@
 package gui;
 
-import javax.swing.*;
 import logic.City;
 import logic.Settlement;
-import java.awt.*;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import map.*;
 
 public class CatanBoardView extends JPanel {

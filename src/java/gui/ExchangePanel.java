@@ -1,8 +1,5 @@
 package gui;
 
-
-import logic.*;
-
 import logic.*;
 
 import javax.swing.*;
