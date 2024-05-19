@@ -2,6 +2,7 @@ package logic;
 
 public class TradePort {
     private boolean[] tradePorts = new boolean[6];
+    //represent the existence of each type of port
 
     public TradePort() {
         for (int i = 0; i < tradePorts.length; i++) {
