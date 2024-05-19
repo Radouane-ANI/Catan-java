@@ -30,7 +30,7 @@ public class ViewControleur {
             gameOption.completeJoueur();
         }
 
-        Game game = new Game(gameOption.getPlayers());
+        game = new Game(gameOption.getPlayers());
 
         GameView gameView = new GameView(game);
         frame.setPanel(gameView);

@@ -16,4 +16,7 @@ public enum Card {
     boolean isRessourceCard(){
         return this.ordinal() <= 4;
     }
+
+
+
 }
