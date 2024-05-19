@@ -19,9 +19,11 @@ public class CatanBoardControleur {
     private CatanBoardView view;
     private List<CityTileComponent> cityTileComp = new ArrayList<>();
     private List<RoadComponent> roadComponents = new ArrayList<>();
+    private Thief thief;
 
     public CatanBoardControleur(CatanBoardView view) {
         this.view = view;
+        this.thief = new Thief(null);
     }
 
     public void buildCity(Player p) {
@@ -56,7 +58,7 @@ public class CatanBoardControleur {
         view.repaint();
     }
 
-    public void moveThief(Thief thief, Player p) {
+    public void moveThief(Player p) {
         p.setFinishedTurn(false);
         for (Tile tile : Tile.getTilesIntern()) {
             if (tile.getThief() != null) {

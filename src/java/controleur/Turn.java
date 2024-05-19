@@ -19,7 +19,6 @@ import javax.swing.JOptionPane;
 
 public class Turn {
     private GameView gameView;
-    public Thief thief;
     protected List<Player> playersList;
     protected int currentPlayerIndex;
     private DiceGUI diceGUI;
@@ -32,7 +31,6 @@ public class Turn {
         currentPlayerIndex = 0; // Commence avec le premier joueur
         this.diceGUI = new DiceGUI(); 
         currentPlayer = playersList.get(currentPlayerIndex);
-        thief = new Thief(null);
     }
 
     void tour() {
@@ -121,7 +119,7 @@ public class Turn {
             }
             update();
             if (!currentPlayer.isBot()) {
-                ViewControleur.getCatanControleur().moveThief(thief, currentPlayer);
+                ViewControleur.getCatanControleur().moveThief(currentPlayer);
             }
         }
         for (Player player : playersList) {

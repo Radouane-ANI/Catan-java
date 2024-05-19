@@ -118,11 +118,11 @@ public class ExchangePanel extends JPanel {
 
     private void addListenerToDevCard(Card card) {
         switch (card) {
-            case KNIGHT: System.out.println(card.name());break;
+            case KNIGHT: ViewControleur.getCatanControleur().moveThief(player);break;
             case MONOPOLY: addListenerToMono();
             case YEAR_PLENTY: addListenerToPlenty();
             case ONE_POINT: addListenerToOnePointPlus();
-            case ROAD_BUILD: System.out.println(card.name());break;
+            case ROAD_BUILD: ViewControleur.getCatanControleur().buildRoad(player);break;
         }
     }
 
