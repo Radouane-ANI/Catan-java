@@ -1,11 +1,14 @@
 Executable:
+java -jar K-catan.jar
+ou bien 
+./catan.bash
 
 Résumé : 
 Ce dépôt contient une implémentation du jeu de société Catan en Java. L'objectif est de recréer l'expérience de jeu de Catan en utilisant le langage de programmation Java. Le projet est développé par Radouane Aouini, Claire Chambaz,Marc Robin, Gabriel Treca et Zhula XXX
 
 Comment lancer un jeu ?
-- Tout d'abbord il faut cliquer sur le bouton "paramètres" du menu pour initialiser les joueurs et pouvoir lancer une partie. Il faut en initialiser 4 pour jouer entre 4 joueurs, si vous en initialisez moins, le reste des joueurs seront des bots (pour l'instant il n'y a pas de bots fonctionnels). 
-- Ensuite vuos pouvez lancer une partie en cliquant sur le bouton "jouer". 
+- Tout d'abbord il faut cliquer sur le bouton "paramètres" du menu pour initialiser les joueurs et pouvoir lancer une partie. Il faut en initialiser 4 pour jouer entre 4 joueurs, si vous en initialisez moins, le reste des joueurs seront des bots. 
+- Ensuite vous pouvez lancer une partie en cliquant sur le bouton "jouer". 
 - Chaque joueur doit placer 1 village et 1 route tour à tour, deux fois. 
 - Maintenant le jeu est lancé et c'est aux joueurs de jouer
 
@@ -19,7 +22,7 @@ Comment jouer ?
 4- vous pouvez jouer une carte développement
 
 Comment gagner ?
-Le premier joueur à ateindre 10 points de victoie gagne la partie
+Le premier joueur à atteindre 10 points de victoire gagne la partie
 
 Cartes développement:
 - 5 cartes point de victoire
