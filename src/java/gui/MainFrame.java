@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
         setTitle("Katan");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setMinimumSize(new Dimension(1000, 700));
+        setMinimumSize(new Dimension(1150, 800));
 
         setPanel(new GameMenu());
         setVisible(true);

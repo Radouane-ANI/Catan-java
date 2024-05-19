@@ -74,7 +74,7 @@ public class Action {
     }
 
     private void randomRoad(Player p) {
-        List<Edge> avaibleRoad = ViewControleur.getCatanControleur().buildRoad(p);
+        List<Edge> avaibleRoad = ViewControleur.getCatanControleur().buildRoad(p, false, 1);
         if (avaibleRoad.size() == 0) {
             return;
         }

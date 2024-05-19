@@ -69,13 +69,17 @@ public class CatanBoardControleur {
         return thief;
     }
 
-    public List<Edge> buildRoad(Player p) {
+    public List<Edge> buildRoad(Player p, boolean devCard, int nb) {
         List<Edge> avaibleRoad = new ArrayList<>();
         for (Edge edge : Edge.listBuildRoad(p)) {
             if (p.isBot()) {
                 avaibleRoad.add(edge);
             } else {
-                avaibleRoad(p, edge);
+                if (devCard) {
+                    avaibleRoad(p, edge, devCard, nb);
+                } else {
+                    avaibleRoad(p, edge, devCard, 1);
+                }
             }
         }
         view.repaint();
@@ -160,13 +164,13 @@ public class CatanBoardControleur {
             if (p.isBot()) {
                 avaibleRoad.add(edge);
             } else {
-                avaibleRoad(p, edge);
+                avaibleRoad(p, edge, false, 1);
             }
         }
         return avaibleRoad;
     }
 
-    private void avaibleRoad(Player p, Edge edge) {
+    private void avaibleRoad(Player p, Edge edge, boolean devCard, int nb) {
         RoadComponent road = new RoadComponent();
         view.addRoad(road, edge, null);
         roadComponents.add(road);
@@ -179,11 +183,22 @@ public class CatanBoardControleur {
                     ViewControleur.NextTurn(true);
                 }
                 Road r = new Road(p);
-                p.buildRoad(r);
-                edge.setRoad(r);
-                removeRoadComponents();
-                p.setFinishedTurn(true);
-                ViewControleur.getGame().update();
+                if (devCard) {
+                    p.buildRoadDev(r);
+                    edge.setRoad(r);
+                    removeRoadComponents();
+                    p.setFinishedTurn(true);
+                    ViewControleur.getGame().update();
+                    if (nb > 1) {
+                        buildRoad(p, devCard, nb - 1);
+                    }
+                } else {
+                    p.buildRoad(r);
+                    edge.setRoad(r);
+                    removeRoadComponents();
+                    p.setFinishedTurn(true);
+                    ViewControleur.getGame().update();
+                }
             }
         });
     }

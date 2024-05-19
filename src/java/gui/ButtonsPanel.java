@@ -119,7 +119,7 @@ public class ButtonsPanel extends JPanel {
                     JOptionPane.showMessageDialog(null,
                             "Il neige! Vous ne pouvez pas construire de routes maintenant.");
                 } else {
-                    ViewControleur.getCatanControleur().buildRoad(player);
+                    ViewControleur.getCatanControleur().buildRoad(player, false, 1);
                 }
             }
         });

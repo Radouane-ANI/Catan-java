@@ -345,4 +345,8 @@ public class Player implements Trade {
         wishList.addCard(victim.myCards.getRandomCard(), 1);
         trade(victim);
     }
+
+    public void buildRoadDev(Road r) {
+        roads.add(r);
+    }
 }

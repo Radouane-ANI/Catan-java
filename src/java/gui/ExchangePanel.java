@@ -3,6 +3,9 @@ package gui;
 import logic.*;
 
 import javax.swing.*;
+
+import static logic.Card.ROAD_BUILD;
+
 import java.awt.*;
 import controleur.ViewControleur;
 import java.awt.event.*;
@@ -17,6 +20,7 @@ public class ExchangePanel extends JPanel {
     protected CardPropose proposeList;
     protected CardPropose proposeForMono;
     protected CardPropose proposeForPlenty;
+    private JPanel overLapPanel1, overLapPanel2;
 
     public ExchangePanel(Player player) {
         this.player = player;
@@ -36,13 +40,13 @@ public class ExchangePanel extends JPanel {
         this.setLayout(new GridLayout(1, 2));
         JPanel cardsExchangePanel = new JPanel();
         cardsExchangePanel.setLayout(new BoxLayout(cardsExchangePanel,BoxLayout.Y_AXIS));
-        JPanel overLapPanel1 = new JPanel();
+        overLapPanel1 = new JPanel();
         overLapPanel1.setLayout(new OverlayLayout(overLapPanel1));
         overLapPanel1.add(proposeList);
         overLapPanel1.add(proposeForMono);
         overLapPanel1.add(proposeForPlenty);
         cardsExchangePanel.add(overLapPanel1);
-        JPanel overLapPanel2 = new JPanel();
+        overLapPanel2 = new JPanel();
         overLapPanel2.setLayout(new OverlayLayout(overLapPanel2));
         overLapPanel2.add(wishList);
         cardsExchangePanel.add(overLapPanel2);
@@ -70,6 +74,8 @@ public class ExchangePanel extends JPanel {
             setVisible(false);
             return;
         }setVisible(true);        
+        overLapPanel1.setVisible(false);
+        overLapPanel2.setVisible(false);
         myCards.setCardBox(player);
         wishList.setCardBox(player);
         saleList.setCardBox(player);
@@ -97,6 +103,8 @@ public class ExchangePanel extends JPanel {
                 lastLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
+                        overLapPanel1.setVisible(true);
+                        overLapPanel2.setVisible(true);                
                         JLabel clickedLabel = (JLabel) e.getSource();
                         Card c = Card.valueOf(clickedLabel.getName());
                         if(c.ordinal() > 4) {
@@ -127,10 +135,11 @@ public class ExchangePanel extends JPanel {
     private void addListenerToDevCard(Card card) {
         switch (card) {
             case KNIGHT: ViewControleur.getCatanControleur().moveThief(player);break;
-            case MONOPOLY: addListenerToMono();
-            case YEAR_PLENTY: addListenerToPlenty();
-            case ONE_POINT: addListenerToOnePointPlus();
-            case ROAD_BUILD: ViewControleur.getCatanControleur().buildRoad(player);break;
+            case MONOPOLY: addListenerToMono();break;
+            case YEAR_PLENTY: addListenerToPlenty();break;
+            case ONE_POINT: addListenerToOnePointPlus();break;
+            case ROAD_BUILD: ViewControleur.getCatanControleur().buildRoad(player, true, 2);
+            player.getMyCards().removeCard(ROAD_BUILD, 1); break;
         }
     }
 
@@ -223,6 +232,8 @@ public class ExchangePanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                overLapPanel1.setVisible(false);
+                overLapPanel2.setVisible(false);        
                 player.revertFromSaleList();
                 player.getWishList().clearBox();
                 initializeWishList();
@@ -284,7 +295,9 @@ public class ExchangePanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ViewControleur.getGame().initierEchange();
+                ViewControleur.getGame().initierEchange();
+                overLapPanel1.setVisible(false);
+                overLapPanel2.setVisible(false);        
                 initializeWishList();
                 initializeMyCards();
                 initializeSaleList();
@@ -378,6 +391,8 @@ public class ExchangePanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                overLapPanel1.setVisible(false);
+                overLapPanel2.setVisible(false);        
                 player.trade(player.getSaleList(),player.getBank(),player.getWishList(),player.getMyCards());
                 initializeWishList();
                 initializeMyCards();
