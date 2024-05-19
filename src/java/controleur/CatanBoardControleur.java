@@ -7,6 +7,7 @@ import java.util.List;
 import gui.CatanBoardView;
 import gui.CityTileComponent;
 import gui.RoadComponent;
+import logic.Card;
 import logic.City;
 import logic.HumanGroup;
 import logic.Player;
@@ -194,6 +195,16 @@ public class CatanBoardControleur {
                 Settlement c = new Settlement(p);
                 p.buildSettlement(c);
                 n.setNode(c);
+
+                Port port = n.getPort();
+                if (port != null) {
+                    port.setOwner(p);
+                    if (port.getRessource() == null) {
+                        p.getTradePorts().addPort(null);
+                    }
+                    p.getTradePorts().addPort(Card.values()[port.getRessource().ordinal()]);
+                }
+
                 removeCityComponents();
                 if (p.getRoads().size() < 2 && !p.isBot()) {
                     firstBuildRoad(p, n);
