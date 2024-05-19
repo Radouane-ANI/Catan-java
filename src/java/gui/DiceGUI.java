@@ -4,8 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
-public class DiceGUI extends JPanel {
+public class DiceGUI extends JPanel implements Serializable {
 
     private TupleDice dicePanel;
     private JButton rollButton;

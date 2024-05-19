@@ -1,5 +1,6 @@
 package logic;
 
+import java.io.Serializable;
 import java.util.List;
 
 import map.Edge;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 
 import static logic.Card.*;
 
-public class Player implements Trade {
+public class Player implements Trade, Serializable {
     private String name;
 
     private CardBox myCards;
