@@ -55,6 +55,14 @@ public class Turn {
         creationCity();
         promptForReroll = false;
     }
+
+    public int getNbOfPlayers() {
+        return playersList.size();
+    }
+
+    public List<Player> getPlayersList() {
+        return playersList;
+    }
     
     protected void firstBuild(Player player) {
         if (!player.isBot() && player.getRoads().size() < 2) {
