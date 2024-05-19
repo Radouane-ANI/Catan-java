@@ -183,7 +183,7 @@ public class Turn {
             Random rd = new Random();
             Player choisi = accepter.get(rd.nextInt(accepter.size()));
             currentPlayer.trade(choisi);
-        } else if (currentPlayer.isBot() && currentPlayer.isTradableInBank(currentPlayer.getBank(), currentPlayer.getWishList(), currentPlayer.getTradePorts())) {
+        } else if (currentPlayer.isBot() && currentPlayer.isTradableInBank()) {
             currentPlayer.trade(currentPlayer.getSaleList(), currentPlayer.getBank(), currentPlayer.getWishList(),
                     currentPlayer.getMyCards());
         }

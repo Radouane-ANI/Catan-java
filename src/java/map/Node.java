@@ -5,7 +5,6 @@ import logic.HumanGroup;
 import java.util.ArrayList;
 
 public class Node extends Vector {
-    private Port port = null;
     private HumanGroup group;
     private ArrayList<Edge> neighborsEdge;
     private ArrayList<Node> neighborsNode;
@@ -123,18 +122,6 @@ public class Node extends Vector {
         return false;
     }
 
-    boolean isCoastalNode() {
-        if (neighborsNode.size() == 2) {
-            return true;
-        }
-        boolean flag = true;
-        for (int i = 0; i < 3; i++) {
-            flag = flag && neighborsNode.get(i).isCoastalNode();
-        }
-
-        return flag;
-    }
-
     public static Node getNode(Vector v) {
         for (Node n : nodeArray) {
             if (((Vector)n).equals(v)) {
@@ -154,11 +141,4 @@ public class Node extends Vector {
         return null;
     }
 
-    public void setPort(Port port) {
-        this.port = port;
-    }
-
-    public Port getPort() {
-        return port;
-    }
 }
