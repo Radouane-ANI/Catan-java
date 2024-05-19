@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import logic.Card;
 import logic.Player;
 
-class Port {
+public class Port {
     Player owner = null;
     final Card ressource;
     final int ratio;
