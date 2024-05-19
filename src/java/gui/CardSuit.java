@@ -18,7 +18,7 @@ public class CardSuit extends JLayeredPane {
     private static final int SALE_LIST = 2;
     private static final int WISH_LIST = 3;
     private static final int WISH_LIST2 = 4;
-    private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
+    private static final String BASE_PATH = "src/ressources/";
     //private static final String BASE_PATH = "src/ressources/";
 
     private int cardSuitType;
@@ -77,7 +77,13 @@ public class CardSuit extends JLayeredPane {
         }
     }
 
-
+    public void setCardBox(Player player) {
+        switch (cardSuitType) { 
+            case MY_CARD_LIST : cardBox = player.getMyCards();break;
+            case SALE_LIST : cardBox = player.getSaleList();break;
+            case WISH_LIST : cardBox = player.getWishList();break;
+        }
+    }
 
     private void loadScaledIcon() {
         String imagFile = "";
@@ -162,7 +168,7 @@ public class CardSuit extends JLayeredPane {
 
     private void addNumberLabel(JLabel label, int size) {
         JPanel transparentPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        ImageIcon iconO = new ImageIcon("/Users/juliazhula/k-catan/src/ressources/0_tree.png");
+        ImageIcon iconO = new ImageIcon("src/ressources/0_tree.png");
         Dimension dimension = new Dimension((int) (iconO.getIconWidth() * 0.6), (int) (iconO.getIconHeight() * 0.6 * 0.3));
         transparentPanel.setPreferredSize(dimension);
         transparentPanel.setOpaque(false);

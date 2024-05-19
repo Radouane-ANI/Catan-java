@@ -10,7 +10,7 @@ import java.io.FilenameFilter;
 
 public class BankPanel extends JPanel {
     //private static final String BASE_PATH = "src/ressources/";
-    private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
+    private static final String BASE_PATH = "src/ressources/";
     Bank bank;
     private static final int IMAGE_COUNT = 7;
 

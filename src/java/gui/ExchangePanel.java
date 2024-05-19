@@ -17,20 +17,16 @@ public class ExchangePanel extends JPanel {
     protected CardPropose proposeList;
     protected CardPropose proposeForMono;
     protected CardPropose proposeForPlenty;
-    protected BankPanel bankPanel;
-    protected ButtonsPanel buttonsPanel;
 
-    public ExchangePanel(Player player, Bank bank) {
+    public ExchangePanel(Player player) {
         this.player = player;
-        this.bank = bank;
+        this.bank = player.getBank();
         this.myCards = new CardSuit(player,1);
         this.saleList = new CardSuit(player,2);
         this.wishList = new CardSuit(player,3);
         this.proposeList = new CardPropose(1,false);
         this.proposeForMono = new CardPropose(2,true);
         this.proposeForPlenty = new CardPropose(2,false);
-        this.buttonsPanel = new ButtonsPanel(player,this);
-        this.bankPanel = new BankPanel(bank);
 
         addMouseListenerToMyCardsLabel();
         addMouseListenerToSaleListLabel();
@@ -53,15 +49,7 @@ public class ExchangePanel extends JPanel {
         cardsExchangePanel.add(saleList);
         cardsExchangePanel.add(myCards);
 
-        JPanel bankAndExchange = new JPanel(new BorderLayout());
-        bankAndExchange.add(bankPanel,BorderLayout.NORTH);
-        bankAndExchange.add(cardsExchangePanel,BorderLayout.SOUTH);
-
-        JPanel buttonsBigPanel = new JPanel(new BorderLayout());
-        buttonsBigPanel.add(buttonsPanel,BorderLayout.SOUTH);
-
-        this.add(bankAndExchange);
-        this.add(buttonsBigPanel);
+        this.add(cardsExchangePanel);
         proposeForMono.setVisible(false);
         proposeForPlenty.setVisible(false);
 
@@ -75,6 +63,26 @@ public class ExchangePanel extends JPanel {
         this.saleList.getButton().setEnabled(b);
     }
 
+    public void update(Player player) {
+        this.player = player;
+        if (player.isBot()
+                || (player.getMyCards().getNumberOfRes() == 0 && player.getWishList().getNumberOfRes() == 0)) {
+            setVisible(false);
+            return;
+        }setVisible(true);        
+        myCards.setCardBox(player);
+        wishList.setCardBox(player);
+        saleList.setCardBox(player);
+        iniinitializeCard();
+    }
+
+    private void iniinitializeCard(){
+        myCards.initializeLabels();
+        addMouseListenerToMyCardsLabel();
+        saleList.initializeLabels();
+        addMouseListenerToSaleListLabel();
+        initializeWishList();
+    }
 
     private void addMouseListenerToMyCardsLabel() {
         JLabel lastLabel;
@@ -191,7 +199,6 @@ public class ExchangePanel extends JPanel {
                 lastLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        System.out.println("saleList");
                         JLabel clickedLabel = (JLabel) e.getSource();
                         Card c = Card.valueOf(clickedLabel.getName());
                         ExchangePanel.this.remove(clickedLabel);
@@ -386,7 +393,7 @@ public class ExchangePanel extends JPanel {
         this.repaint();
     }
 
-    public void start(int framerate) {
+    /*public void start(int framerate) {
 
         Runnable runnable = new Runnable() {
             @Override
@@ -440,5 +447,5 @@ public class ExchangePanel extends JPanel {
 
         exchangePanel.start(1);
     }
-
+*/
 }

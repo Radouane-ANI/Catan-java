@@ -14,6 +14,7 @@ import map.Tile;
 import util.TerrainType;
 import gui.DiceGUI;
 import gui.GameView;
+import ai.Action;
 
 import javax.swing.JOptionPane;
 
@@ -23,21 +24,26 @@ public class Turn {
     protected int currentPlayerIndex;
     private DiceGUI diceGUI;
     protected Player currentPlayer;
-    private boolean promptForReroll;
+    private boolean promptForReroll, finishedTrade;
     private String currentWeather;
+    private Action actionBot;
 
     public Turn(List<Player> players) {
         playersList = players;
         currentPlayerIndex = 0; // Commence avec le premier joueur
         this.diceGUI = new DiceGUI(); 
         currentPlayer = playersList.get(currentPlayerIndex);
+        actionBot = new Action();
+        finishedTrade = true;
     }
 
     void tour() {
         currentPlayer = playersList.get(currentPlayerIndex);
         currentPlayer.setFinishedTurn(false);
         update();
+        updateWeather();
         boolean isSunnyWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay().getCurrentWeather().equals("Soleil");
+        boolean isSnowWeather = gameView != null && gameView.getWeatherDisplay() != null && gameView.getWeatherDisplay().getCurrentWeather().equals("Neige");
         if (currentPlayer.isBot()) {
             diceGUI.roll();
         } else {
@@ -49,22 +55,23 @@ public class Turn {
         update();
         if (currentPlayer.isBot()) {
             initierEchange();
+            waitFinishedTrade();
+            actionBot.randomBuild(currentPlayer, isSnowWeather);
         }
-        creationCity();
         promptForReroll = false;
+        currentPlayer.setFinishedTurn(true);
     }
     
     protected void firstBuild(Player player) {
-        if (!player.isBot() && player.getRoads().size() < 2) {
+        if (!player.isBot()) {
             ViewControleur.getCatanControleur().firstBuild(player);
-        } else if (player.isBot()) {
-            // placement des batiments pour le bot
+        } else {
+            actionBot.firstBuild(player);
         }
     }
 
 
     private void recupRessources(List<Player> players, int sumDices) {
-        System.out.println("result(Turn): " + sumDices);
         if (gameView != null && gameView.getWeatherDisplay() != null) {
             currentWeather = gameView.getWeatherDisplay().getCurrentWeather();
         }
@@ -103,16 +110,13 @@ public class Turn {
         if (!currentWeather.equals("Nuageux")) {
             for (Player player : playersList) {
                 if (player.isBot()) {
-                    continue;
+                    actionBot.stolenRandom(player);
                 }
-                if (player.getMyCards().getNumberOfRes() > 7) {
+                else if (player.getMyCards().getNumberOfRes() > 7) {
                     gameView.updateStolen(player);
                     player.setFinishedTurn(false);
                     while (!player.isFinishedTurn()) {
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                        }
+                        sleep();
                     }
                     player.setFinishedTurn(false);    
                 }
@@ -120,21 +124,10 @@ public class Turn {
             update();
             if (!currentPlayer.isBot()) {
                 ViewControleur.getCatanControleur().moveThief(currentPlayer);
+            }else {
+                actionBot.moveThief(currentPlayer);
             }
         }
-        for (Player player : playersList) {
-            if (player.isBot()) {
-                continue;
-            }
-            while (!player.isFinishedTurn()) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                }
-            }
-            player.setFinishedTurn(true);    
-        }
-        update();
     }
 
     protected void recupFirstRessources(){
@@ -151,7 +144,10 @@ public class Turn {
     }
 
     public void initierEchange() {
+        finishedTrade = false;
+        update();
         if (currentPlayer.isBot() && !currentPlayer.exchangeSuggestion()) {
+            finishedTrade = true;
             return;
         }
         List<Player> accepter = new ArrayList<>();
@@ -169,8 +165,6 @@ public class Turn {
             } else if (!p.isBot()) {
                 proposeEchange(accepter, p);
             }
-            p.revertFromSaleList();
-            p.getWishList().clearBox();
         }
         if (accepter.size() == playersList.size() - 1) {
             echange(accepter);
@@ -179,6 +173,7 @@ public class Turn {
 
     public void echange(List<Player> accepter) {
         if (accepter.size() < playersList.size() - 1) {
+            currentPlayer.revertFromSaleList();
             return;
         }
         for (int i = 0; i < playersList.size() - 1; i++)
@@ -187,43 +182,49 @@ public class Turn {
             Random rd = new Random();
             Player choisi = accepter.get(rd.nextInt(accepter.size()));
             currentPlayer.trade(choisi);
-        } else if (currentPlayer.isBot()) {
+        } else if (currentPlayer.isBot() && currentPlayer.isTradableInBank()) {
             currentPlayer.trade(currentPlayer.getSaleList(), currentPlayer.getBank(), currentPlayer.getWishList(),
                     currentPlayer.getMyCards());
         }
         currentPlayer.revertFromSaleList();
         currentPlayer.getWishList().clearBox();
+        finishedTrade = true;
+        update();
     }
-
-    /* 
-    private boolean buyRessourceCard(Player p,Card c){
-        return p.buyRessourceCard(c);
-    }
-    */
-
-    private void creationCity(){}
 
     private void proposeEchange(List<Player> accepter, Player p) {
         if (currentPlayer.canTradeWith(p)) {
             gameView.proposeEchange(currentPlayer, accepter, p);
         } else {
             accepter.add(currentPlayer);
-            if (accepter.size() == playersList.size()) {
-                currentPlayer.revertFromSaleList();
-                currentPlayer.getWishList().clearBox();
+            if (accepter.size() == playersList.size() -1) {
+                echange(accepter);
             }
         }
+    }
+
+    protected void sleep() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+        }
+    }
+
+    private void waitFinishedTrade() {
+        while (!finishedTrade) {
+            sleep();
+        }
+    }
+
+    public boolean isFinishedTrade() {
+        return finishedTrade;
     }
 
     private void waitRollDice(boolean isSunnyWeather) {
         diceGUI.setRollDice(false);
     
         while (!diceGUI.isRollDice()) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                // à gérer
-            }
+            sleep();
         }
     
         if (isSunnyWeather && !promptForReroll) {
@@ -254,6 +255,12 @@ public class Turn {
         currentPlayer.calculePoints();
         if (gameView != null) {
             gameView.update();
+        }
+    }
+
+    private void updateWeather() {
+        if (gameView != null && gameView.getWeatherDisplay() != null) {
+            gameView.getWeatherDisplay().updateWeather(!currentPlayer.isBot());
         }
     }
 }

@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PersonalScorePanel extends JPanel {
-    private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/scorePanel/";
+    private static final String BASE_PATH = "src/ressources/scorePanel/";
     private Player player;
     private int type;
     private String name;

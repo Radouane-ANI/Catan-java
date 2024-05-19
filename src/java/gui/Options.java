@@ -42,7 +42,7 @@ public class Options extends JPanel {
         difficultyPanel.setOpaque(false);
         JLabel labelDifficulte = new JLabel("Difficulté :");
         setLabelFont(labelDifficulte, 20, null);
-        difficulteComboBox = new JComboBox<>(new String[] { "Facile", "Normal", "Difficile" });
+        difficulteComboBox = new JComboBox<>(new String[] { "Facile", "Normal"});
         difficulteComboBox.setSelectedIndex(difficulte - 1);
         difficultyPanel.add(labelDifficulte);
         difficultyPanel.add(difficulteComboBox);
@@ -130,6 +130,10 @@ public class Options extends JPanel {
     }
 
     public void completeJoueur() {
+        if (players.size() == 0) {
+            players.add(new Player(false, "joueur", bank, couleursDisponibles.get(0)));
+            couleursDisponibles.remove(0);
+        }
         if (players.size() != 4) {
             int length = 4 - players.size();
             for (int i = 0; i < length; i++) {

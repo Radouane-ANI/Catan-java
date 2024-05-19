@@ -21,7 +21,7 @@ public class CardPropose extends JPanel {
 
     private String buttonName;
 
-    private static final String BASE_PATH = "/Users/juliazhula/k-catan/src/ressources/";
+    private static final String BASE_PATH = "src/ressources/";
     private JButton button;
     private ImageIcon scaledIcon[] = new ImageIcon[5];
     private Map<Card, JLabel> cardsLabel;

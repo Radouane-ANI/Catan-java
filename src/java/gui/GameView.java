@@ -1,13 +1,12 @@
+
 package gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
-
 import controleur.Game;
 import controleur.ViewControleur;
 import logic.Player;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -18,8 +17,10 @@ import java.util.List;
 public class GameView extends JPanel {
     private StateGUI stateGUI;
     private CatanBoardView boardView;
+    private BankPanel bankPanel;
     private ExchangePanel exchangePanel;
     private Game game;
+    private ButtonsPanel buttonsPanel;
     private WeatherDisplay weatherDisplay;
     private JPanel panelTempo;
 
@@ -29,24 +30,21 @@ public class GameView extends JPanel {
         DiceGUI dicePanel = game.getDiceGUI();
         stateGUI = new StateGUI();
         this.weatherDisplay = new WeatherDisplay();
-    
         JPanel panelLateral = new JPanel(new GridLayout(3, 1));
-    
         panelLateral.add(dicePanel);
         panelLateral.add(weatherDisplay);
         panelLateral.add(stateGUI);
         panelLateral.setOpaque(false);
-    
         Dimension size = getSize();
         boardView = new CatanBoardView(size);
-    
-        exchangePanel = new ExchangePanel(game.getCurrentPlayer(),ViewControleur.getBank());
+        bankPanel = new BankPanel(ViewControleur.getBank());
+        exchangePanel = new ExchangePanel(game.getCurrentPlayer());
+        buttonsPanel = new ButtonsPanel(game, weatherDisplay);
         boardView.setOpaque(false);
-      /*  JPanel panelSuperieur = new JPanel(new GridLayout(1, 2));
+        JPanel panelSuperieur = new JPanel(new GridLayout(1, 2));
         panelSuperieur.add(bankPanel);
         panelSuperieur.add(buttonsPanel);
-        panelSuperieur.setOpaque(false);*/
-    
+        panelSuperieur.setOpaque(false);
         JPanel panelInferieur = new JPanel(new BorderLayout());
         panelInferieur.add(exchangePanel, BorderLayout.WEST);
         panelTempo = new JPanel();
@@ -54,14 +52,13 @@ public class GameView extends JPanel {
         panelTempo.setLayout(new BoxLayout(panelTempo, BoxLayout.Y_AXIS));
         panelTempo.setOpaque(false);
         panelInferieur.setOpaque(false);
-
         add(panelLateral, BorderLayout.EAST);
         add(boardView, BorderLayout.CENTER);
-        //add(panelSuperieur, BorderLayout.NORTH);
+        add(panelSuperieur, BorderLayout.NORTH);
         add(panelInferieur, BorderLayout.SOUTH);
         game.setGameView(this);
     }
-    
+
     public CatanBoardView getBoardView() {
         return boardView;
     }
@@ -84,19 +81,20 @@ public class GameView extends JPanel {
     public void proposeEchange(Player currentPlayer, List<Player> accepter, Player p) {
         ProposeEchange prop = new ProposeEchange(currentPlayer, accepter, p, game);
         panelTempo.add(prop);
+        revalidate();
     }
 
     public void update() {
         Player player = game.getCurrentPlayer();
-        //buttonsPanel.update();
+        buttonsPanel.update();
         stateGUI.update(player);
-        //bankPanel.updateNumbers();
-        exchangePanel.update();
+        bankPanel.updateNumbers();
+        exchangePanel.update(player);
     }
 
     public void updateStolen(Player player) {
         stateGUI.update(player);
-        exchangePanel.bankPanel.updateNumbers();
+        bankPanel.updateNumbers();
         panelTempo.add(new DiscardPanel(player));
         exchangePanel.setVisible(false);
         panelTempo.revalidate();

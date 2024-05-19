@@ -26,36 +26,60 @@ public class CatanBoardControleur {
         this.thief = new Thief(null);
     }
 
-    public void buildCity(Player p) {
+    public List<Settlement> buildCity(Player p) {
+        List<Settlement> avaibleCity = new ArrayList<>();
         for (Settlement settlement : p.getSettlements()) {
             Node node = Node.getNode(settlement);
             if (node != null) {
-                avaibleCity(node, p, settlement);
+                if (p.isBot()) {
+                    avaibleCity.add(settlement);
+                } else {
+                    avaibleCity(node, p, settlement);
+                }
             }
         }
         view.repaint();
+        return avaibleCity;
     }
 
-    public void buildSettlement(Player p) {
+    public List<Node> buildSettlement(Player p) {
+        List<Node> avaibleSettelement = new ArrayList<>();
         for (Road road : p.getRoads()) {
             Edge edge = Edge.getEdge(road);
-            Node posX = Node.canBuildSettlement(edge.getX());
-            if (posX != null) {
-                avaibleSettelement(posX, p);
+            if (edge.getX().canBuildSettlement()) {
+                if (p.isBot()) {
+                    avaibleSettelement.add(edge.getX());
+                } else {
+                    avaibleSettelement(edge.getX(), p);
+                }
             }
-            Node posY = Node.canBuildSettlement(edge.getY());
-            if (posY != null) {
-                avaibleSettelement(posY, p);
+            if (edge.getY().canBuildSettlement()) {
+                if (p.isBot()) {
+                    avaibleSettelement.add(edge.getY());
+                } else {
+                    avaibleSettelement(edge.getY(), p);
+                }
             }
         }
         view.repaint();
+        return avaibleSettelement;
     }
 
-    public void buildRoad(Player p) {
+    public Thief getThief() {
+        return thief;
+    }
+
+    public List<Edge> buildRoad(Player p) {
+        List<Edge> avaibleRoad = new ArrayList<>();
         for (Edge edge : Edge.listBuildRoad(p)) {
-            avaibleRoad(p, edge);
+            if (p.isBot()) {
+                avaibleRoad.add(edge);
+            } else {
+                avaibleRoad(p, edge);
+            }
         }
         view.repaint();
+        return avaibleRoad;
     }
 
     public void moveThief(Player p) {
@@ -109,22 +133,37 @@ public class CatanBoardControleur {
         view.repaint();
     }
 
-    public void firstBuild(Player p) {
+    public List<Node> firstBuild(Player p) {
+        List<Node> avaibleSettelement = new ArrayList<>();
         if (p == null || p.getRoads().size() > 2) {
-            return;
+            return avaibleSettelement;
         }
         for (Node node : Node.getNodesIntern()) {
-            if (node.getGroup() == null) {
-                avaibleSettelement(node, p);
+            if (node.canBuildSettlement()) {
+                if (p.isBot()) {
+                    avaibleSettelement.add(node);
+                } else {
+                    avaibleSettelement(node, p);
+                }
             }
         }
         view.repaint();
+        return avaibleSettelement;
     }
 
-    private void firstBuildRoad(Player p, Node n) {
-        for (Edge edge : Edge.getEdgeNeighbor(n)) {
-            avaibleRoad(p, edge);
+    public List<Edge> firstBuildRoad(Player p, Node n) {
+        List<Edge> avaibleRoad = new ArrayList<>();
+        if (p == null || p.getRoads().size() > 2) {
+            return avaibleRoad;
         }
+        for (Edge edge : Edge.getEdgeNeighbor(n)) {
+            if (p.isBot()) {
+                avaibleRoad.add(edge);
+            } else {
+                avaibleRoad(p, edge);
+            }
+        }
+        return avaibleRoad;
     }
 
     private void avaibleRoad(Player p, Edge edge) {
@@ -137,7 +176,7 @@ public class CatanBoardControleur {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (p.getRoads().size() < 2) {
-                    ViewControleur.NextTurn(false);
+                    ViewControleur.NextTurn(true);
                 }
                 Road r = new Road(p);
                 p.buildRoad(r);
@@ -162,9 +201,9 @@ public class CatanBoardControleur {
                 p.buildSettlement(c);
                 n.setNode(c);
                 removeCityComponents();
-                if (p.getRoads().size() < 2) {
+                if (p.getRoads().size() < 2 && !p.isBot()) {
                     firstBuildRoad(p, n);
-                } else {
+                } else if (p.getRoads().size() >= 2) {
                     p.setFinishedTurn(true);
                     ViewControleur.getGame().update();
                 }
