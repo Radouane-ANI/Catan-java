@@ -4,12 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import logic.*;
 import map.Node;
-import logic.Player;
-import logic.City;
-import logic.HumanGroup;
-import logic.Settlement;
-import logic.Thief;
 import map.Board;
 import map.Tile;
 import util.TerrainType;
@@ -76,6 +73,17 @@ public class Turn implements Serializable {
         } else if (player.isBot()) {
             // placement des batiments pour le bot
         }
+    }
+
+    public int mono_getCardFromEveryone(Card c) {
+        int counter = 0;
+        for(Player player : playersList) {
+            if (player != currentPlayer) {
+                counter = player.getMyCards().getNumber(c);
+                player.getMyCards().setZero(c);
+            }
+        }
+        return counter;
     }
 
 

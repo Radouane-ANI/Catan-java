@@ -1,4 +1,4 @@
-package SaveGame;
+/*package SaveGame;
 
 import controleur.Turn;
 import logic.Player;
@@ -61,7 +61,7 @@ public class GameSaveManager {
     }
 }
 
-}
+}*/
 
 
 

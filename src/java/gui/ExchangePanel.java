@@ -296,13 +296,12 @@ public class ExchangePanel extends JPanel {
 
     private void addListerToProposeListForDev(boolean isMono) {
         JButton button;
-        CardBox selected;
         if (isMono) {
             button = proposeForMono.getButton();
-            selected = proposeForMono.getSelectedCards();
+
         } else {
             button = proposeForPlenty.getButton();
-            selected = proposeForPlenty.getSelectedCards();
+
         }
         for (ActionListener listener : button.getActionListeners()) {
             button.removeActionListener(listener);
@@ -310,12 +309,22 @@ public class ExchangePanel extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                CardBox selected;
                 if (isMono) {
+                    selected = proposeForMono.getSelectedCards();
                     System.out.println("get on card from everyone");
+                    for(Card card : Card.values()) {
+                        if (selected.getNumber(card) > 0) {
+                            int amount = ViewControleur.getGame().mono_getCardFromEveryone(card);
+                            player.getMyCards().addCard(card,amount);
+                        }
+                    }
                 } else{
+                    selected = proposeForPlenty.getSelectedCards();
                     for(Card card : Card.values()) {
                         if (selected.getNumber(card) > 0) {
                             player.getMyCards().addCard(card,1);
+                            System.out.println("add one "+card.name());
                             bank.removeCard(card,1);
                         }
                     }
@@ -329,7 +338,13 @@ public class ExchangePanel extends JPanel {
                     proposeForPlenty.initializeForDev();
                     proposeForPlenty.setVisible(false);
                 }
+
                 initializeMyCards();
+                initializeSaleList();
+                initializeWishList();
+                reNewCloseButton();
+                reNewBankButton();
+                reNew();
 
                 button.setEnabled(false);
 
@@ -413,7 +428,7 @@ public class ExchangePanel extends JPanel {
         buttonsPanel.updateButtons();
     }
 
-    /*public static void main(String[] args)  {
+    public static void main(String[] args)  {
         Bank bank = new Bank();
 
         Player player = new Player(false, "Sam", bank, Color.red);
@@ -440,5 +455,5 @@ public class ExchangePanel extends JPanel {
 
         exchangePanel.start(1);
     }
-*/
+
 }
