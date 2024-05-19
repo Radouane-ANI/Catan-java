@@ -1,13 +1,12 @@
+
 package gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
-
 import controleur.Game;
 import controleur.ViewControleur;
 import logic.Player;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -31,18 +30,14 @@ public class GameView extends JPanel {
         DiceGUI dicePanel = game.getDiceGUI();
         stateGUI = new StateGUI();
         this.weatherDisplay = new WeatherDisplay();
-    
         JPanel panelLateral = new JPanel(new GridLayout(3, 1));
-    
         panelLateral.add(dicePanel);
         panelLateral.add(weatherDisplay);
         panelLateral.add(stateGUI);
         panelLateral.setOpaque(false);
-    
         Dimension size = getSize();
         boardView = new CatanBoardView(size);
         bankPanel = new BankPanel(ViewControleur.getBank());
-    
         exchangePanel = new ExchangePanel(game.getCurrentPlayer());
         buttonsPanel = new ButtonsPanel(game, weatherDisplay);
         boardView.setOpaque(false);
@@ -50,7 +45,6 @@ public class GameView extends JPanel {
         panelSuperieur.add(bankPanel);
         panelSuperieur.add(buttonsPanel);
         panelSuperieur.setOpaque(false);
-    
         JPanel panelInferieur = new JPanel(new BorderLayout());
         panelInferieur.add(exchangePanel, BorderLayout.WEST);
         panelTempo = new JPanel();
@@ -58,14 +52,13 @@ public class GameView extends JPanel {
         panelTempo.setLayout(new BoxLayout(panelTempo, BoxLayout.Y_AXIS));
         panelTempo.setOpaque(false);
         panelInferieur.setOpaque(false);
-
         add(panelLateral, BorderLayout.EAST);
         add(boardView, BorderLayout.CENTER);
         add(panelSuperieur, BorderLayout.NORTH);
         add(panelInferieur, BorderLayout.SOUTH);
         game.setGameView(this);
     }
-    
+
     public CatanBoardView getBoardView() {
         return boardView;
     }

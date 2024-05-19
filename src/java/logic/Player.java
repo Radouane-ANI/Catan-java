@@ -27,6 +27,12 @@ public class Player implements Trade {
     private List<City> cities;
 
     private int points;
+
+    private int extraPoint;
+
+    public int roadLength;
+
+    public int numberOfKnightsUsed;
     private Color color;
 
     public Player(boolean bot, String nom, Bank bank, Color color) {
@@ -65,6 +71,13 @@ public class Player implements Trade {
         return bot;
     }
 
+    public void setExtraPoint(int x) {
+        extraPoint += x;
+    }
+
+    public int getExtraPoint() {
+        return extraPoint;
+    }
 
     public TradePort getTradePorts() {
         return tradePorts;
@@ -150,6 +163,7 @@ public class Player implements Trade {
     public List<Settlement> getSettlements() {
         return settlements;
     }
+    public int getNbOfSettlemernts() { return settlements.size(); }
 
     public void setSettlements(List<Settlement> settlements) {
         this.settlements = settlements;
@@ -158,6 +172,8 @@ public class Player implements Trade {
     public List<City> getCities() {
         return cities;
     }
+
+    public int getNbOfCity() { return cities.size(); }
 
     public void setCities(List<City> cities) {
         this.cities = cities;
@@ -171,9 +187,13 @@ public class Player implements Trade {
         return points;
     }
 
+    public int getPointsToTal() { return points+extraPoint; }
+
     public void setPoints(int points) {
         this.points = points;
     }
+
+    public void onePointPLus() { this.extraPoint += 1; }
 
     public boolean win() {
         calculePoints();
@@ -329,5 +349,9 @@ public class Player implements Trade {
     public void stealCard(Player victim) {
         wishList.addCard(victim.myCards.getRandomCard(), 1);
         trade(victim);
+    }
+
+    public void buildRoadDev(Road r) {
+        roads.add(r);
     }
 }

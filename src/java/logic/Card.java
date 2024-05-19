@@ -17,6 +17,4 @@ public enum Card {
         return this.ordinal() <= 4;
     }
 
-
-
 }

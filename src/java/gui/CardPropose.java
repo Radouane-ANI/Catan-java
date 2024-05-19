@@ -1,27 +1,49 @@
 package gui;
 
 import logic.Card;
+import logic.CardBox;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class CardPropose extends JPanel {
+   // private static final String BASE_PATH = "src/ressources/";
+
+    private int buttonType;//1--Bank 2--Yes
+
+    private boolean isForMono;
+
+    private String buttonName;
+
     private static final String BASE_PATH = "src/ressources/";
     private JButton button;
     private ImageIcon scaledIcon[] = new ImageIcon[5];
     private Map<Card, JLabel> cardsLabel;
 
-    public CardPropose() {
+    public CardPropose(int buttonType, boolean isForMono) {
+        this.buttonType = buttonType;
+        this.isForMono = isForMono;
+        switch (buttonType) {
+            case 1 -> buttonName = "bank.png";
+            case 2 -> buttonName = "yes.png";
+        }
         button = new JButton();
         loadButtonIcon();
         button.setEnabled(false);
         this.cardsLabel = new LinkedHashMap<>();
         setLayout(null);
         loadScaledIcon();
-        initializeAllCards();
+        if (buttonType == 1) {
+            initializeAllCards();
+        } else {
+            initializeForDev();
+        }
     }
 
     public JButton getButton() {
@@ -33,7 +55,7 @@ public class CardPropose extends JPanel {
     }
 
     private void loadButtonIcon() {
-        String imageFile = BASE_PATH+"bank.png";
+        String imageFile = BASE_PATH+buttonName;
         ImageIcon icon = new ImageIcon(imageFile);
         Image scaledImage = icon.getImage().getScaledInstance((int) (icon.getIconWidth() * 0.3), (int) (icon.getIconHeight() * 0.3), Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
@@ -85,6 +107,38 @@ public class CardPropose extends JPanel {
         positionCards();
     }
 
+    public void initializeForDev() {
+        for(int i = 0; i < 5; i++) {
+            JLabel label = new JLabel(scaledIcon[i]);
+            label.setName(Card.values()[i].name());
+            label.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if(label.getBorder() == null) {
+                        label.setBorder(BorderFactory.createLineBorder(Color.MAGENTA,3));
+                    } else {
+                        label.setBorder(null);
+                    }
+                    if (isForMono) {
+                        if (getSelectedCards().getNbOfKind() == 1) {
+                            button.setEnabled(true);
+                        }else{
+                            button.setEnabled(false);
+                        }
+                    }else{
+                        if (getSelectedCards().getNbOfKind() == 2) {
+                            button.setEnabled(true);
+                        }else{
+                            button.setEnabled(false);
+                        }
+                    }
+                }
+            });
+            cardsLabel.put(Card.values()[i],label);
+        }
+        positionCards();
+    }
+
     private void positionCards() {
         int offsetX = 5;
         int offsetY = 5;
@@ -103,9 +157,28 @@ public class CardPropose extends JPanel {
         this.repaint();
     }
 
+    protected CardBox getSelectedCards() {
+        CardBox selected = new CardBox();
+        for (Map.Entry<Card, JLabel> entry : cardsLabel.entrySet()) {
+            JLabel label = entry.getValue();
+            if (label.getBorder() != null) {
+                selected.addCard(Card.valueOf(label.getName()),1);
+            }
+        }
+        return selected;
+    }
+
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(100, 80);
     }
 
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Overlapping Cards");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        CardPropose cardPropose = new CardPropose(1,false);
+        frame.add(cardPropose,BorderLayout.SOUTH);
+        frame.setSize(1000, 700);
+        frame.setVisible(true);
+    }
 }

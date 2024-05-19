@@ -31,13 +31,12 @@ public class Bank extends CardBox {
             Random r = new Random();
             int probability = r.nextInt(allDevCardsNumber()) + 1;
             int accu = 0;
-            for (int i = 5; i < cardsNumbers.length; i++) {
-                accu += cardsNumbers[i];
-                if (accu >= probability) {
-                    return Card.values()[i];
-                }
+            int index = 5;
+            while (accu < probability) {
+                accu += getNumber(Card.values()[index]);
+                index++;
             }
-    
+            return Card.values()[index-1];
         }
         return null;
     }
@@ -53,6 +52,5 @@ public class Bank extends CardBox {
         }
         return allDevCardsNumber;
     }
-
 }
 

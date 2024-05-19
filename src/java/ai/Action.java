@@ -74,7 +74,7 @@ public class Action {
     }
 
     private void randomRoad(Player p) {
-        List<Edge> avaibleRoad = ViewControleur.getCatanControleur().buildRoad(p);
+        List<Edge> avaibleRoad = ViewControleur.getCatanControleur().buildRoad(p, false, 1);
         if (avaibleRoad.size() == 0) {
             return;
         }
@@ -110,7 +110,8 @@ public class Action {
         }
     }
 
-    public void moveThief(Player currentPlayer, Thief thief) {
+    public void moveThief(Player currentPlayer) {
+        Thief thief = ViewControleur.getCatanControleur().getThief();
         int pos = rd.nextInt(Tile.getTilesIntern().length);
         while (Tile.getTilesIntern()[pos].getThief() != null) {
             pos = rd.nextInt(Tile.getTilesIntern().length);

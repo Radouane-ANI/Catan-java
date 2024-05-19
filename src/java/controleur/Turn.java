@@ -3,12 +3,9 @@ package controleur;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import logic.*;
 import map.Node;
-import logic.Player;
-import logic.City;
-import logic.HumanGroup;
-import logic.Settlement;
-import logic.Thief;
 import map.Board;
 import map.Tile;
 import util.TerrainType;
@@ -20,7 +17,6 @@ import javax.swing.JOptionPane;
 
 public class Turn {
     private GameView gameView;
-    private Thief thief;
     protected List<Player> playersList;
     protected int currentPlayerIndex;
     private DiceGUI diceGUI;
@@ -34,7 +30,6 @@ public class Turn {
         currentPlayerIndex = 0; // Commence avec le premier joueur
         this.diceGUI = new DiceGUI(); 
         currentPlayer = playersList.get(currentPlayerIndex);
-        thief = new Thief(null);
         actionBot = new Action();
         finishedTrade = true;
     }
@@ -63,6 +58,14 @@ public class Turn {
         promptForReroll = false;
         currentPlayer.setFinishedTurn(true);
     }
+
+    public int getNbOfPlayers() {
+        return playersList.size();
+    }
+
+    public List<Player> getPlayersList() {
+        return playersList;
+    }
     
     protected void firstBuild(Player player) {
         if (!player.isBot()) {
@@ -71,6 +74,18 @@ public class Turn {
             actionBot.firstBuild(player);
         }
     }
+
+    public int mono_getCardFromEveryone(Card c) {
+        int counter = 0;
+        for(Player player : playersList) {
+            if (player != currentPlayer) {
+                counter = player.getMyCards().getNumber(c);
+                player.getMyCards().setZero(c);
+            }
+        }
+        return counter;
+    }
+
 
     private void recupRessources(List<Player> players, int sumDices) {
         if (gameView != null && gameView.getWeatherDisplay() != null) {
@@ -124,9 +139,9 @@ public class Turn {
             }
             update();
             if (!currentPlayer.isBot()) {
-                ViewControleur.getCatanControleur().moveThief(thief, currentPlayer);
+                ViewControleur.getCatanControleur().moveThief(currentPlayer);
             }else {
-                actionBot.moveThief(currentPlayer, thief);
+                actionBot.moveThief(currentPlayer);
             }
         }
     }
