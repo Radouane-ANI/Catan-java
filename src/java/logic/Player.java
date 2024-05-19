@@ -3,6 +3,7 @@ package logic;
 import java.util.List;
 
 import map.Edge;
+import map.Node;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -188,11 +189,13 @@ public class Player implements Trade {
         boolean flag = false;
         for (Road road : getRoads()) {
             Edge edge = Edge.getEdge(road);
-            if (edge.getX().canBuildSettlement()) {
+            Node posX = Node.canBuildSettlement(edge.getX());
+            if (posX != null) {
                 flag = true;
                 break;
             }
-            if (edge.getY().canBuildSettlement()) {
+            Node posY = Node.canBuildSettlement(edge.getY());
+            if (posY != null) {
                 flag = true;
                 break;
             }
@@ -256,13 +259,6 @@ public class Player implements Trade {
         return missingCards;
     }
 
-    public boolean isTradableInBank() {
-        Card c = wishList.getFirst();
-        wishList.clearBox();
-        wishList.addCard(c, 1);
-        return isTradableInBank(saleList, wishList, tradePorts);
-    }
-
     public void updateTradeLists() {
         saleList.clearBox();
         wishList.clearBox();
@@ -297,7 +293,6 @@ public class Player implements Trade {
             int quantite = etats.get(min) * -1 <= etats.get(max) ? etats.get(min) * -1 : etats.get(max);
             wishList.addCard(max, quantite);
             saleList.addCard(min, quantite);
-            myCards.removeCard(min, quantite);
         }
         return wishList.getNumberOfRes() != 0;
     }
@@ -308,8 +303,6 @@ public class Player implements Trade {
     
     public void trade(Player player) {
         trade(saleList, player.myCards, wishList, myCards);
-        player.saleList.clearBox();
-        player.wishList.clearBox();
     }
 
     public boolean buyRessourceCard(Card c){
