@@ -435,7 +435,7 @@ public class ExchangePanel extends JPanel {
         buttonsPanel.updateButtons();
     }
 
-    public static void main(String[] args)  {
+    /*public static void main(String[] args)  {
         Bank bank = new Bank();
 
         Player player = new Player(false, "Sam", bank, Color.red);

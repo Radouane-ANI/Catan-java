@@ -163,6 +163,7 @@ public class Player implements Trade {
     public List<Settlement> getSettlements() {
         return settlements;
     }
+    public int getNbOfSettlemernts() { return settlements.size(); }
 
     public void setSettlements(List<Settlement> settlements) {
         this.settlements = settlements;
@@ -171,6 +172,8 @@ public class Player implements Trade {
     public List<City> getCities() {
         return cities;
     }
+
+    public int getNbOfCity() { return cities.size(); }
 
     public void setCities(List<City> cities) {
         this.cities = cities;
@@ -184,11 +187,13 @@ public class Player implements Trade {
         return points;
     }
 
+    public int getPointsToTal() { return points+extraPoint; }
+
     public void setPoints(int points) {
         this.points = points;
     }
 
-    public void onePointPLus() { this.points += 1; }
+    public void onePointPLus() { this.extraPoint += 1; }
 
     public boolean win() {
         calculePoints();

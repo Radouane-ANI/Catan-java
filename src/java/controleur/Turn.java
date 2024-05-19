@@ -61,6 +61,14 @@ public class Turn {
         promptForReroll = false;
         currentPlayer.setFinishedTurn(true);
     }
+
+    public int getNbOfPlayers() {
+        return playersList.size();
+    }
+
+    public List<Player> getPlayersList() {
+        return playersList;
+    }
     
     protected void firstBuild(Player player) {
         if (!player.isBot()) {
