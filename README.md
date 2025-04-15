@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="banniere.png" alt="img" width="300"/>
+  <img src="banniere.png" alt="img"/>
 </p>
 
 Executable:
