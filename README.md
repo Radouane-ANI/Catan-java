@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="banniere.png" alt="img" width="300"/>
+</p>
+
 Executable:
 java -jar K-catan.jar
 ou bien 
